@@ -4,284 +4,401 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Danush Vikraman · Quantum Engineer</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#080604; --bg2:#0f0c08; --bg3:#161209; --bg4:#1c1810;
-  --text:#f0e8d8; --dim:#8a7a62; --dimmer:#4a3e2c;
-  --gold:#c8a84b; --gold-lt:#edc96a; --gold-dk:#7a6230; --gold-pale:#fdf3d0;
-  --gg:linear-gradient(135deg,#7a6230,#c8a84b,#edc96a,#c8a84b,#7a6230);
-  --gh:linear-gradient(90deg,#7a6230,#c8a84b,#edc96a,#fef9e7,#edc96a,#c8a84b,#7a6230);
-  --glow:0 0 28px rgba(200,168,75,.22),0 0 56px rgba(200,168,75,.07);
-  --glow-sm:0 0 14px rgba(200,168,75,.18);
-  --border:rgba(200,168,75,.14); --border-lt:rgba(200,168,75,.32);
-  --royal:'Cinzel',serif; --deco:'Cinzel Decorative',serif; --body:'Cormorant Garamond',serif;
+  --bg:#06050300;
+  --bg-solid:#060503;
+  --bg2:#0d0b07;
+  --bg3:#141008;
+  --bg4:#1a160a;
+  --bg5:#21190d;
+  --text:#ffffff;
+  --text-warm:#f5ead8;
+  --dim:#d4c5a9;
+  --dimmer:#9a8a70;
+  --dimmest:#5a4e38;
+  --gold:#c9a84c;
+  --gold-lt:#f0cc70;
+  --gold-pale:#fdf6e3;
+  --gold-dk:#7a6130;
+  --gold-mid:#a88a3a;
+  --gg:linear-gradient(135deg,#4a3a1a,#8a6828,#c9a84c,#f0cc70,#c9a84c,#8a6828,#4a3a1a);
+  --gg-h:linear-gradient(90deg,#4a3a1a,#8a6828,#c9a84c,#f5e090,#c9a84c,#8a6828,#4a3a1a);
+  --gg-line:linear-gradient(90deg,transparent,#c9a84c,#f0cc70,#c9a84c,transparent);
+  --glow-gold:0 0 40px rgba(201,168,76,.3),0 0 80px rgba(201,168,76,.1);
+  --glow-sm:0 0 20px rgba(201,168,76,.2);
+  --glow-inner:inset 0 0 30px rgba(201,168,76,.04);
+  --border:rgba(201,168,76,.12);
+  --border-md:rgba(201,168,76,.25);
+  --border-lt:rgba(201,168,76,.45);
+  --royal:'Cinzel',serif;
+  --deco:'Cinzel Decorative',serif;
+  --body:'Cormorant Garamond',serif;
+  --fell:'IM Fell English',serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;overflow:hidden;}
-body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:18px;cursor:crosshair;}
+html{height:100%;}
+body{background:var(--bg-solid);color:var(--text);font-family:var(--body);font-size:18px;overflow:hidden;height:100%;cursor:crosshair;}
 
-/* ── CANVAS ── */
-#qc{position:fixed;inset:0;z-index:0;opacity:.45;pointer-events:none;}
+/* ── LUXURY CANVAS BG ── */
+#qc{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* ── VIGNETTE ── */
+#vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 40%,rgba(6,5,3,.7) 100%);}
+
+/* ── CORNER ORNAMENTS ── */
+.corner-orn{position:fixed;z-index:2;pointer-events:none;width:80px;height:80px;}
+.corner-orn svg{width:100%;height:100%;}
+#co-tl{top:0;left:0;}
+#co-tr{top:0;right:0;transform:scaleX(-1);}
+#co-bl{bottom:0;left:0;transform:scaleY(-1);}
+#co-br{bottom:0;right:0;transform:scale(-1,-1);}
 
 /* ── APP SHELL ── */
-#app{position:fixed;inset:0;z-index:1;overflow:hidden;}
+#app{position:fixed;inset:0;z-index:3;overflow:hidden;}
 
 /* ── PAGE TRANSITIONS ── */
-.page{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;
-  transition:transform .55s cubic-bezier(.4,0,.2,1),opacity .55s ease;
-  overflow-y:auto;overflow-x:hidden;
-}
-.page.hidden-left {transform:translateX(-100%);opacity:0;pointer-events:none;}
-.page.hidden-right{transform:translateX(100%); opacity:0;pointer-events:none;}
-.page.active     {transform:translateX(0);     opacity:1;pointer-events:all;}
+.page{position:absolute;inset:0;display:flex;flex-direction:column;transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .6s ease;overflow-y:auto;overflow-x:hidden;}
+.page.hidden-left{transform:translateX(-100%);opacity:0;pointer-events:none;}
+.page.hidden-right{transform:translateX(100%);opacity:0;pointer-events:none;}
+.page.active{transform:translateX(0);opacity:1;pointer-events:all;}
 
 /* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:2px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--gold);}
+::-webkit-scrollbar{width:1px;}
+::-webkit-scrollbar-track{background:var(--bg-solid);}
+::-webkit-scrollbar-thumb{background:var(--gold-mid);}
 
 /* ── NAV ── */
 nav{
-  position:sticky;top:0;z-index:50;
+  position:sticky;top:0;z-index:50;flex-shrink:0;
   display:flex;align-items:center;justify-content:space-between;
-  padding:1.4rem 4rem;
-  background:linear-gradient(to bottom,rgba(8,6,4,.97) 70%,transparent);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid rgba(200,168,75,.06);
-  flex-shrink:0;
+  padding:1.6rem 5rem;
+  background:linear-gradient(to bottom,rgba(6,5,3,.98) 60%,transparent);
+  backdrop-filter:blur(20px);
 }
-.nav-logo{font-family:var(--deco);font-size:1.2rem;font-weight:700;letter-spacing:.22em;text-decoration:none;background:var(--gg);background-size:200%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-.nav-right{display:flex;gap:.7rem;}
-.btn-icon{background:none;border:1px solid var(--border);color:var(--dim);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;font-size:.9rem;}
-.btn-icon:hover,.btn-icon.active-icon{border-color:var(--gold);color:var(--gold);box-shadow:var(--glow-sm);}
+.nav-logo-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.nav-logo{font-family:var(--deco);font-size:1rem;font-weight:700;letter-spacing:.3em;text-decoration:none;background:var(--gg);background-size:300%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-rule{width:60px;height:1px;background:var(--gg-line);}
+.nav-right{display:flex;gap:.8rem;}
+.btn-icon{
+  background:none;border:1px solid var(--border-md);
+  color:var(--dimmer);width:38px;height:38px;border-radius:0;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .3s;font-size:.85rem;
+  position:relative;
+}
+.btn-icon::before,.btn-icon::after{content:'';position:absolute;width:6px;height:6px;border-color:var(--gold);border-style:solid;transition:all .3s;}
+.btn-icon::before{top:-2px;left:-2px;border-width:1px 0 0 1px;}
+.btn-icon::after{bottom:-2px;right:-2px;border-width:0 1px 1px 0;}
+.btn-icon:hover{border-color:var(--gold-mid);color:var(--gold-lt);box-shadow:var(--glow-sm);}
+.btn-icon:hover::before,.btn-icon:hover::after{border-color:var(--gold-lt);}
+.btn-icon.active-icon{border-color:var(--gold);color:var(--gold-lt);}
 
 /* ═══════════════════════════
    PAGE 1 — LANDING
 ═══════════════════════════ */
-#p1-content{
-  flex:1;display:flex;flex-direction:column;
-  padding:5rem 4rem 4rem;
-  max-width:1200px;width:100%;margin:0 auto;
-}
+#p1-content{flex:1;display:flex;flex-direction:column;padding:4rem 5rem 3rem;max-width:1280px;width:100%;margin:0 auto;}
 
-/* HERO */
-.hero{margin-bottom:4rem;}
-.hero-crown{display:flex;align-items:center;gap:1.2rem;margin-bottom:1.2rem;}
-.crown-line{flex:1;height:1px;background:linear-gradient(to right,transparent,var(--gold-dk));}
-.crown-line-r{flex:1;height:1px;background:linear-gradient(to left,transparent,var(--gold-dk));}
-.crown-label{font-family:var(--royal);font-size:.58rem;letter-spacing:.38em;text-transform:uppercase;color:var(--gold);white-space:nowrap;}
-.hero-name{font-family:var(--deco);font-weight:700;line-height:.92;letter-spacing:.06em;margin-bottom:1.1rem;}
-/* Static metallic gold — no flash */
-.name-l1{display:block;font-size:clamp(3.5rem,8vw,7.5rem);color:var(--gold-lt);}
-.name-l2{display:block;font-size:clamp(3rem,6vw,6rem);color:var(--text);opacity:.85;letter-spacing:.1em;}
-.hero-rule{width:320px;height:1px;background:linear-gradient(to right,var(--gold),rgba(200,168,75,.1),transparent);margin-bottom:1.2rem;}
-.hero-sub{font-family:var(--royal);font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-bottom:.9rem;}
-.hero-sub span{color:var(--gold);margin:0 .5rem;}
-.hero-desc{max-width:440px;font-size:.98rem;line-height:1.85;color:var(--dim);font-style:italic;font-weight:300;margin-bottom:2rem;}
-.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
-.btn-royal{font-family:var(--royal);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;padding:.82rem 2rem;cursor:pointer;text-decoration:none;display:inline-block;transition:all .35s;border:none;}
-.btn-gold{background:var(--gg);color:#0a0806;}
-.btn-gold:hover{box-shadow:var(--glow);letter-spacing:.22em;}
-.btn-ghost{background:transparent;color:var(--gold);border:1px solid var(--gold);}
-.btn-ghost:hover{background:rgba(200,168,75,.07);box-shadow:var(--glow-sm);}
+/* ── HERO ── */
+.hero{margin-bottom:4.5rem;position:relative;}
 
-/* SECTION CARDS GRID */
-.cards-label{font-family:var(--royal);font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--dim);margin-bottom:1.4rem;display:flex;align-items:center;gap:1rem;}
-.cards-label::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border-lt),transparent);}
-.cards-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:1.2rem;
-}
+/* Decorative side rule */
+.hero-side{position:absolute;left:-2.5rem;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--gold-dk) 20%,var(--gold) 50%,var(--gold-dk) 80%,transparent);}
+
+.hero-eyebrow{display:flex;align-items:center;gap:1rem;margin-bottom:1.4rem;}
+.eyebrow-gem{font-size:.4rem;color:var(--gold);}
+.eyebrow-text{font-family:var(--royal);font-size:.55rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold-lt);}
+.eyebrow-line{flex:1;height:1px;background:linear-gradient(to right,var(--border-lt),transparent);max-width:200px;}
+
+.hero-name{font-family:var(--deco);line-height:.88;margin-bottom:1.4rem;}
+.name-l1{display:block;font-size:clamp(4rem,9vw,8.5rem);font-weight:700;color:var(--gold-lt);letter-spacing:.04em;text-shadow:0 0 60px rgba(201,168,76,.25);}
+.name-l2{display:block;font-size:clamp(2.8rem,5.5vw,5.5rem);font-weight:400;color:var(--text-warm);letter-spacing:.12em;opacity:.9;}
+
+/* Ornamental rule under name */
+.hero-ornament{display:flex;align-items:center;gap:.8rem;margin-bottom:1.4rem;}
+.orn-line{flex:0 0 80px;height:1px;background:linear-gradient(to right,transparent,var(--gold));}
+.orn-line-r{flex:0 0 80px;height:1px;background:linear-gradient(to left,transparent,var(--gold));}
+.orn-diamond{font-size:.45rem;color:var(--gold-lt);}
+.orn-text{font-family:var(--royal);font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);white-space:nowrap;}
+
+.hero-title{font-family:var(--royal);font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(--dimmer);margin-bottom:.8rem;}
+.hero-title span{color:var(--gold-mid);}
+
+/* Italic quote in IM Fell English */
+.hero-quote{font-family:var(--fell);font-style:italic;font-size:1.1rem;line-height:1.9;color:var(--dim);margin-bottom:2rem;max-width:480px;border-left:1px solid var(--border-lt);padding-left:1.2rem;}
+
+.hero-btns{display:flex;gap:1.2rem;flex-wrap:wrap;}
+.btn-royal{font-family:var(--royal);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;padding:.88rem 2.4rem;cursor:pointer;text-decoration:none;display:inline-block;transition:all .4s;border:none;position:relative;}
+.btn-gold{background:var(--gg);background-size:200%;color:#080601;font-weight:600;}
+.btn-gold:hover{box-shadow:var(--glow-gold);letter-spacing:.25em;}
+.btn-ghost{background:transparent;color:var(--gold-lt);border:1px solid var(--border-md);position:relative;}
+.btn-ghost::before,.btn-ghost::after{content:'';position:absolute;width:8px;height:8px;border-color:var(--gold-lt);border-style:solid;transition:all .3s;}
+.btn-ghost::before{top:-2px;left:-2px;border-width:1px 0 0 1px;}
+.btn-ghost::after{bottom:-2px;right:-2px;border-width:0 1px 1px 0;}
+.btn-ghost:hover{background:rgba(201,168,76,.06);border-color:var(--gold);box-shadow:var(--glow-sm);}
+
+/* ── SECTION CARDS ── */
+.cards-header{display:flex;align-items:center;gap:1.2rem;margin-bottom:1.8rem;}
+.cards-header-rule{height:1px;flex:1;background:linear-gradient(to right,var(--border-lt),transparent);}
+.cards-header-label{font-family:var(--royal);font-size:.52rem;letter-spacing:.4em;text-transform:uppercase;color:var(--dimmer);white-space:nowrap;}
+.cards-header-gem{font-size:.4rem;color:var(--gold);}
+
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+
 .sec-card{
-  border:1px solid var(--border);
   background:var(--bg2);
-  padding:1.8rem;cursor:pointer;
+  padding:2rem 1.8rem;cursor:pointer;
   position:relative;overflow:hidden;
-  transition:all .35s;
-  display:flex;flex-direction:column;gap:.6rem;
+  transition:all .4s;
+  display:flex;flex-direction:column;gap:.5rem;
 }
-.sec-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gg);transform:scaleX(0);transform-origin:left;transition:transform .4s;}
-.sec-card::after{content:'';position:absolute;bottom:1.8rem;right:1.8rem;font-family:var(--royal);font-size:.62rem;letter-spacing:.1em;color:var(--gold);opacity:0;transition:opacity .3s;font-style:normal;}
+.sec-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--gg-h);transform:scaleX(0);transform-origin:left;transition:transform .5s;
+}
+.sec-card::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.06),transparent 60%);
+  opacity:0;transition:opacity .4s;
+}
 .sec-card:hover::before{transform:scaleX(1);}
-.sec-card:hover{border-color:rgba(200,168,75,.35);background:var(--bg3);transform:translateY(-4px);box-shadow:var(--glow),0 20px 40px rgba(0,0,0,.5);}
 .sec-card:hover::after{opacity:1;}
-.card-roman{font-family:var(--deco);font-size:2.8rem;font-weight:400;color:var(--gold);opacity:.12;line-height:1;transition:opacity .3s;position:absolute;top:.8rem;right:1.2rem;}
-.sec-card:hover .card-roman{opacity:.22;}
-.card-glyph{font-size:1.3rem;margin-bottom:.2rem;}
-.card-title{font-family:var(--royal);font-size:.95rem;font-weight:600;letter-spacing:.06em;color:var(--text);}
-.card-sub{font-family:var(--body);font-size:.82rem;color:var(--dim);font-style:italic;line-height:1.5;}
-.card-arrow{font-size:.7rem;color:var(--gold);margin-top:auto;padding-top:.5rem;font-family:var(--royal);letter-spacing:.1em;opacity:0;transition:opacity .3s;}
-.sec-card:hover .card-arrow{opacity:1;}
+.sec-card:hover{background:var(--bg3);box-shadow:inset 0 0 40px rgba(201,168,76,.04);}
+
+.card-num{
+  font-family:var(--deco);font-size:4.5rem;font-weight:400;
+  color:var(--gold);opacity:.06;
+  position:absolute;bottom:-.8rem;right:1rem;
+  line-height:1;transition:opacity .4s;pointer-events:none;
+}
+.sec-card:hover .card-num{opacity:.12;}
+.card-icon-row{display:flex;align-items:center;gap:.7rem;margin-bottom:.3rem;}
+.card-icon-line{width:20px;height:1px;background:var(--gold-mid);opacity:.5;}
+.card-icon-label{font-family:var(--royal);font-size:.48rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-mid);}
+.card-title{font-family:var(--royal);font-size:1rem;font-weight:600;letter-spacing:.05em;color:var(--text);}
+.card-sub{font-family:var(--body);font-size:.85rem;color:var(--dim);font-style:italic;line-height:1.55;font-weight:300;}
+.card-cta{font-family:var(--royal);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-mid);margin-top:auto;padding-top:.8rem;opacity:0;transition:opacity .3s;display:flex;align-items:center;gap:.5rem;}
+.card-cta::after{content:'';flex:1;height:1px;background:var(--gold-mid);max-width:30px;}
+.sec-card:hover .card-cta{opacity:1;}
+
+/* ── FOOTER ── */
+.p1-footer{text-align:center;padding:1rem;border-top:1px solid var(--border);flex-shrink:0;position:relative;}
+.p1-footer::before{content:'◆ ◆ ◆';position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:.35rem;color:var(--gold-mid);background:var(--bg-solid);padding:0 .8rem;letter-spacing:.4em;}
+.p1-footer-text{font-family:var(--royal);font-size:.5rem;letter-spacing:.28em;color:var(--dimmest);text-transform:uppercase;}
 
 /* ═══════════════════════════
    PAGE 2 — DETAIL
 ═══════════════════════════ */
 #p2-nav{
   display:flex;align-items:center;gap:1.5rem;
-  padding:1.4rem 4rem;
-  background:linear-gradient(to bottom,rgba(8,6,4,.97) 70%,transparent);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid rgba(200,168,75,.06);
-  flex-shrink:0;
+  padding:1.5rem 5rem;
+  background:linear-gradient(to bottom,rgba(6,5,3,.98) 60%,transparent);
+  backdrop-filter:blur(20px);flex-shrink:0;
 }
 .back-btn{
-  font-family:var(--royal);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--dim);background:none;border:1px solid var(--border);
-  padding:.55rem 1.2rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:.5rem;
+  font-family:var(--royal);font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dimmer);background:none;border:1px solid var(--border-md);
+  padding:.55rem 1.4rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:.6rem;
+  position:relative;
 }
-.back-btn:hover{color:var(--gold);border-color:var(--gold);}
-.p2-crumb{font-family:var(--royal);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);}
-#p2-body{flex:1;padding:3.5rem 4rem 4rem;max-width:1100px;width:100%;margin:0 auto;}
+.back-btn::before,.back-btn::after{content:'';position:absolute;width:5px;height:5px;border-color:var(--gold-mid);border-style:solid;transition:border-color .3s;}
+.back-btn::before{top:-1px;left:-1px;border-width:1px 0 0 1px;}
+.back-btn::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0;}
+.back-btn:hover{color:var(--gold-lt);border-color:var(--gold);}
+.p2-crumb-wrap{display:flex;align-items:center;gap:.6rem;}
+.p2-crumb-gem{font-size:.4rem;color:var(--gold);}
+.p2-crumb{font-family:var(--royal);font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold-lt);}
 
-/* Detail sections */
-.d-roman{font-family:var(--royal);font-size:.58rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
-.d-title{font-family:var(--royal);font-size:clamp(2rem,4vw,3.2rem);font-weight:600;letter-spacing:.05em;color:var(--text);margin-bottom:.4rem;}
-.d-title-accent{background:var(--gg);background-size:200%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-.d-rule{display:flex;align-items:center;gap:.8rem;margin-bottom:3rem;}
-.d-rule-line{width:55px;height:1px;background:linear-gradient(to right,var(--gold),transparent);}
-.d-rule-gem{color:var(--gold);font-size:.5rem;}
+#p2-body{flex:1;padding:3.5rem 5rem 5rem;max-width:1200px;width:100%;margin:0 auto;}
 
-/* Cards */
+/* ── DETAIL TYPOGRAPHY ── */
+.d-overline{font-family:var(--royal);font-size:.5rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold-mid);margin-bottom:.6rem;display:flex;align-items:center;gap:.7rem;}
+.d-overline::before{content:'';width:24px;height:1px;background:var(--gold-mid);}
+.d-title{font-family:var(--deco);font-size:clamp(2.2rem,4vw,3.8rem);font-weight:700;color:var(--text);margin-bottom:.3rem;line-height:1;}
+.d-title em{font-family:var(--deco);font-style:normal;background:var(--gg);background-size:200%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.d-divider{display:flex;align-items:center;gap:1rem;margin-bottom:3rem;margin-top:.5rem;}
+.d-divider-line{height:1px;flex:0 0 60px;background:linear-gradient(to right,var(--gold),transparent);}
+.d-divider-gem{color:var(--gold);font-size:.45rem;letter-spacing:.4em;}
+.d-divider-line2{height:1px;flex:0 0 30px;background:linear-gradient(to right,rgba(201,168,76,.3),transparent);}
+
+/* ── DETAIL CARDS ── */
 .d-card{
   border:1px solid var(--border);background:var(--bg2);
-  padding:2.2rem;position:relative;overflow:hidden;
-  transition:all .35s;margin-bottom:1.5rem;
+  padding:2.4rem;position:relative;overflow:hidden;
+  transition:all .4s;margin-bottom:1.8rem;
 }
-.d-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--gg);opacity:.4;transition:opacity .3s;}
-.d-card::after{content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:var(--gg);opacity:.5;}
-.d-card:hover{background:var(--bg3);border-color:rgba(200,168,75,.3);box-shadow:var(--glow-sm);}
-.d-card:hover::before{opacity:.9;}
+.d-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--gg-h);opacity:.5;transition:opacity .3s;}
+.d-card::after{content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--gold),rgba(201,168,76,.1));}
+.d-card:hover{background:var(--bg3);border-color:var(--border-md);}
+.d-card:hover::before{opacity:1;}
 
-/* Grid for projects */
-.d-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;}
-.d-proj{
-  border:1px solid var(--border);background:var(--bg2);
-  padding:2rem;position:relative;overflow:hidden;
-  transition:all .35s;display:flex;flex-direction:column;
-}
-.d-proj::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gg);opacity:0;transition:opacity .4s;}
-.d-proj:hover{border-color:rgba(200,168,75,.35);transform:translateY(-4px);box-shadow:var(--glow);}
-.d-proj:hover::before{opacity:1;}
-.proj-roman-bg{position:absolute;top:.5rem;right:1rem;font-family:var(--deco);font-size:4rem;color:var(--gold);opacity:.06;pointer-events:none;line-height:1;}
+.label-sm{font-family:var(--royal);font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;}
+.label-sm::before{content:'';width:16px;height:1px;background:var(--gold-lt);}
+.card-heading{font-family:var(--royal);font-size:1.35rem;font-weight:600;letter-spacing:.04em;color:var(--text);margin-bottom:.2rem;}
+.card-italic{font-family:var(--fell);font-size:.95rem;color:var(--dim);font-style:italic;margin-bottom:1rem;line-height:1.5;}
+.badge{font-family:var(--royal);font-size:.52rem;letter-spacing:.14em;padding:.38rem 1rem;border:1px solid var(--gold-mid);color:var(--gold-lt);background:rgba(201,168,76,.05);white-space:nowrap;}
+.meta-row{display:flex;flex-wrap:wrap;gap:1.4rem;font-family:var(--royal);font-size:.58rem;letter-spacing:.08em;color:var(--dimmer);margin-bottom:.8rem;padding:1rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.meta-item{display:flex;flex-direction:column;gap:.2rem;}
+.meta-label{font-size:.46rem;letter-spacing:.25em;text-transform:uppercase;color:var(--dimmest);}
+.meta-val{color:var(--gold-lt);}
+.divider-sm{height:1px;background:linear-gradient(to right,var(--border-lt),transparent);margin:1.4rem 0;}
 
-/* Typography in details */
-.label-sm{font-family:var(--royal);font-size:.56rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
-.card-heading{font-family:var(--royal);font-size:1.3rem;font-weight:600;letter-spacing:.04em;color:var(--text);margin-bottom:.2rem;}
-.card-italic{font-family:var(--body);font-size:.9rem;color:var(--dim);font-style:italic;margin-bottom:1rem;}
-.badge{font-family:var(--royal);font-size:.56rem;letter-spacing:.12em;padding:.35rem .9rem;border:1px solid var(--gold);color:var(--gold);background:rgba(200,168,75,.04);white-space:nowrap;}
-.meta-row{display:flex;flex-wrap:wrap;gap:1.2rem;font-family:var(--royal);font-size:.6rem;letter-spacing:.08em;color:var(--dimmer);margin-bottom:.8rem;}
-.meta-row span{color:var(--gold);}
-.divider{height:1px;background:linear-gradient(to right,var(--border-lt),transparent);margin:1.5rem 0;}
-.bullets{list-style:none;display:flex;flex-direction:column;gap:.8rem;}
-.bullets li{font-size:.92rem;line-height:1.8;color:var(--dim);padding-left:1.4rem;position:relative;font-weight:300;}
-.bullets li::before{content:'◆';position:absolute;left:0;color:var(--gold);font-size:.38rem;top:.65rem;}
+.bullets{list-style:none;display:flex;flex-direction:column;gap:.9rem;}
+.bullets li{font-size:.95rem;line-height:1.85;color:var(--dim);padding-left:1.6rem;position:relative;font-weight:300;}
+.bullets li::before{content:'◆';position:absolute;left:0;color:var(--gold);font-size:.32rem;top:.7rem;}
+
 .tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.6rem;}
-.tag{font-family:var(--royal);padding:.28rem .85rem;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--border);color:var(--dim);background:var(--bg3);transition:all .25s;cursor:default;}
-.tag:hover{border-color:var(--gold);color:var(--gold-pale);background:rgba(200,168,75,.06);}
-.proj-link{font-family:var(--royal);font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:.4rem .9rem;border:1px solid var(--border-lt);transition:all .25s;display:inline-block;margin-top:auto;}
-.proj-link:hover{background:rgba(200,168,75,.08);border-color:var(--gold);}
-.proj-links{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.2rem;}
-.contact-link{display:flex;align-items:center;gap:1.2rem;color:var(--dim);text-decoration:none;font-size:.9rem;padding:1rem 1.4rem;border:1px solid var(--border);background:var(--bg2);transition:all .35s;position:relative;overflow:hidden;margin-bottom:.8rem;}
-.contact-link::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gg);transform:scaleY(0);transform-origin:top;transition:transform .3s;}
-.contact-link:hover::after{transform:scaleY(1);}
-.contact-link:hover{border-color:rgba(200,168,75,.3);color:var(--gold-pale);padding-left:1.8rem;}
-.cl-icon{width:22px;text-align:center;color:var(--gold);flex-shrink:0;font-family:var(--royal);font-size:.75rem;font-weight:700;}
+.tag{font-family:var(--royal);padding:.3rem .9rem;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--border);color:var(--dim);background:var(--bg3);transition:all .25s;cursor:default;}
+.tag:hover{border-color:var(--gold-mid);color:var(--gold-pale);background:rgba(201,168,76,.05);}
 
-/* Skills grid */
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2rem;}
-.skill-group-title{font-family:var(--royal);font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;padding-bottom:.55rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.6rem;}
-.skill-group-title::before{content:'◆';font-size:.38rem;}
+/* ── PROJECT GRID ── */
+.d-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:1px;background:var(--border);}
+.d-proj{
+  background:var(--bg2);padding:2.2rem;
+  position:relative;overflow:hidden;
+  transition:all .4s;display:flex;flex-direction:column;
+}
+.d-proj::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gg-h);opacity:0;transition:opacity .4s;}
+.d-proj::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 90% 10%,rgba(201,168,76,.07),transparent 55%);opacity:0;transition:opacity .4s;}
+.d-proj:hover{background:var(--bg3);}
+.d-proj:hover::before,.d-proj:hover::after{opacity:1;}
+.proj-bg-num{position:absolute;bottom:-.5rem;right:.8rem;font-family:var(--deco);font-size:5rem;color:var(--gold);opacity:.04;line-height:1;pointer-events:none;transition:opacity .4s;}
+.d-proj:hover .proj-bg-num{opacity:.09;}
+.proj-link{font-family:var(--royal);font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-lt);text-decoration:none;padding:.42rem 1rem;border:1px solid var(--border-md);transition:all .3s;display:inline-flex;align-items:center;gap:.4rem;margin-top:auto;}
+.proj-link:hover{background:rgba(201,168,76,.08);border-color:var(--gold);}
+.proj-links{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.4rem;}
 
-/* Ach */
-.ach-item{display:flex;align-items:flex-start;gap:1.6rem;padding:1.5rem 1.8rem;border:1px solid var(--border);background:var(--bg2);transition:all .35s;position:relative;overflow:hidden;margin-bottom:1rem;}
-.ach-item::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--gg);transform:scaleX(0);transform-origin:left;transition:transform .4s;}
-.ach-item:hover::after{transform:scaleX(1);}
-.ach-item:hover{border-color:rgba(200,168,75,.28);background:var(--bg3);}
-.ach-glyph{font-size:1.3rem;flex-shrink:0;width:40px;text-align:center;margin-top:.1rem;}
-.ach-title{font-family:var(--royal);font-size:.95rem;font-weight:600;letter-spacing:.03em;color:var(--text);margin-bottom:.3rem;}
-.ach-sub{font-family:var(--body);font-size:.88rem;color:var(--dim);line-height:1.7;font-style:italic;font-weight:300;}
+/* ── SKILLS ── */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:2.2rem;}
+.skill-group{border:1px solid var(--border);background:var(--bg2);padding:1.8rem;position:relative;}
+.skill-group::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--gg-h);opacity:.4;}
+.skill-group-title{font-family:var(--royal);font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:1.2rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.6rem;}
+.skill-group-title::before{content:'◈';font-size:.6rem;color:var(--gold);}
 
-/* Footer in p1 */
-.p1-footer{text-align:center;padding:1.2rem;border-top:1px solid var(--border);flex-shrink:0;}
-.p1-footer-text{font-family:var(--royal);font-size:.52rem;letter-spacing:.22em;color:var(--dimmer);}
+/* ── ACHIEVEMENTS ── */
+.ach-item{
+  display:flex;align-items:flex-start;gap:1.8rem;
+  padding:1.8rem 2rem;border:1px solid var(--border);background:var(--bg2);
+  transition:all .4s;position:relative;overflow:hidden;margin-bottom:1.2rem;
+}
+.ach-item::before{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--gg-h);transform:scaleX(0);transform-origin:left;transition:transform .5s;}
+.ach-item::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--gold),transparent);}
+.ach-item:hover::before{transform:scaleX(1);}
+.ach-item:hover{background:var(--bg3);border-color:var(--border-md);}
+.ach-medallion{width:48px;height:48px;border:1px solid var(--border-md);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;background:rgba(201,168,76,.04);position:relative;}
+.ach-medallion::before,.ach-medallion::after{content:'';position:absolute;width:4px;height:4px;background:var(--gold-mid);}
+.ach-medallion::before{top:-2px;left:-2px;}
+.ach-medallion::after{bottom:-2px;right:-2px;}
+.ach-title{font-family:var(--royal);font-size:.95rem;font-weight:600;letter-spacing:.03em;color:var(--text);margin-bottom:.4rem;}
+.ach-sub{font-family:var(--fell);font-size:.9rem;color:var(--dim);line-height:1.75;font-style:italic;font-weight:400;}
 
-/* Anim */
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-.fu{opacity:0;animation:fadeUp .8s ease forwards;}
-.anim-card{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease;}
-.anim-card.visible{opacity:1;transform:translateY(0);}
+/* ── CONTACT ── */
+.contact-link{display:flex;align-items:center;gap:1.4rem;color:var(--dim);text-decoration:none;font-family:var(--body);font-size:.95rem;padding:1.1rem 1.6rem;border:1px solid var(--border);background:var(--bg2);transition:all .4s;position:relative;overflow:hidden;margin-bottom:.9rem;}
+.contact-link::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gg);transform:scaleY(0);transform-origin:top;transition:transform .3s;}
+.contact-link::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 0% 50%,rgba(201,168,76,.05),transparent 50%);opacity:0;transition:opacity .3s;}
+.contact-link:hover::before{transform:scaleY(1);}
+.contact-link:hover::after{opacity:1;}
+.contact-link:hover{border-color:var(--border-md);color:var(--text-warm);padding-left:2rem;}
+.cl-icon{width:26px;text-align:center;color:var(--gold-lt);flex-shrink:0;font-family:var(--royal);font-size:.8rem;font-weight:700;letter-spacing:0;}
 
 /* ── MODALS ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(8,6,4,.9);backdrop-filter:blur(16px);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay{position:fixed;inset:0;background:rgba(6,5,3,.93);backdrop-filter:blur(20px);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s;}
 .modal-overlay.active{opacity:1;pointer-events:all;}
-.modal{background:var(--bg2);border:1px solid var(--border-lt);padding:2.8rem;width:420px;max-width:92vw;position:relative;}
-.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gg);}
-.modal-crest{font-family:var(--royal);font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;}
-.modal-title{font-family:var(--royal);font-size:1.7rem;font-weight:600;letter-spacing:.05em;color:var(--text);margin-bottom:.5rem;}
-.modal-sub{font-family:var(--body);font-size:.9rem;color:var(--dim);margin-bottom:2rem;line-height:1.7;font-style:italic;font-weight:300;}
-.modal-input{width:100%;padding:.85rem 1.1rem;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:var(--royal);font-size:.85rem;letter-spacing:.28em;outline:none;transition:border-color .3s;margin-bottom:.5rem;}
+.modal{background:var(--bg2);border:1px solid var(--border-md);padding:3rem;width:440px;max-width:92vw;position:relative;}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gg-h);}
+.modal-corner{position:absolute;width:10px;height:10px;border-color:var(--gold-mid);border-style:solid;}
+.modal-corner.tl{top:-1px;left:-1px;border-width:2px 0 0 2px;}
+.modal-corner.tr{top:-1px;right:-1px;border-width:2px 2px 0 0;}
+.modal-corner.bl{bottom:-1px;left:-1px;border-width:0 0 2px 2px;}
+.modal-corner.br{bottom:-1px;right:-1px;border-width:0 2px 2px 0;}
+.modal-crest{font-family:var(--royal);font-size:.52rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem;}
+.modal-crest::before{content:'◆';font-size:.38rem;color:var(--gold);}
+.modal-title{font-family:var(--deco);font-size:1.8rem;font-weight:700;letter-spacing:.05em;color:var(--text);margin-bottom:.5rem;}
+.modal-sub{font-family:var(--fell);font-size:.92rem;color:var(--dim);margin-bottom:2rem;line-height:1.7;font-style:italic;}
+.modal-input{width:100%;padding:.9rem 1.2rem;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:var(--royal);font-size:.8rem;letter-spacing:.3em;outline:none;transition:border-color .3s;margin-bottom:.5rem;}
 .modal-input:focus{border-color:var(--gold);box-shadow:var(--glow-sm);}
-.modal-error{font-family:var(--royal);font-size:.58rem;letter-spacing:.08em;color:#cc4444;min-height:1.2em;margin-bottom:.8rem;}
+.modal-error{font-family:var(--royal);font-size:.55rem;letter-spacing:.08em;color:#f87171;min-height:1.2em;margin-bottom:.8rem;}
 .modal-actions{display:flex;gap:1rem;justify-content:flex-end;margin-top:.5rem;}
-.btn-cancel{background:none;border:1px solid var(--border);color:var(--dim);padding:.6rem 1.5rem;font-family:var(--royal);font-size:.58rem;letter-spacing:.12em;cursor:pointer;transition:all .2s;}
-.btn-cancel:hover{border-color:var(--dim);color:var(--text);}
-.btn-submit{background:var(--gg);border:none;color:#0a0806;padding:.6rem 1.8rem;font-family:var(--royal);font-size:.58rem;letter-spacing:.18em;font-weight:600;cursor:pointer;transition:all .3s;}
-.btn-submit:hover{box-shadow:var(--glow);}
+.btn-cancel{background:none;border:1px solid var(--border);color:var(--dim);padding:.65rem 1.6rem;font-family:var(--royal);font-size:.55rem;letter-spacing:.14em;cursor:pointer;transition:all .2s;}
+.btn-cancel:hover{border-color:var(--dimmer);color:var(--text);}
+.btn-submit{background:var(--gg);background-size:200%;border:none;color:#060300;padding:.65rem 2rem;font-family:var(--royal);font-size:.55rem;letter-spacing:.2em;font-weight:700;cursor:pointer;transition:all .3s;}
+.btn-submit:hover{box-shadow:var(--glow-gold);}
 
 /* ── THEME PANEL ── */
-.theme-panel{position:fixed;right:-320px;top:0;bottom:0;width:300px;background:var(--bg2);border-left:1px solid var(--border);z-index:150;padding:5rem 1.8rem 2rem;transition:right .4s cubic-bezier(.4,0,.2,1);overflow-y:auto;}
-.theme-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gg);}
+.theme-panel{position:fixed;right:-330px;top:0;bottom:0;width:310px;background:var(--bg2);border-left:1px solid var(--border-md);z-index:150;padding:5.5rem 2rem 2rem;transition:right .45s cubic-bezier(.4,0,.2,1);overflow-y:auto;}
+.theme-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gg-h);}
 .theme-panel.open{right:0;}
-.tp-title{font-family:var(--royal);font-size:1.3rem;font-weight:600;letter-spacing:.07em;color:var(--text);margin-bottom:.4rem;}
-.tp-sub{font-family:var(--body);font-size:.85rem;color:var(--dimmer);font-style:italic;margin-bottom:1.8rem;padding-bottom:1.4rem;border-bottom:1px solid var(--border);}
-.tp-label{font-family:var(--royal);font-size:.55rem;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin-bottom:.9rem;margin-top:1.6rem;}
-.swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;}
-.swatch{aspect-ratio:1;cursor:pointer;border:2px solid transparent;transition:all .22s;position:relative;outline:none;}
-.swatch.active{border-color:var(--gold) !important;box-shadow:var(--glow-sm);}
-.swatch.active::after{content:'◆';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.55);font-size:.65rem;}
-.swatch:hover{transform:scale(1.1);}
-.font-opts{display:flex;flex-direction:column;gap:.5rem;}
-.font-opt{padding:.75rem 1rem;border:1px solid var(--border);cursor:pointer;font-size:.85rem;transition:all .22s;background:var(--bg3);color:var(--dim);}
-.font-opt.active{border-color:var(--gold);color:var(--gold-pale);background:rgba(200,168,75,.06);}
-.font-opt:hover:not(.active){border-color:rgba(200,168,75,.28);}
+.tp-title{font-family:var(--deco);font-size:1.4rem;font-weight:700;letter-spacing:.06em;color:var(--text);margin-bottom:.4rem;}
+.tp-sub{font-family:var(--fell);font-size:.88rem;color:var(--dimmer);font-style:italic;margin-bottom:2rem;padding-bottom:1.6rem;border-bottom:1px solid var(--border);}
+.tp-label{font-family:var(--royal);font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-mid);margin-bottom:.9rem;margin-top:1.8rem;display:flex;align-items:center;gap:.5rem;}
+.tp-label::before{content:'◆';font-size:.3rem;}
+.swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;}
+.swatch{aspect-ratio:1;cursor:pointer;border:1px solid transparent;transition:all .25s;position:relative;outline:none;}
+.swatch.active{border-color:var(--gold) !important;box-shadow:0 0 12px rgba(201,168,76,.4);}
+.swatch.active::after{content:'◆';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.5);font-size:.55rem;}
+.swatch:hover{transform:scale(1.08);}
+.font-opts{display:flex;flex-direction:column;gap:.6rem;}
+.font-opt{padding:.8rem 1.1rem;border:1px solid var(--border);cursor:pointer;font-size:.88rem;transition:all .25s;background:var(--bg3);color:var(--dimmer);}
+.font-opt.active{border-color:var(--gold-mid);color:var(--gold-pale);background:rgba(201,168,76,.05);}
+.font-opt:hover:not(.active){border-color:var(--border-md);}
 
-/* Edit bar */
-.edit-bar{position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--gold);padding:.75rem 1.6rem;display:flex;gap:1rem;align-items:center;z-index:300;box-shadow:var(--glow);font-family:var(--royal);font-size:.6rem;letter-spacing:.12em;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;}
+/* ── EDIT BAR ── */
+.edit-bar{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--gold);padding:.8rem 1.8rem;display:flex;gap:1rem;align-items:center;z-index:300;box-shadow:var(--glow-gold);font-family:var(--royal);font-size:.58rem;letter-spacing:.14em;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;color:var(--text);}
 body.edit-mode .edit-bar{opacity:1;pointer-events:all;}
-.edit-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 1.8s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
-body.edit-mode [data-e]{outline:1px dashed rgba(200,168,75,.22);cursor:text;min-width:10px;min-height:1em;}
-body.edit-mode [data-e]:hover{outline:1px solid var(--gold);background:rgba(200,168,75,.03);}
-body.edit-mode [data-e]:focus{outline:2px solid var(--gold);background:rgba(200,168,75,.05);}
+.edit-dot{width:6px;height:6px;background:var(--gold-lt);animation:pulse 1.8s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.15}}
+body.edit-mode [data-e]{outline:1px dashed rgba(201,168,76,.2);cursor:text;min-width:10px;min-height:1em;}
+body.edit-mode [data-e]:hover{outline:1px solid var(--gold-mid);background:rgba(201,168,76,.02);}
+body.edit-mode [data-e]:focus{outline:2px solid var(--gold);background:rgba(201,168,76,.04);}
 
-@media(max-width:768px){
-  nav,#p2-nav{padding:1.2rem 1.5rem;}
-  #p1-content,#p2-body{padding:2rem 1.5rem;}
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.fu{opacity:0;animation:fadeUp .9s ease forwards;}
+.anim-card{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.anim-card.visible{opacity:1;transform:translateY(0);}
+
+/* Stagger anim-cards */
+.anim-card:nth-child(2){transition-delay:.08s;}
+.anim-card:nth-child(3){transition-delay:.16s;}
+.anim-card:nth-child(4){transition-delay:.24s;}
+.anim-card:nth-child(5){transition-delay:.32s;}
+.anim-card:nth-child(6){transition-delay:.4s;}
+
+@media(max-width:900px){
+  nav,#p2-nav,#p1-content,#p2-body{padding-left:1.8rem;padding-right:1.8rem;}
   .cards-grid{grid-template-columns:1fr 1fr;}
   .d-grid{grid-template-columns:1fr;}
   .skills-grid{grid-template-columns:1fr;}
+  .hero-side{display:none;}
 }
-@media(max-width:480px){
+@media(max-width:520px){
   .cards-grid{grid-template-columns:1fr;}
-  .hero-name .name-l1{font-size:3rem;}
-  .hero-name .name-l2{font-size:2.5rem;}
+  .name-l1{font-size:3.2rem;}
+  .name-l2{font-size:2.4rem;}
 }
 </style>
 </head>
 <body>
 
 <canvas id="qc"></canvas>
+<div id="vig"></div>
+
+<!-- Corner Ornaments -->
+<div class="corner-orn" id="co-tl"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L40 2" stroke="rgba(201,168,76,.3)" stroke-width=".75"/><path d="M2 2 L2 40" stroke="rgba(201,168,76,.3)" stroke-width=".75"/><path d="M8 2 L8 8 L2 8" stroke="rgba(201,168,76,.5)" stroke-width=".75" fill="none"/><circle cx="2" cy="2" r="2" fill="#c9a84c" opacity=".6"/><path d="M14 2 L14 5" stroke="rgba(201,168,76,.25)" stroke-width=".5"/><path d="M20 2 L20 4" stroke="rgba(201,168,76,.2)" stroke-width=".5"/><path d="M2 14 L5 14" stroke="rgba(201,168,76,.25)" stroke-width=".5"/><path d="M2 20 L4 20" stroke="rgba(201,168,76,.2)" stroke-width=".5"/></svg></div>
+<div class="corner-orn" id="co-tr"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L40 2" stroke="rgba(201,168,76,.3)" stroke-width=".75"/><path d="M2 2 L2 40" stroke="rgba(201,168,76,.3)" stroke-width=".75"/><path d="M8 2 L8 8 L2 8" stroke="rgba(201,168,76,.5)" stroke-width=".75" fill="none"/><circle cx="2" cy="2" r="2" fill="#c9a84c" opacity=".6"/><path d="M14 2 L14 5" stroke="rgba(201,168,76,.25)" stroke-width=".5"/><path d="M20 2 L20 4" stroke="rgba(201,168,76,.2)" stroke-width=".5"/><path d="M2 14 L5 14" stroke="rgba(201,168,76,.25)" stroke-width=".5"/><path d="M2 20 L4 20" stroke="rgba(201,168,76,.2)" stroke-width=".5"/></svg></div>
+<div class="corner-orn" id="co-bl"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L40 2" stroke="rgba(201,168,76,.3)" stroke-width=".75"/><path d="M2 2 L2 40" stroke="rgba(201,168,76,.3)" stroke-width=".75"/><path d="M8 2 L8 8 L2 8" stroke="rgba(201,168,76,.5)" stroke-width=".75" fill="none"/><circle cx="2" cy="2" r="2" fill="#c9a84c" opacity=".6"/></svg></div>
+<div class="corner-orn" id="co-br"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L40 2" stroke="rgba(201,168,76,.3)" stroke-width=".75"/><path d="M2 2 L2 40" stroke="rgba(201,168,76,.3)" stroke-width=".75"/><path d="M8 2 L8 8 L2 8" stroke="rgba(201,168,76,.5)" stroke-width=".75" fill="none"/><circle cx="2" cy="2" r="2" fill="#c9a84c" opacity=".6"/></svg></div>
 
 <div id="app">
 
-<!-- ═══════════════ PAGE 1 — LANDING ═══════════════ -->
+<!-- ═══════════ PAGE 1 ═══════════ -->
 <div id="page1" class="page active">
   <nav>
-    <a href="#" class="nav-logo" onclick="return false">D · V</a>
+    <div class="nav-logo-wrap">
+      <a href="#" class="nav-logo" onclick="return false">D · V</a>
+      <div class="nav-rule"></div>
+    </div>
     <div class="nav-right">
       <button class="btn-icon" id="theme-btn" title="Customise Theme">◈</button>
       <button class="btn-icon" id="edit-btn" title="Edit Mode">✎</button>
@@ -289,126 +406,139 @@ body.edit-mode [data-e]:focus{outline:2px solid var(--gold);background:rgba(200,
   </nav>
 
   <div id="p1-content">
-    <!-- HERO -->
     <div class="hero">
-      <div class="hero-crown fu" style="animation-delay:.05s">
-        <div class="crown-line"></div>
-        <span class="crown-label" data-e data-k="crown">Quantum Engineer · Researcher · Inventor</span>
-        <div class="crown-line-r"></div>
+      <div class="hero-side"></div>
+
+      <div class="hero-eyebrow fu" style="animation-delay:.05s">
+        <span class="eyebrow-gem">◆</span>
+        <span class="eyebrow-text" data-e data-k="crown">Quantum Engineer · Researcher · Inventor</span>
+        <div class="eyebrow-line"></div>
       </div>
+
       <h1 class="hero-name fu" style="animation-delay:.15s">
         <span class="name-l1" data-e data-k="n1">Danush</span>
         <span class="name-l2" data-e data-k="n2">Vikraman</span>
       </h1>
-      <div class="hero-rule fu" style="animation-delay:.22s"></div>
-      <p class="hero-sub fu" style="animation-delay:.28s" data-e data-k="sub">
-        B.Tech ECE <span>◆</span> PES University, Bengaluru <span>◆</span> CGPA 7.51
+
+      <div class="hero-ornament fu" style="animation-delay:.22s">
+        <div class="orn-line"></div>
+        <span class="orn-diamond">◆</span>
+        <span class="orn-text" data-e data-k="orn">PES University · Bengaluru · CGPA 7.51</span>
+        <span class="orn-diamond">◆</span>
+        <div class="orn-line-r"></div>
+      </div>
+
+      <p class="hero-title fu" style="animation-delay:.3s" data-e data-k="sub">
+        B.Tech ECE <span>·</span> 2022–Present <span>·</span> IBM ibm_fez Validator
       </p>
-      <p class="hero-desc fu" style="animation-delay:.34s" data-e data-k="desc">
-        Forging the frontier of quantum algorithms, NISQ hardware, and machine learning. arXiv co-author. IBM ibm_fez validator.
+
+      <p class="hero-quote fu" style="animation-delay:.38s" data-e data-k="desc">
+        Forging the frontier of quantum algorithms, NISQ hardware, and machine learning. Three arXiv co-authorships. Outperformed QAOA on Weighted Max-Cut.
       </p>
-      <div class="hero-btns fu" style="animation-delay:.42s">
-        <a href="#" class="btn-royal btn-gold" onclick="openSection('projects');return false">See My Work</a>
+
+      <div class="hero-btns fu" style="animation-delay:.46s">
+        <a href="#" class="btn-royal btn-gold" onclick="openSection('projects');return false">View My Work</a>
         <a href="#" class="btn-royal btn-ghost" onclick="openSection('contact');return false">Get in Touch</a>
       </div>
     </div>
 
-    <!-- SECTION CARDS -->
-    <div class="cards-label fu" style="animation-delay:.5s">Explore</div>
-    <div class="cards-grid">
+    <div class="cards-header fu" style="animation-delay:.54s">
+      <span class="cards-header-gem">◆</span>
+      <span class="cards-header-label">Chapters</span>
+      <div class="cards-header-rule"></div>
+    </div>
 
-      <div class="sec-card fu" style="animation-delay:.55s" onclick="openSection('education')">
-        <div class="card-roman">I</div>
-        <div class="card-glyph">🎓</div>
+    <div class="cards-grid">
+      <div class="sec-card fu" style="animation-delay:.58s" onclick="openSection('education')">
+        <div class="card-num">I</div>
+        <div class="card-icon-row"><div class="card-icon-line"></div><span class="card-icon-label">Academia</span></div>
         <div class="card-title">Education</div>
         <div class="card-sub">PES University · B.Tech ECE · CGPA 7.51 · 2022–Present</div>
-        <div class="card-arrow">Open ↗</div>
+        <div class="card-cta">Open</div>
       </div>
-
-      <div class="sec-card fu" style="animation-delay:.6s" onclick="openSection('experience')">
-        <div class="card-roman">II</div>
-        <div class="card-glyph">⚗️</div>
+      <div class="sec-card fu" style="animation-delay:.62s" onclick="openSection('experience')">
+        <div class="card-num">II</div>
+        <div class="card-icon-row"><div class="card-icon-line"></div><span class="card-icon-label">Industry</span></div>
         <div class="card-title">Experience</div>
         <div class="card-sub">Quanad Lab Research Intern · IBM AI Intern · 2 Roles</div>
-        <div class="card-arrow">Open ↗</div>
+        <div class="card-cta">Open</div>
       </div>
-
-      <div class="sec-card fu" style="animation-delay:.65s" onclick="openSection('projects')">
-        <div class="card-roman">III</div>
-        <div class="card-glyph">⚛️</div>
+      <div class="sec-card fu" style="animation-delay:.66s" onclick="openSection('projects')">
+        <div class="card-num">III</div>
+        <div class="card-icon-row"><div class="card-icon-line"></div><span class="card-icon-label">Research</span></div>
         <div class="card-title">Research & Projects</div>
         <div class="card-sub">3 arXiv papers · QYO, YO, Origo Signum · IBM Quantum</div>
-        <div class="card-arrow">Open ↗</div>
+        <div class="card-cta">Open</div>
       </div>
-
-      <div class="sec-card fu" style="animation-delay:.7s" onclick="openSection('skills')">
-        <div class="card-roman">IV</div>
-        <div class="card-glyph">⚙️</div>
+      <div class="sec-card fu" style="animation-delay:.70s" onclick="openSection('skills')">
+        <div class="card-num">IV</div>
+        <div class="card-icon-row"><div class="card-icon-line"></div><span class="card-icon-label">Mastery</span></div>
         <div class="card-title">Skills & Stack</div>
         <div class="card-sub">Python, Qiskit, SystemVerilog, MATLAB, Lab Instruments</div>
-        <div class="card-arrow">Open ↗</div>
+        <div class="card-cta">Open</div>
       </div>
-
-      <div class="sec-card fu" style="animation-delay:.75s" onclick="openSection('honours')">
-        <div class="card-roman">V</div>
-        <div class="card-glyph">🏆</div>
+      <div class="sec-card fu" style="animation-delay:.74s" onclick="openSection('honours')">
+        <div class="card-num">V</div>
+        <div class="card-icon-row"><div class="card-icon-line"></div><span class="card-icon-label">Honours</span></div>
         <div class="card-title">Honours & Certs</div>
         <div class="card-sub">Hackathon Finalist · IBM Badge · Deloitte · HackerRank</div>
-        <div class="card-arrow">Open ↗</div>
+        <div class="card-cta">Open</div>
       </div>
-
-      <div class="sec-card fu" style="animation-delay:.8s" onclick="openSection('contact')">
-        <div class="card-roman">VI</div>
-        <div class="card-glyph">✉️</div>
+      <div class="sec-card fu" style="animation-delay:.78s" onclick="openSection('contact')">
+        <div class="card-num">VI</div>
+        <div class="card-icon-row"><div class="card-icon-line"></div><span class="card-icon-label">Connect</span></div>
         <div class="card-title">Get in Touch</div>
         <div class="card-sub">Email · Phone · LinkedIn · GitHub · Open to Collaboration</div>
-        <div class="card-arrow">Open ↗</div>
+        <div class="card-cta">Open</div>
       </div>
-
     </div>
   </div>
 
   <div class="p1-footer">
     <div class="p1-footer-text" data-e data-k="footer">© MMXXVI · Danush Vikraman · PES University · Bengaluru</div>
   </div>
-</div><!-- /page1 -->
+</div>
 
-
-<!-- ═══════════════ PAGE 2 — DETAIL ═══════════════ -->
+<!-- ═══════════ PAGE 2 ═══════════ -->
 <div id="page2" class="page hidden-right">
   <div id="p2-nav">
     <button class="back-btn" onclick="goBack()">← Back</button>
-    <span class="p2-crumb" id="p2-crumb">Section</span>
-    <div style="margin-left:auto;display:flex;gap:.7rem;">
+    <div class="p2-crumb-wrap">
+      <span class="p2-crumb-gem">◆</span>
+      <span class="p2-crumb" id="p2-crumb">Section</span>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:.8rem;">
       <button class="btn-icon" id="theme-btn2" title="Customise Theme">◈</button>
       <button class="btn-icon" id="edit-btn2" title="Edit Mode">✎</button>
     </div>
   </div>
-  <div id="p2-body"><!-- injected per section --></div>
-</div><!-- /page2 -->
+  <div id="p2-body"></div>
+</div>
 
-</div><!-- /app -->
+</div>
 
 <!-- Edit bar -->
 <div class="edit-bar" id="edit-bar">
   <div class="edit-dot"></div>
-  <span id="edit-status">EDIT MODE — Click any text to amend</span>
-  <span style="color:var(--dimmer)">◆</span>
-  <button class="btn-royal btn-gold" style="padding:.45rem 1rem;font-size:.56rem;" onclick="saveContent()">Save</button>
+  <span id="edit-status">Edit Mode — Click any text to amend</span>
+  <span style="color:var(--dimmest)">◆</span>
+  <button class="btn-royal btn-gold" style="padding:.45rem 1.1rem;font-size:.52rem;" onclick="saveContent()">Save</button>
   <button class="btn-cancel" style="border-color:transparent" onclick="exitEdit()">Exit</button>
 </div>
 
 <!-- Login Modal -->
 <div class="modal-overlay" id="login-modal">
   <div class="modal">
-    <div class="modal-crest">◆ Private Access</div>
+    <div class="modal-corner tl"></div><div class="modal-corner tr"></div>
+    <div class="modal-corner bl"></div><div class="modal-corner br"></div>
+    <div class="modal-crest">Private Access</div>
     <div class="modal-title">Authentication</div>
     <div class="modal-sub">Enter your passcode to unlock edit mode.</div>
     <input type="password" class="modal-input" id="pass-in" placeholder="••••••••" autocomplete="off">
     <div class="modal-error" id="login-err"></div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('login-modal')">Cancel</button>
-      <button class="btn-submit" onclick="doLogin()">Unlock ↗</button>
+      <button class="btn-submit" onclick="doLogin()">Unlock</button>
     </div>
   </div>
 </div>
@@ -416,14 +546,16 @@ body.edit-mode [data-e]:focus{outline:2px solid var(--gold);background:rgba(200,
 <!-- Set Passcode Modal -->
 <div class="modal-overlay" id="setpass-modal">
   <div class="modal">
-    <div class="modal-crest">◆ First-Time Setup</div>
+    <div class="modal-corner tl"></div><div class="modal-corner tr"></div>
+    <div class="modal-corner bl"></div><div class="modal-corner br"></div>
+    <div class="modal-crest">First-Time Setup</div>
     <div class="modal-title">Set Your Passcode</div>
     <div class="modal-sub">Choose a passcode to protect your edit access. This is done only once.</div>
     <input type="password" class="modal-input" id="np-in" placeholder="New passcode (min 4 chars)">
     <input type="password" class="modal-input" id="cp-in" placeholder="Confirm passcode" style="margin-top:.6rem">
     <div class="modal-error" id="sp-err"></div>
     <div class="modal-actions">
-      <button class="btn-submit" onclick="doSetPass()">Set Passcode ↗</button>
+      <button class="btn-submit" onclick="doSetPass()">Set Passcode</button>
     </div>
   </div>
 </div>
@@ -434,60 +566,96 @@ body.edit-mode [data-e]:focus{outline:2px solid var(--gold);background:rgba(200,
   <div class="tp-sub">Tailor the aesthetic to your taste.</div>
   <div class="tp-label">Accent Colour</div>
   <div class="swatches" id="acc-sw">
-    <div class="swatch active" data-c="#c8a84b" style="background:linear-gradient(135deg,#7a6230,#c8a84b,#edc96a)" title="Royal Gold"></div>
-    <div class="swatch" data-c="#e0e0e0" style="background:linear-gradient(135deg,#aaa,#ddd,#fff)" title="Platinum"></div>
-    <div class="swatch" data-c="#b76e79" style="background:linear-gradient(135deg,#8a4a54,#b76e79,#dfa0a8)" title="Rose Gold"></div>
-    <div class="swatch" data-c="#4a9eff" style="background:linear-gradient(135deg,#1a5cb8,#4a9eff,#90c8ff)" title="Sapphire"></div>
-    <div class="swatch" data-c="#7c3aed" style="background:linear-gradient(135deg,#4c1d95,#7c3aed,#a78bfa)" title="Imperial Violet"></div>
-    <div class="swatch" data-c="#10b981" style="background:linear-gradient(135deg,#065f46,#10b981,#6ee7b7)" title="Emerald"></div>
-    <div class="swatch" data-c="#f43f5e" style="background:linear-gradient(135deg,#881337,#f43f5e,#fda4af)" title="Crimson"></div>
-    <div class="swatch" data-c="#f97316" style="background:linear-gradient(135deg,#7c2d12,#f97316,#fdba74)" title="Amber Bronze"></div>
-    <div class="swatch" data-c="#06b6d4" style="background:linear-gradient(135deg,#164e63,#06b6d4,#67e8f9)" title="Aquamarine"></div>
+    <div class="swatch active" data-c="#c9a84c" style="background:linear-gradient(135deg,#4a3a1a,#c9a84c,#f0cc70)" title="Royal Gold"></div>
+    <div class="swatch" data-c="#d4d4d4" style="background:linear-gradient(135deg,#888,#d4d4d4,#fff)" title="Platinum"></div>
+    <div class="swatch" data-c="#b76e79" style="background:linear-gradient(135deg,#7a3a44,#b76e79,#e0a0a8)" title="Rose Gold"></div>
+    <div class="swatch" data-c="#4a9eff" style="background:linear-gradient(135deg,#1040a0,#4a9eff,#90caff)" title="Sapphire"></div>
+    <div class="swatch" data-c="#8b5cf6" style="background:linear-gradient(135deg,#4c1d95,#8b5cf6,#c4b5fd)" title="Amethyst"></div>
+    <div class="swatch" data-c="#10b981" style="background:linear-gradient(135deg,#064030,#10b981,#6ee7b7)" title="Emerald"></div>
+    <div class="swatch" data-c="#f43f5e" style="background:linear-gradient(135deg,#7a1020,#f43f5e,#fda4b0)" title="Crimson"></div>
+    <div class="swatch" data-c="#f97316" style="background:linear-gradient(135deg,#6a2200,#f97316,#fdba74)" title="Amber"></div>
+    <div class="swatch" data-c="#06b6d4" style="background:linear-gradient(135deg,#0a3a50,#06b6d4,#67e8f9)" title="Aquamarine"></div>
   </div>
   <div class="tp-label">Background</div>
   <div class="swatches" id="bg-sw">
-    <div class="swatch active" data-bg="#080604" style="background:#080604;border:2px solid #333"></div>
-    <div class="swatch" data-bg="#080808" style="background:#080808;border:2px solid #333"></div>
-    <div class="swatch" data-bg="#060810" style="background:#060810;border:2px solid #333"></div>
-    <div class="swatch" data-bg="#0a0606" style="background:#0a0606;border:2px solid #333"></div>
-    <div class="swatch" data-bg="#060a06" style="background:#060a06;border:2px solid #333"></div>
-    <div class="swatch" data-bg="#0d0d0d" style="background:#0d0d0d;border:2px solid #333"></div>
+    <div class="swatch active" data-bg="#060503" style="background:#060503;border:1px solid #333" title="Obsidian"></div>
+    <div class="swatch" data-bg="#080808" style="background:#080808;border:1px solid #333" title="Jet Black"></div>
+    <div class="swatch" data-bg="#050810" style="background:#050810;border:1px solid #333" title="Midnight Blue"></div>
+    <div class="swatch" data-bg="#080506" style="background:#080506;border:1px solid #333" title="Dark Ruby"></div>
+    <div class="swatch" data-bg="#050808" style="background:#050808;border:1px solid #333" title="Deep Teal"></div>
+    <div class="swatch" data-bg="#0a0a0a" style="background:#0a0a0a;border:1px solid #333" title="Pure Black"></div>
   </div>
   <div class="tp-label">Font</div>
   <div class="font-opts" id="f-opts">
-    <div class="font-opt active" data-fonts="Cinzel+Decorative|Cormorant+Garamond" style="font-family:'Cinzel Decorative',serif">Cinzel / Cormorant</div>
-    <div class="font-opt" data-fonts="Playfair+Display|EB+Garamond" style="font-family:'Playfair Display',serif">Playfair / EB Garamond</div>
+    <div class="font-opt active" data-fonts="Cinzel+Decorative|Cormorant+Garamond" style="font-family:'Cinzel Decorative',serif">Cinzel · Cormorant</div>
+    <div class="font-opt" data-fonts="Playfair+Display|EB+Garamond" style="font-family:'Playfair Display',serif">Playfair · EB Garamond</div>
     <div class="font-opt" data-fonts="Cormorant+SC|Cormorant+Garamond" style="font-family:'Cormorant SC',serif">Cormorant SC</div>
     <div class="font-opt" data-fonts="Libre+Baskerville|Libre+Baskerville" style="font-family:'Libre Baskerville',serif">Libre Baskerville</div>
   </div>
-  <button class="btn-royal btn-gold" style="width:100%;margin-top:2rem;" onclick="saveTheme()">Save Theme</button>
+  <button class="btn-royal btn-gold" style="width:100%;margin-top:2.2rem;" onclick="saveTheme()">Save Theme</button>
 </div>
 
 <script>
-// ──────────────────────────────
-// CANVAS
-// ──────────────────────────────
 const C=document.getElementById('qc'),X=C.getContext('2d');
 let N=[];
 const rsz=()=>{C.width=innerWidth;C.height=innerHeight;};
-const mk=()=>{N=[];const n=Math.max(30,Math.floor(innerWidth*innerHeight/18000));for(let i=0;i<n;i++)N.push({x:Math.random()*C.width,y:Math.random()*C.height,vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,r:Math.random()*1.4+.3,ph:Math.random()*Math.PI*2,g:Math.random()});};
+const mk=()=>{
+  N=[];
+  const cnt=Math.max(40,Math.floor(innerWidth*innerHeight/14000));
+  for(let i=0;i<cnt;i++){
+    const typ=Math.random();
+    N.push({
+      x:Math.random()*C.width,y:Math.random()*C.height,
+      vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,
+      r:Math.random()*1.8+.2,ph:Math.random()*Math.PI*2,
+      g:Math.random(),typ,
+      twinkle:Math.random()>.7
+    });
+  }
+};
 const h2r=h=>{h=h.replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];};
+
+let t=0;
 const draw=()=>{
+  t+=.005;
   X.clearRect(0,0,C.width,C.height);
-  const gc=getComputedStyle(document.documentElement).getPropertyValue('--gold').trim()||'#c8a84b';
-  const[r,g,b]=h2r(gc);
+  const gc=getComputedStyle(document.documentElement).getPropertyValue('--gold').trim()||'#c9a84c';
+  const[r,g,b]=h2r(gc.trim());
+
   N.forEach((n,i)=>{
-    n.x+=n.vx;n.y+=n.vy;n.ph+=.013;
-    if(n.x<0||n.x>C.width)n.vx*=-1;if(n.y<0||n.y>C.height)n.vy*=-1;
-    const gw=.5+.5*Math.sin(n.ph);
-    const rr=Math.min(255,r+Math.floor((255-r)*n.g*.35));
-    const rg=Math.min(255,g+Math.floor((255-g)*n.g*.3));
-    const rb=Math.min(255,b+Math.floor((255-b)*n.g*.15));
-    X.beginPath();X.arc(n.x,n.y,n.r*gw,0,Math.PI*2);
-    X.fillStyle=`rgba(${rr},${rg},${rb},${.7*gw})`;X.fill();
+    n.x+=n.vx;n.y+=n.vy;n.ph+=.01+n.g*.005;
+    if(n.x<0)n.x=C.width;if(n.x>C.width)n.x=0;
+    if(n.y<0)n.y=C.height;if(n.y>C.height)n.y=0;
+
+    const tw=n.twinkle?(.6+.4*Math.sin(n.ph*2.3)):1;
+    const gw=.4+.6*Math.abs(Math.sin(n.ph));
+    const alpha=(.15+.5*n.g)*tw*gw;
+
+    if(n.typ>.85){
+      X.beginPath();
+      const s=n.r*.8;
+      X.moveTo(n.x,n.y-s);X.lineTo(n.x+s*.3,n.y-s*.3);
+      X.lineTo(n.x+s,n.y);X.lineTo(n.x+s*.3,n.y+s*.3);
+      X.lineTo(n.x,n.y+s);X.lineTo(n.x-s*.3,n.y+s*.3);
+      X.lineTo(n.x-s,n.y);X.lineTo(n.x-s*.3,n.y-s*.3);
+      X.closePath();
+      X.fillStyle=`rgba(${r},${g},${b},${alpha*.6})`;
+      X.fill();
+    } else {
+      X.beginPath();X.arc(n.x,n.y,n.r*gw,0,Math.PI*2);
+      const rr=Math.min(255,r+Math.floor((240-r)*n.g*.4));
+      const rg=Math.min(255,g+Math.floor((220-g)*n.g*.35));
+      const rb=Math.min(255,b+Math.floor((150-b)*n.g*.2));
+      X.fillStyle=`rgba(${rr},${rg},${rb},${alpha})`;X.fill();
+    }
+
     for(let j=i+1;j<N.length;j++){
       const m=N[j],dx=n.x-m.x,dy=n.y-m.y,d=Math.sqrt(dx*dx+dy*dy);
-      if(d<120){X.beginPath();X.moveTo(n.x,n.y);X.lineTo(m.x,m.y);X.strokeStyle=`rgba(${r},${g},${b},${(1-d/120)*.15})`;X.lineWidth=.35;X.stroke();}
+      if(d<100){
+        X.beginPath();X.moveTo(n.x,n.y);X.lineTo(m.x,m.y);
+        X.strokeStyle=`rgba(${r},${g},${b},${(1-d/100)*.1})`;
+        X.lineWidth=.3;X.stroke();
+      }
     }
   });
   requestAnimationFrame(draw);
@@ -495,204 +663,207 @@ const draw=()=>{
 window.addEventListener('resize',()=>{rsz();mk();});
 rsz();mk();draw();
 
-// ──────────────────────────────
-// SECTION CONTENT
-// ──────────────────────────────
+/* ── SECTION DATA ── */
 const sections={
   education:{
-    crumb:'I — Education',
+    crumb:'I · Education',
     html:`
-      <div class="d-roman">Alma Mater</div>
-      <div class="d-title"><span class="d-title-accent">Academic</span> Foundation</div>
-      <div class="d-rule"><div class="d-rule-line"></div><div class="d-rule-gem">◆</div></div>
-      <div class="d-card anim-card">
-        <div class="label-sm">Institution</div>
-        <div class="card-heading" data-e data-k="edu-name">PES University</div>
-        <div class="card-italic" data-e data-k="edu-deg">Bachelor of Technology — Electronics & Communication Engineering</div>
-        <div class="meta-row">
-          <span>Period —</span> <span data-e data-k="edu-per">Sep 2022 – Present</span>
-          &nbsp;&nbsp;<span>CGPA —</span> <span data-e data-k="edu-cgpa">7.51</span>/10
-          &nbsp;&nbsp;<span>Campus —</span> <span data-e data-k="edu-loc">Bengaluru, Karnataka</span>
-        </div>
-        <div class="divider"></div>
-        <div class="label-sm">Coursework</div>
-        <div class="tags">
-          <span class="tag">Quantum Computing</span><span class="tag">Robotics</span>
-          <span class="tag">Image Processing</span><span class="tag">Machine Learning</span>
-          <span class="tag">Digital Circuits</span><span class="tag">Semiconductor Physics</span>
-          <span class="tag">Wireless Communication</span>
-        </div>
-      </div>`
+<div class="d-overline">Alma Mater</div>
+<div class="d-title"><em>Academic</em> Foundation</div>
+<div class="d-divider"><div class="d-divider-line"></div><span class="d-divider-gem">◆ ◆ ◆</span><div class="d-divider-line2"></div></div>
+<div class="d-card anim-card">
+  <div class="label-sm">Institution</div>
+  <div class="card-heading" data-e data-k="edu-name">PES University</div>
+  <div class="card-italic" data-e data-k="edu-deg">Bachelor of Technology in Electronics & Communication Engineering</div>
+  <div class="meta-row">
+    <div class="meta-item"><div class="meta-label">Period</div><div class="meta-val" data-e data-k="edu-per">Sep 2022 – Present</div></div>
+    <div class="meta-item"><div class="meta-label">CGPA</div><div class="meta-val" data-e data-k="edu-cgpa">7.51 / 10</div></div>
+    <div class="meta-item"><div class="meta-label">Campus</div><div class="meta-val" data-e data-k="edu-loc">Bengaluru, Karnataka</div></div>
+  </div>
+  <div class="label-sm" style="margin-top:.8rem">Coursework</div>
+  <div class="tags">
+    <span class="tag">Quantum Computing</span><span class="tag">Robotics</span>
+    <span class="tag">Image Processing</span><span class="tag">Machine Learning</span>
+    <span class="tag">Digital Circuits</span><span class="tag">Semiconductor Physics</span>
+    <span class="tag">Wireless Communication</span>
+  </div>
+</div>`
   },
   experience:{
-    crumb:'II — Experience',
+    crumb:'II · Experience',
     html:`
-      <div class="d-roman">Professional Tenure</div>
-      <div class="d-title"><span class="d-title-accent">Work</span> Experience</div>
-      <div class="d-rule"><div class="d-rule-line"></div><div class="d-rule-gem">◆</div></div>
-      <div class="d-card anim-card">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:.3rem;">
-          <div class="card-heading" data-e data-k="ex1-r">Research Intern</div>
-          <div class="badge" data-e data-k="ex1-d">Jan 2026 — May 2026</div>
-        </div>
-        <div class="card-italic" data-e data-k="ex1-c">Quanad Laboratory, PES University · Bengaluru</div>
-        <ul class="bullets">
-          <li data-e data-k="ex1-b1">Fabricated EML layers for Indian QLED panels (CVD, spin-coating), characterising quantum-material device properties across 5+ thin-film samples via DC Keithley, Impedance Analyser, Cyclic Voltammetry, and UV Spectroscopy.</li>
-          <li data-e data-k="ex1-b2">Contributed numerical analysis to neuromorphic computing and quantum-classical hybrid learning model research. Presented findings at Quanad Lab Open Day.</li>
-        </ul>
-      </div>
-      <div class="d-card anim-card">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:.3rem;">
-          <div class="card-heading" data-e data-k="ex2-r">AI Intern</div>
-          <div class="badge" data-e data-k="ex2-d">Jun 2025 — Jul 2025</div>
-        </div>
-        <div class="card-italic" data-e data-k="ex2-c">Edunet Foundation · AICTE & IBM SkillsBuild · Remote</div>
-        <ul class="bullets">
-          <li data-e data-k="ex2-b1">Built and deployed an Employee Salary Prediction app using Random Forest Classifier (89.4% accuracy), engineering an end-to-end ML pipeline from data cleaning through production deployment on Streamlit.</li>
-        </ul>
-      </div>`
+<div class="d-overline">Professional Tenure</div>
+<div class="d-title"><em>Work</em> Experience</div>
+<div class="d-divider"><div class="d-divider-line"></div><span class="d-divider-gem">◆ ◆ ◆</span><div class="d-divider-line2"></div></div>
+<div class="d-card anim-card">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:.4rem;">
+    <div class="card-heading" data-e data-k="ex1-r">Research Intern</div>
+    <div class="badge" data-e data-k="ex1-d">Jan 2026 — May 2026</div>
+  </div>
+  <div class="card-italic" data-e data-k="ex1-c">Quanad Laboratory, PES University · Bengaluru</div>
+  <ul class="bullets">
+    <li data-e data-k="ex1-b1">Fabricated EML layers for Indian QLED panels (CVD, spin-coating), characterising quantum-material device properties across 5+ thin-film samples via DC Keithley, Impedance Analyser, Cyclic Voltammetry, and UV Spectroscopy.</li>
+    <li data-e data-k="ex1-b2">Contributed numerical analysis to neuromorphic computing and quantum-classical hybrid learning model research. Presented findings at Quanad Lab Open Day.</li>
+  </ul>
+</div>
+<div class="d-card anim-card">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:.4rem;">
+    <div class="card-heading" data-e data-k="ex2-r">AI Intern</div>
+    <div class="badge" data-e data-k="ex2-d">Jun 2025 — Jul 2025</div>
+  </div>
+  <div class="card-italic" data-e data-k="ex2-c">Edunet Foundation · AICTE & IBM SkillsBuild · Remote</div>
+  <ul class="bullets">
+    <li data-e data-k="ex2-b1">Built and deployed an Employee Salary Prediction app using Random Forest Classifier (89.4% accuracy), engineering an end-to-end ML pipeline from data cleaning through production deployment on Streamlit.</li>
+  </ul>
+</div>`
   },
   projects:{
-    crumb:'III — Research & Projects',
+    crumb:'III · Research & Projects',
     html:`
-      <div class="d-roman">Corpus of Work</div>
-      <div class="d-title"><span class="d-title-accent">Research</span> & Projects</div>
-      <div class="d-rule"><div class="d-rule-line"></div><div class="d-rule-gem">◆</div></div>
-      <div class="d-grid">
-        <div class="d-proj anim-card">
-          <div class="proj-roman-bg">I</div>
-          <div class="label-sm" data-e data-k="p1-tag">arXiv · Quantum-Classical Hybrid</div>
-          <div class="card-heading" data-e data-k="p1-t">QYO — Quantum-Classical Hybrid Metaheuristic</div>
-          <div class="card-italic" data-e data-k="p1-s">Co-authored with Prof. Gajanan V Honnavar</div>
-          <p style="font-size:.88rem;line-height:1.8;color:var(--dim);font-weight:300;flex:1;" data-e data-k="p1-d">Four-layer pipelined architecture unifying SA warm-start, QWalk-MCMC exploration, and adaptive Grover amplification. Outperformed QAOA by 15.3–21.4 pp on Weighted Max-Cut. Validated on IBM ibm_fez 156-qubit NISQ at depth 119.</p>
-          <div class="proj-links"><a href="#" class="proj-link">arXiv ↗</a></div>
-        </div>
-        <div class="d-proj anim-card">
-          <div class="proj-roman-bg">II</div>
-          <div class="label-sm" data-e data-k="p2-tag">arXiv:2601.01832 · Optimization</div>
-          <div class="card-heading" data-e data-k="p2-t">YO — Classical Hybrid Optimization Framework</div>
-          <div class="card-italic" data-e data-k="p2-s">Co-authored with Prof. Gajanan V Honnavar</div>
-          <p style="font-size:.88rem;line-height:1.8;color:var(--dim);font-weight:300;flex:1;" data-e data-k="p2-d">Three-layer MCMC + greedy + adaptive SA framework. Ranked 2nd on Rosenbrock 5D with fastest runtime (0.061s). Delivered 1.8% shorter TSP tours at N=200. Open-source on GitHub.</p>
-          <div class="proj-links"><a href="https://arxiv.org/abs/2601.01832" class="proj-link" target="_blank">arXiv ↗</a><a href="#" class="proj-link">GitHub ↗</a></div>
-        </div>
-        <div class="d-proj anim-card">
-          <div class="proj-roman-bg">III</div>
-          <div class="label-sm" data-e data-k="p3-tag">arXiv · Quantum Security</div>
-          <div class="card-heading" data-e data-k="p3-t">Origo Signum — Quantum PUF</div>
-          <div class="card-italic" data-e data-k="p3-s">Co-authored with Prof. Gajanan V Honnavar</div>
-          <p style="font-size:.88rem;line-height:1.8;color:var(--dim);font-weight:300;flex:1;" data-e data-k="p3-d">3-qubit quantum circuit exploiting NISQ decoherence as controlled entropy. Achieved 9.38-bit Shannon entropy (≈91% of max) on IBM ibm_fez. Validated on Qiskit Aer.</p>
-          <div class="proj-links"><a href="#" class="proj-link">arXiv ↗</a></div>
-        </div>
-        <div class="d-proj anim-card">
-          <div class="proj-roman-bg">IV</div>
-          <div class="label-sm">Qiskit · IBM Quantum</div>
-          <div class="card-heading" data-e data-k="p4-t">Quantum Cryptography — BB84 QKD</div>
-          <div class="card-italic" data-e data-k="p4-s">Quantum Key Distribution Implementation</div>
-          <p style="font-size:.88rem;line-height:1.8;color:var(--dim);font-weight:300;flex:1;" data-e data-k="p4-d">Implemented and stress-tested BB84 QKD circuits, verifying protocol integrity under simulated channel noise on IBM Quantum Experience.</p>
-          <div class="proj-links"><a href="#" class="proj-link">GitHub ↗</a></div>
-        </div>
-        <div class="d-proj anim-card">
-          <div class="proj-roman-bg">V</div>
-          <div class="label-sm">Hardware · Python · SystemVerilog</div>
-          <div class="card-heading" data-e data-k="p5-t">Additional Projects</div>
-          <div class="card-italic" data-e data-k="p5-s">Hardware, Security & Signal Processing</div>
-          <p style="font-size:.88rem;line-height:1.8;color:var(--dim);font-weight:300;flex:1;" data-e data-k="p5-d">PT-broken non-Hermitian system · RF Green Ambulance Corridor (Arduino) · RSA Encryption (Python) · 8-bit Vedic Multiplier (SystemVerilog)</p>
-        </div>
-      </div>`
+<div class="d-overline">Corpus of Work</div>
+<div class="d-title"><em>Research</em> & Projects</div>
+<div class="d-divider"><div class="d-divider-line"></div><span class="d-divider-gem">◆ ◆ ◆</span><div class="d-divider-line2"></div></div>
+<div class="d-grid">
+  <div class="d-proj anim-card">
+    <div class="proj-bg-num">I</div>
+    <div class="label-sm" data-e data-k="p1-tag">arXiv · Quantum-Classical Hybrid</div>
+    <div class="card-heading" data-e data-k="p1-t">QYO — Quantum-Classical Hybrid Metaheuristic</div>
+    <div class="card-italic" data-e data-k="p1-s">Co-authored with Prof. Gajanan V Honnavar</div>
+    <p style="font-size:.9rem;line-height:1.85;font-weight:300;flex:1;color:var(--dim);" data-e data-k="p1-d">Four-layer pipelined architecture unifying SA warm-start, QWalk-MCMC exploration, and adaptive Grover amplification. Outperformed QAOA by 15.3–21.4 pp on Weighted Max-Cut. Validated on IBM ibm_fez 156-qubit NISQ at depth 119.</p>
+    <div class="proj-links"><a href="#" class="proj-link">arXiv ↗</a></div>
+  </div>
+  <div class="d-proj anim-card">
+    <div class="proj-bg-num">II</div>
+    <div class="label-sm" data-e data-k="p2-tag">arXiv:2601.01832 · Optimization</div>
+    <div class="card-heading" data-e data-k="p2-t">YO — Classical Hybrid Optimization</div>
+    <div class="card-italic" data-e data-k="p2-s">Co-authored with Prof. Gajanan V Honnavar</div>
+    <p style="font-size:.9rem;line-height:1.85;font-weight:300;flex:1;color:var(--dim);" data-e data-k="p2-d">Three-layer MCMC + greedy + adaptive SA framework. Ranked 2nd on Rosenbrock 5D with fastest runtime (0.061s). Delivered 1.8% shorter TSP tours at N=200. Open-source on GitHub.</p>
+    <div class="proj-links"><a href="https://arxiv.org/abs/2601.01832" class="proj-link" target="_blank">arXiv ↗</a><a href="#" class="proj-link">GitHub ↗</a></div>
+  </div>
+  <div class="d-proj anim-card">
+    <div class="proj-bg-num">III</div>
+    <div class="label-sm" data-e data-k="p3-tag">arXiv · Quantum Security</div>
+    <div class="card-heading" data-e data-k="p3-t">Origo Signum — Quantum PUF</div>
+    <div class="card-italic" data-e data-k="p3-s">Co-authored with Prof. Gajanan V Honnavar</div>
+    <p style="font-size:.9rem;line-height:1.85;font-weight:300;flex:1;color:var(--dim);" data-e data-k="p3-d">3-qubit quantum circuit exploiting NISQ decoherence as controlled entropy. Achieved 9.38-bit Shannon entropy (≈91% of max) on IBM ibm_fez. Validated on Qiskit Aer.</p>
+    <div class="proj-links"><a href="#" class="proj-link">arXiv ↗</a></div>
+  </div>
+  <div class="d-proj anim-card">
+    <div class="proj-bg-num">IV</div>
+    <div class="label-sm">Qiskit · IBM Quantum</div>
+    <div class="card-heading" data-e data-k="p4-t">Quantum Cryptography — BB84 QKD</div>
+    <div class="card-italic" data-e data-k="p4-s">Quantum Key Distribution Implementation</div>
+    <p style="font-size:.9rem;line-height:1.85;font-weight:300;flex:1;color:var(--dim);" data-e data-k="p4-d">Implemented and stress-tested BB84 QKD circuits, verifying protocol integrity under simulated channel noise on IBM Quantum Experience.</p>
+    <div class="proj-links"><a href="#" class="proj-link">GitHub ↗</a></div>
+  </div>
+  <div class="d-proj anim-card">
+    <div class="proj-bg-num">V</div>
+    <div class="label-sm">Hardware · Python · SystemVerilog</div>
+    <div class="card-heading" data-e data-k="p5-t">Additional Projects</div>
+    <div class="card-italic" data-e data-k="p5-s">Hardware, Security & Signal Processing</div>
+    <p style="font-size:.9rem;line-height:1.85;font-weight:300;flex:1;color:var(--dim);" data-e data-k="p5-d">PT-broken non-Hermitian system · RF Green Ambulance Corridor (Arduino) · RSA Encryption (Python) · 8-bit Vedic Multiplier (SystemVerilog)</p>
+  </div>
+</div>`
   },
   skills:{
-    crumb:'IV — Skills & Stack',
+    crumb:'IV · Skills & Stack',
     html:`
-      <div class="d-roman">Mastery & Expertise</div>
-      <div class="d-title"><span class="d-title-accent">Technical</span> Skills</div>
-      <div class="d-rule"><div class="d-rule-line"></div><div class="d-rule-gem">◆</div></div>
-      <div class="skills-grid">
-        <div class="anim-card"><div class="skill-group-title">Programming</div><div class="tags"><span class="tag">Python</span><span class="tag">C</span><span class="tag">Java</span><span class="tag">SystemVerilog</span><span class="tag">MATLAB</span><span class="tag">Assembly 8086</span></div></div>
-        <div class="anim-card"><div class="skill-group-title">Quantum Tools</div><div class="tags"><span class="tag">Qiskit</span><span class="tag">IBM Quantum Experience</span><span class="tag">Qiskit Aer</span></div></div>
-        <div class="anim-card"><div class="skill-group-title">Engineering Tools</div><div class="tags"><span class="tag">Git</span><span class="tag">OpenCV</span><span class="tag">Streamlit</span><span class="tag">Arduino</span><span class="tag">Quartus Prime</span><span class="tag">Cadence</span><span class="tag">KICAD</span></div></div>
-        <div class="anim-card"><div class="skill-group-title">Lab Instruments</div><div class="tags"><span class="tag">DC Keithley</span><span class="tag">Impedance Analyser</span><span class="tag">UV Spectroscopy</span><span class="tag">Spin Coater</span><span class="tag">Cyclic Voltammetry</span></div></div>
-        <div class="anim-card"><div class="skill-group-title">Research Areas</div><div class="tags"><span class="tag">Quantum Algorithms</span><span class="tag">Quantum ML</span><span class="tag">NISQ Hardware</span><span class="tag">Neuromorphic Computing</span><span class="tag">Machine Learning</span></div></div>
-        <div class="anim-card"><div class="skill-group-title">Fabrication</div><div class="tags"><span class="tag">CVD</span><span class="tag">Spin Coating</span><span class="tag">Digital Circuit Design</span><span class="tag">Materials Characterisation</span></div></div>
-      </div>`
+<div class="d-overline">Mastery & Expertise</div>
+<div class="d-title"><em>Technical</em> Skills</div>
+<div class="d-divider"><div class="d-divider-line"></div><span class="d-divider-gem">◆ ◆ ◆</span><div class="d-divider-line2"></div></div>
+<div class="skills-grid">
+  <div class="skill-group anim-card"><div class="skill-group-title">Programming</div><div class="tags"><span class="tag">Python</span><span class="tag">C</span><span class="tag">Java</span><span class="tag">SystemVerilog</span><span class="tag">MATLAB</span><span class="tag">Assembly 8086</span></div></div>
+  <div class="skill-group anim-card"><div class="skill-group-title">Quantum Tools</div><div class="tags"><span class="tag">Qiskit</span><span class="tag">IBM Quantum Experience</span><span class="tag">Qiskit Aer</span></div></div>
+  <div class="skill-group anim-card"><div class="skill-group-title">Engineering Tools</div><div class="tags"><span class="tag">Git</span><span class="tag">OpenCV</span><span class="tag">Streamlit</span><span class="tag">Arduino</span><span class="tag">Quartus Prime</span><span class="tag">Cadence</span><span class="tag">KICAD</span></div></div>
+  <div class="skill-group anim-card"><div class="skill-group-title">Lab Instruments</div><div class="tags"><span class="tag">DC Keithley</span><span class="tag">Impedance Analyser</span><span class="tag">UV Spectroscopy</span><span class="tag">Spin Coater</span><span class="tag">Cyclic Voltammetry</span></div></div>
+  <div class="skill-group anim-card"><div class="skill-group-title">Research Areas</div><div class="tags"><span class="tag">Quantum Algorithms</span><span class="tag">Quantum ML</span><span class="tag">NISQ Hardware</span><span class="tag">Neuromorphic Computing</span><span class="tag">Machine Learning</span></div></div>
+  <div class="skill-group anim-card"><div class="skill-group-title">Fabrication</div><div class="tags"><span class="tag">CVD</span><span class="tag">Spin Coating</span><span class="tag">Digital Circuit Design</span><span class="tag">Materials Characterisation</span></div></div>
+</div>`
   },
   honours:{
-    crumb:'V — Honours & Certifications',
+    crumb:'V · Honours & Certifications',
     html:`
-      <div class="d-roman">Recognition</div>
-      <div class="d-title"><span class="d-title-accent">Honours</span> & Certifications</div>
-      <div class="d-rule"><div class="d-rule-line"></div><div class="d-rule-gem">◆</div></div>
-      <div class="ach-item anim-card"><div class="ach-glyph">🏆</div><div><div class="ach-title" data-e data-k="a1-t">Hackathon Finalist — Infynite Hackathon</div><div class="ach-sub" data-e data-k="a1-s">Led a 4-member team to the top 30 of 120 teams across 14 colleges. Recognised for technical innovation and execution.</div></div></div>
-      <div class="ach-item anim-card"><div class="ach-glyph">📜</div><div><div class="ach-title" data-e data-k="a2-t">IBM AI Digital Badge — Edunet Foundation & IBM SkillsBuild</div><div class="ach-sub" data-e data-k="a2-s">Awarded upon completion of an intensive AI internship programme, validated by IBM and AICTE India.</div></div></div>
-      <div class="ach-item anim-card"><div class="ach-glyph">🎖</div><div><div class="ach-title" data-e data-k="a3-t">Professional Certifications</div><div class="ach-sub" data-e data-k="a3-s">Data Analytics & Cybersecurity (Deloitte) · EE Simulation (GE) · Intermediate Problem Solving (HackerRank) · Robotics L1 & L2 (40 hrs) · C Programming (Codechef)</div></div></div>`
+<div class="d-overline">Recognition & Distinction</div>
+<div class="d-title"><em>Honours</em> & Certifications</div>
+<div class="d-divider"><div class="d-divider-line"></div><span class="d-divider-gem">◆ ◆ ◆</span><div class="d-divider-line2"></div></div>
+<div class="ach-item anim-card">
+  <div class="ach-medallion">🏆</div>
+  <div>
+    <div class="ach-title" data-e data-k="a1-t">Hackathon Finalist — Infynite Hackathon</div>
+    <div class="ach-sub" data-e data-k="a1-s">Led a 4-member team to the top 30 of 120 teams across 14 colleges. Recognised for technical innovation and execution under pressure.</div>
+  </div>
+</div>
+<div class="ach-item anim-card">
+  <div class="ach-medallion">📜</div>
+  <div>
+    <div class="ach-title" data-e data-k="a2-t">IBM AI Digital Badge — Edunet Foundation & IBM SkillsBuild</div>
+    <div class="ach-sub" data-e data-k="a2-s">Awarded upon completion of an intensive AI internship programme, validated by IBM and AICTE India.</div>
+  </div>
+</div>
+<div class="ach-item anim-card">
+  <div class="ach-medallion">🎖</div>
+  <div>
+    <div class="ach-title" data-e data-k="a3-t">Professional Certifications</div>
+    <div class="ach-sub" data-e data-k="a3-s">Data Analytics & Cybersecurity (Deloitte) · EE Simulation (GE) · Intermediate Problem Solving (HackerRank) · Robotics L1 & L2 (40 hrs) · C Programming (Codechef)</div>
+  </div>
+</div>`
   },
   contact:{
-    crumb:'VI — Get in Touch',
+    crumb:'VI · Get in Touch',
     html:`
-      <div class="d-roman">Open to Collaboration</div>
-      <div class="d-title">Let's <span class="d-title-accent">Connect</span></div>
-      <div class="d-rule"><div class="d-rule-line"></div><div class="d-rule-gem">◆</div></div>
-      <p style="font-size:1rem;color:var(--dim);font-style:italic;font-weight:300;line-height:1.85;margin-bottom:2.5rem;max-width:500px;" data-e data-k="c-intro">Open to research collaborations, quantum computing projects, and internship opportunities. Do not hesitate to reach out.</p>
-      <a href="mailto:danushvikraman004@gmail.com" class="contact-link anim-card">
-        <span class="cl-icon">✉</span><span data-e data-k="c-email">danushvikraman004@gmail.com</span>
-      </a>
-      <a href="tel:+918971095599" class="contact-link anim-card">
-        <span class="cl-icon">✆</span><span data-e data-k="c-phone">+91 8971095599</span>
-      </a>
-      <a href="#" class="contact-link anim-card" id="li-link" target="_blank">
-        <span class="cl-icon">in</span><span data-e data-k="c-li">LinkedIn — Add your URL in edit mode</span>
-      </a>
-      <a href="#" class="contact-link anim-card" id="gh-link" target="_blank">
-        <span class="cl-icon">⌥</span><span data-e data-k="c-gh">GitHub — Add your URL in edit mode</span>
-      </a>`
+<div class="d-overline">Open to Collaboration</div>
+<div class="d-title">Let's <em>Connect</em></div>
+<div class="d-divider"><div class="d-divider-line"></div><span class="d-divider-gem">◆ ◆ ◆</span><div class="d-divider-line2"></div></div>
+<p style="font-family:var(--fell);font-style:italic;font-size:1.05rem;color:var(--dim);line-height:1.9;margin-bottom:2.5rem;max-width:520px;border-left:1px solid var(--border-lt);padding-left:1.2rem;" data-e data-k="c-intro">Open to research collaborations, quantum computing projects, and internship opportunities. Do not hesitate to reach out.</p>
+<a href="mailto:danushvikraman004@gmail.com" class="contact-link anim-card">
+  <span class="cl-icon">✉</span><span data-e data-k="c-email">danushvikraman004@gmail.com</span>
+</a>
+<a href="tel:+918971095599" class="contact-link anim-card">
+  <span class="cl-icon">✆</span><span data-e data-k="c-phone">+91 8971095599</span>
+</a>
+<a href="#" class="contact-link anim-card" target="_blank">
+  <span class="cl-icon">in</span><span data-e data-k="c-li">LinkedIn — Add your URL in edit mode</span>
+</a>
+<a href="#" class="contact-link anim-card" target="_blank">
+  <span class="cl-icon">⌥</span><span data-e data-k="c-gh">GitHub — Add your URL in edit mode</span>
+</a>`
   }
 };
 
-// ──────────────────────────────
-// PAGE NAVIGATION
-// ──────────────────────────────
+/* ── NAVIGATION ── */
 const p1=document.getElementById('page1');
 const p2=document.getElementById('page2');
 const p2body=document.getElementById('p2-body');
 const p2crumb=document.getElementById('p2-crumb');
 
 function openSection(key){
-  const s=sections[key];
-  if(!s)return;
+  const s=sections[key];if(!s)return;
   p2crumb.textContent=s.crumb;
   p2body.innerHTML=s.html;
-  // restore saved content for this page's editables
   applySavedContent();
-  // re-observe new anim-cards
   document.querySelectorAll('#p2-body .anim-card').forEach(el=>obs.observe(el));
-  // re-apply edit mode if active
-  if(document.body.classList.contains('edit-mode')) enableEditables();
-  // transition
+  if(document.body.classList.contains('edit-mode'))enableEditables();
   p1.classList.remove('active');p1.classList.add('hidden-left');
   p2.classList.remove('hidden-right');p2.classList.add('active');
   p2.scrollTop=0;
 }
-
 function goBack(){
   p2.classList.remove('active');p2.classList.add('hidden-right');
   p1.classList.remove('hidden-left');p1.classList.add('active');
 }
 
-// ──────────────────────────────
-// SCROLL ANIMATION
-// ──────────────────────────────
-const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.08});
+/* ── SCROLL ANIM ── */
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.06});
 document.querySelectorAll('.anim-card').forEach(el=>obs.observe(el));
 
-// ──────────────────────────────
-// AUTH & PASSCODE
-// ──────────────────────────────
-const KP='dv_pass',KC='dv_content',KT='dv_theme';
+/* ── AUTH ── */
+const KP='dv_pass2',KC='dv_content2',KT='dv_theme2';
 async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function hasPass(){return!!localStorage.getItem(KP);}
 function openModal(id){document.getElementById(id).classList.add('active');const i=document.querySelector('#'+id+' input');if(i){i.value='';setTimeout(()=>i.focus(),80);}}
 function closeModal(id){document.getElementById(id).classList.remove('active');document.querySelectorAll('#'+id+' .modal-error').forEach(e=>e.textContent='');}
 
-// Wire both edit buttons (nav on p1 + p2)
+let pendingAction=null;
 [document.getElementById('edit-btn'),document.getElementById('edit-btn2')].forEach(b=>{
   b.addEventListener('click',()=>{
     if(document.body.classList.contains('edit-mode')){exitEdit();return;}
@@ -716,83 +887,67 @@ document.getElementById('pass-in').addEventListener('keydown',e=>{if(e.key==='En
 document.getElementById('cp-in').addEventListener('keydown',e=>{if(e.key==='Enter')doSetPass();});
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal(o.id);}));
 
-// ──────────────────────────────
-// EDIT MODE
-// ──────────────────────────────
+/* ── EDIT ── */
 function enableEditables(){document.querySelectorAll('[data-e]').forEach(el=>{el.contentEditable='true';el.spellcheck=false;});}
 function disableEditables(){document.querySelectorAll('[data-e]').forEach(el=>el.contentEditable='false');}
-function exitEdit(){document.body.classList.remove('edit-mode');disableEditables();if(typeof gp!=='undefined')gp.classList.remove('open');[document.getElementById('edit-btn'),document.getElementById('edit-btn2')].forEach(b=>b.classList.remove('active-icon'));}
-
+function exitEdit(){document.body.classList.remove('edit-mode');disableEditables();gp.classList.remove('open');[document.getElementById('edit-btn'),document.getElementById('edit-btn2')].forEach(b=>b.classList.remove('active-icon'));}
 function saveContent(){
   const data=JSON.parse(localStorage.getItem(KC)||'{}');
   document.querySelectorAll('[data-k]').forEach(el=>{data[el.dataset.k]=el.innerHTML;});
   localStorage.setItem(KC,JSON.stringify(data));
   const s=document.getElementById('edit-status');
-  s.textContent='◆ SAVED';setTimeout(()=>s.textContent='EDIT MODE — Click any text to amend',2200);
+  s.textContent='◆ Saved';setTimeout(()=>s.textContent='Edit Mode — Click any text to amend',2200);
 }
 function applySavedContent(){
-  try{
-    const data=JSON.parse(localStorage.getItem(KC)||'{}');
-    Object.entries(data).forEach(([k,v])=>{document.querySelectorAll('[data-k="'+k+'"]').forEach(el=>el.innerHTML=v);});
-  }catch(e){}
+  try{const data=JSON.parse(localStorage.getItem(KC)||'{}');Object.entries(data).forEach(([k,v])=>document.querySelectorAll('[data-k="'+k+'"]').forEach(el=>el.innerHTML=v));}catch(e){}
 }
-applySavedContent();
-
-// ──────────────────────────────
-// THEME (passcode-locked)
-// ──────────────────────────────
-const gp=document.getElementById('theme-panel');
-
-function handleThemeBtn(){
-  if(document.body.classList.contains('edit-mode')){
-    // Already authenticated — open panel directly
-    gp.classList.toggle('open');
-  } else {
-    // Need to authenticate first
-    pendingAction='theme';
-    openModal(hasPass()?'login-modal':'setpass-modal');
-  }
-}
-let pendingAction=null;
-
-// Patch enterEdit to also fire pendingAction if set
-const _origEnterEdit=enterEdit;
 function enterEdit(){
-  document.body.classList.add('edit-mode');
-  enableEditables();
+  document.body.classList.add('edit-mode');enableEditables();
   [document.getElementById('edit-btn'),document.getElementById('edit-btn2')].forEach(b=>b.classList.add('active-icon'));
   if(pendingAction==='theme'){pendingAction=null;setTimeout(()=>gp.classList.add('open'),80);}
 }
+applySavedContent();
 
+/* ── THEME ── */
+const gp=document.getElementById('theme-panel');
+function handleThemeBtn(){
+  if(document.body.classList.contains('edit-mode')){gp.classList.toggle('open');return;}
+  pendingAction='theme';openModal(hasPass()?'login-modal':'setpass-modal');
+}
 [document.getElementById('theme-btn'),document.getElementById('theme-btn2')].forEach(b=>b.addEventListener('click',handleThemeBtn));
 document.addEventListener('click',e=>{
   const btns=[document.getElementById('theme-btn'),document.getElementById('theme-btn2')];
   if(gp.classList.contains('open')&&!gp.contains(e.target)&&!btns.some(b=>b.contains(e.target)))gp.classList.remove('open');
 });
 
+const h2r2=h=>{h=h.replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];};
 function setAccent(hex){
-  const[r,g,b]=h2r(hex);
-  const lt='#'+[r,g,b].map(v=>Math.min(255,Math.floor(v*1.3)).toString(16).padStart(2,'0')).join('');
-  const dk='#'+[r,g,b].map(v=>Math.floor(v*.55).toString(16).padStart(2,'0')).join('');
+  const[r,g,b]=h2r2(hex);
+  const lt='#'+[r,g,b].map(v=>Math.min(255,Math.floor(v*1.28)).toString(16).padStart(2,'0')).join('');
+  const dk='#'+[r,g,b].map(v=>Math.floor(v*.5).toString(16).padStart(2,'0')).join('');
+  const mid='#'+[r,g,b].map(v=>Math.floor(v*.82).toString(16).padStart(2,'0')).join('');
   document.documentElement.style.setProperty('--gold',hex);
   document.documentElement.style.setProperty('--gold-lt',lt);
   document.documentElement.style.setProperty('--gold-dk',dk);
-  document.documentElement.style.setProperty('--gold-pale','#'+[r,g,b].map(v=>Math.min(255,Math.floor(v*1.5)).toString(16).padStart(2,'0')).join(''));
-  const gg=`linear-gradient(135deg,${dk},${hex},${lt},${hex},${dk})`;
-  const gh=`linear-gradient(90deg,${dk},${hex},${lt},#fffff0,${lt},${hex},${dk})`;
+  document.documentElement.style.setProperty('--gold-mid',mid);
+  document.documentElement.style.setProperty('--gold-pale','#'+[r,g,b].map(v=>Math.min(255,Math.floor(v*1.55)).toString(16).padStart(2,'0')).join(''));
+  const gg=`linear-gradient(135deg,${dk},${mid},${hex},${lt},${hex},${mid},${dk})`;
   document.documentElement.style.setProperty('--gg',gg);
-  document.documentElement.style.setProperty('--gh',gh);
-  document.documentElement.style.setProperty('--border',`rgba(${r},${g},${b},.14)`);
-  document.documentElement.style.setProperty('--border-lt',`rgba(${r},${g},${b},.32)`);
-  document.documentElement.style.setProperty('--glow',`0 0 28px rgba(${r},${g},${b},.22),0 0 56px rgba(${r},${g},${b},.07)`);
-  document.documentElement.style.setProperty('--glow-sm',`0 0 14px rgba(${r},${g},${b},.18)`);
+  document.documentElement.style.setProperty('--gg-h',`linear-gradient(90deg,${dk},${mid},${hex},${lt},${hex},${mid},${dk})`);
+  document.documentElement.style.setProperty('--gg-line',`linear-gradient(90deg,transparent,${hex},${lt},${hex},transparent)`);
+  document.documentElement.style.setProperty('--border',`rgba(${r},${g},${b},.12)`);
+  document.documentElement.style.setProperty('--border-md',`rgba(${r},${g},${b},.25)`);
+  document.documentElement.style.setProperty('--border-lt',`rgba(${r},${g},${b},.45)`);
+  document.documentElement.style.setProperty('--glow-gold',`0 0 40px rgba(${r},${g},${b},.3),0 0 80px rgba(${r},${g},${b},.1)`);
+  document.documentElement.style.setProperty('--glow-sm',`0 0 20px rgba(${r},${g},${b},.2)`);
 }
 function setBg(hex){
-  const sh=(h,n)=>{const[r,g,b]=h2r(h);return'#'+[r,g,b].map(v=>Math.min(255,v+n).toString(16).padStart(2,'0')).join('');};
-  document.documentElement.style.setProperty('--bg',hex);
+  const sh=(h,n)=>{const[r,g,b]=h2r2(h);return'#'+[r,g,b].map(v=>Math.min(255,v+n).toString(16).padStart(2,'0')).join('');};
+  document.documentElement.style.setProperty('--bg-solid',hex);
   document.documentElement.style.setProperty('--bg2',sh(hex,7));
-  document.documentElement.style.setProperty('--bg3',sh(hex,12));
-  document.documentElement.style.setProperty('--bg4',sh(hex,18));
+  document.documentElement.style.setProperty('--bg3',sh(hex,13));
+  document.documentElement.style.setProperty('--bg4',sh(hex,20));
+  document.body.style.background=hex;
 }
 
 document.querySelectorAll('#acc-sw .swatch').forEach(s=>s.addEventListener('click',()=>{
@@ -823,7 +978,7 @@ document.querySelectorAll('#f-opts .font-opt').forEach(o=>o.addEventListener('cl
 function saveTheme(){
   const cv=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
   localStorage.setItem(KT,JSON.stringify({
-    gold:cv('--gold'),bg:cv('--bg'),
+    gold:cv('--gold'),bg:document.body.style.background,
     royal:cv('--royal'),deco:cv('--deco'),body:cv('--body'),
     ak:document.querySelector('#acc-sw .swatch.active')?.dataset.c,
     bk:document.querySelector('#bg-sw .swatch.active')?.dataset.bg,
@@ -836,8 +991,8 @@ function loadTheme(){
     const t=JSON.parse(localStorage.getItem(KT)||'{}');
     if(t.gold)setAccent(t.gold);if(t.bg)setBg(t.bg);
     if(t.royal)document.documentElement.style.setProperty('--royal',t.royal);
-    if(t.deco) document.documentElement.style.setProperty('--deco',t.deco);
-    if(t.body) document.documentElement.style.setProperty('--body',t.body);
+    if(t.deco)document.documentElement.style.setProperty('--deco',t.deco);
+    if(t.body)document.documentElement.style.setProperty('--body',t.body);
     if(t.ak)document.querySelectorAll('#acc-sw .swatch').forEach(s=>s.classList.toggle('active',s.dataset.c===t.ak));
     if(t.bk)document.querySelectorAll('#bg-sw .swatch').forEach(s=>s.classList.toggle('active',s.dataset.bg===t.bk));
     if(t.fk)document.querySelectorAll('#f-opts .font-opt').forEach(o=>o.classList.toggle('active',o.dataset.fonts===t.fk));
