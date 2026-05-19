@@ -467,7 +467,7 @@ body.edit-mode .sec-card .card-actions{display:flex;}
   .hero-atom-wrap{display:none !important;}
 
   /* Show the mobile atom */
-  .mobile-atom-section{display:flex;}
+  .mobile-atom-section{display:flex;margin-bottom:3rem;}
 
   .hero-text{width:100%;}
   .hero-eyebrow{margin-bottom:.9rem;}
@@ -966,14 +966,12 @@ function initAtom(canvas){
   const CX=W/2;
   const CY=H/2;
 
-  // Scale factor — orbits were designed for 380px canvas
   const S=W/380;
 
   let mouseX=0,mouseY=0;
   let tiltX=0,tiltY=0;
   let isNear=false;
 
-  // Only bind mouse for desktop canvas (mobile uses touch)
   if(canvas.id==='atom-c'){
     window.addEventListener('mousemove',e=>{
       const rect=canvas.getBoundingClientRect();
@@ -984,7 +982,6 @@ function initAtom(canvas){
     });
   }
 
-  // Touch support for mobile
   canvas.addEventListener('touchmove',e=>{
     e.preventDefault();
     const t=e.touches[0];
@@ -1031,7 +1028,6 @@ function initAtom(canvas){
       const rx0=ex0*cosT-ey0*sinT,ry0=ex0*sinT+ey0*cosT;
       const rx1=ex1*cosT-ey1*sinT,ry1=ex1*sinT+ey1*cosT;
       const depth=0.38+0.62*((ry0/orb.a)+1)/2;
-      // ENHANCED: much higher alpha for visibility
       const alpha=0.55*depth;
       ctx.beginPath();
       ctx.moveTo(CX+rx0*(1+tiltX*.07),CY+ry0*(1+tiltY*.10*Math.sin(tiltAngle)));
@@ -1062,7 +1058,6 @@ function initAtom(canvas){
     const pulse=1+0.15*Math.sin(frame*.038);
     const rlt=Math.min(255,r+65),glt=Math.min(255,g+55),blt=Math.min(255,b+32);
 
-    // Wide ambient glow — ENHANCED brightness
     const outerGrad=ctx.createRadialGradient(CX,CY,0,CX,CY,72*S*pulse);
     outerGrad.addColorStop(0,`rgba(${r},${g},${b},0.32)`);
     outerGrad.addColorStop(0.4,`rgba(${r},${g},${b},0.12)`);
@@ -1070,7 +1065,6 @@ function initAtom(canvas){
     ctx.beginPath();ctx.arc(CX,CY,72*S*pulse,0,Math.PI*2);
     ctx.fillStyle=outerGrad;ctx.fill();
 
-    // Mid glow
     const midGrad=ctx.createRadialGradient(CX,CY,0,CX,CY,32*S*pulse);
     midGrad.addColorStop(0,`rgba(${r},${g},${b},0.75)`);
     midGrad.addColorStop(0.5,`rgba(${r},${g},${b},0.35)`);
@@ -1078,7 +1072,6 @@ function initAtom(canvas){
     ctx.beginPath();ctx.arc(CX,CY,32*S*pulse,0,Math.PI*2);
     ctx.fillStyle=midGrad;ctx.fill();
 
-    // Nucleus sphere
     const core=ctx.createRadialGradient(CX-3*S,CY-3*S,0,CX,CY,14*S);
     core.addColorStop(0,'rgba(255,252,240,1)');
     core.addColorStop(0.35,`rgba(${rlt},${glt},${blt},1)`);
@@ -1087,12 +1080,10 @@ function initAtom(canvas){
     ctx.beginPath();ctx.arc(CX,CY,14*S,0,Math.PI*2);
     ctx.fillStyle=core;ctx.fill();
 
-    // Inner ring
     ctx.beginPath();ctx.arc(CX,CY,20*S,0,Math.PI*2);
     ctx.strokeStyle=`rgba(${r},${g},${b},0.55)`;
     ctx.lineWidth=1.1*S;ctx.stroke();
 
-    // Dashed rotating ring
     ctx.save();
     ctx.setLineDash([2.5*S,4.5*S]);
     ctx.lineDashOffset=-frame*.28;
@@ -1101,7 +1092,6 @@ function initAtom(canvas){
     ctx.lineWidth=0.8*S;ctx.stroke();
     ctx.restore();
 
-    // Diamond ornaments
     for(let i=0;i<4;i++){
       const a=(i/4)*Math.PI*2+frame*.012;
       const dx=Math.cos(a)*20*S,dy=Math.sin(a)*20*S;
@@ -1122,17 +1112,14 @@ function initAtom(canvas){
       ctx.beginPath();ctx.arc(trail[j].x,trail[j].y,sz,0,Math.PI*2);
       ctx.fillStyle=`rgba(${r},${g},${b},${alpha})`;ctx.fill();
     }
-    // Aura — ENHANCED
     const aura=ctx.createRadialGradient(pos.x,pos.y,0,pos.x,pos.y,22*S);
     aura.addColorStop(0,`rgba(${r},${g},${b},1)`);
     aura.addColorStop(0.3,`rgba(${r},${g},${b},0.55)`);
     aura.addColorStop(1,'transparent');
     ctx.beginPath();ctx.arc(pos.x,pos.y,22*S,0,Math.PI*2);
     ctx.fillStyle=aura;ctx.fill();
-    // Core
     ctx.beginPath();ctx.arc(pos.x,pos.y,4.5*S,0,Math.PI*2);
     ctx.fillStyle='rgba(255,252,235,1)';ctx.fill();
-    // Crosshair
     const cr=8*S;
     ctx.strokeStyle=`rgba(${r},${g},${b},0.55)`;ctx.lineWidth=0.7*S;
     ctx.beginPath();ctx.moveTo(pos.x-cr,pos.y);ctx.lineTo(pos.x+cr,pos.y);
@@ -1233,14 +1220,9 @@ function initAtom(canvas){
   atomLoop();
 }
 
-// Init both canvases
 initAtom(document.getElementById('atom-c'));
 initAtom(document.getElementById('atom-c-mobile'));
 
-
-/* ══════════════════════════════════════
-   SECTIONS DATA & NAVIGATION
-══════════════════════════════════════ */
 const KP='dv_pass2',KC='dv_content2',KT='dv_theme2',KS='dv_sections2';
 
 const builtinSections={
@@ -1379,7 +1361,6 @@ function rebuildGrid(){
 }
 rebuildGrid();
 
-/* ── NAVIGATION ── */
 const p1=document.getElementById('page1'),p2=document.getElementById('page2');
 const p2body=document.getElementById('p2-body'),p2crumb=document.getElementById('p2-crumb');
 
@@ -1403,7 +1384,6 @@ function goBack(){
 const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.05});
 document.querySelectorAll('.anim-card').forEach(el=>obs.observe(el));
 
-/* ── AUTH ── */
 async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function hasPass(){return!!localStorage.getItem(KP);}
 function openModal(id){document.getElementById(id).classList.add('active');const i=document.querySelector('#'+id+' input[type="text"],#'+id+' input[type="password"]');if(i)setTimeout(()=>i.focus(),80);}
@@ -1418,7 +1398,6 @@ document.getElementById('pass-in').addEventListener('keydown',e=>{if(e.key==='En
 document.getElementById('cp-in').addEventListener('keydown',e=>{if(e.key==='Enter')doSetPass();});
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal(o.id);}));
 
-/* ── EDIT MODE ── */
 function enableEditables(){document.querySelectorAll('[data-e]').forEach(el=>{el.contentEditable='true';el.spellcheck=false;});}
 function disableEditables(){document.querySelectorAll('[data-e]').forEach(el=>el.contentEditable='false');}
 function exitEdit(){document.body.classList.remove('edit-mode');disableEditables();document.getElementById('theme-panel').classList.remove('open');[document.getElementById('edit-btn'),document.getElementById('edit-btn2')].forEach(b=>b.classList.remove('active-icon'));document.getElementById('p2-add-btn').style.display='none';}
@@ -1427,7 +1406,6 @@ function applySavedContent(){try{const data=JSON.parse(localStorage.getItem(KC)|
 function enterEdit(){document.body.classList.add('edit-mode');enableEditables();[document.getElementById('edit-btn'),document.getElementById('edit-btn2')].forEach(b=>b.classList.add('active-icon'));document.getElementById('p2-add-btn').style.display=p2.classList.contains('active')?'flex':'none';}
 applySavedContent();
 
-/* ── ADD SECTION ── */
 function openAddSectionModal(){
   if(!document.body.classList.contains('edit-mode'))return;
   ['sec-category','sec-title','sec-subtitle','sec-content','sec-link'].forEach(id=>document.getElementById(id).value='');
@@ -1452,7 +1430,6 @@ function doAddSection(){
   setTimeout(enableEditables,100);
 }
 
-/* ── EDIT CARD ── */
 function openEditCardModal(key){
   if(!document.body.classList.contains('edit-mode'))return;
   document.getElementById('edit-card-key').value=key;
@@ -1508,7 +1485,6 @@ function applyCardOverrides(){
 }
 applyCardOverrides();
 
-/* ── THEME ── */
 const gp=document.getElementById('theme-panel');
 function handleThemeBtn(){if(document.body.classList.contains('edit-mode')){gp.classList.toggle('open');return;}openModal(hasPass()?'login-modal':'setpass-modal');}
 [document.getElementById('theme-btn'),document.getElementById('theme-btn2')].forEach(b=>b.addEventListener('click',handleThemeBtn));
@@ -1572,7 +1548,6 @@ function loadTheme(){
 }
 loadTheme();
 
-/* ── Size mobile atom canvas dynamically ── */
 function sizeMobileAtom(){
   const maw=document.getElementById('mobile-atom-wrap');
   const mc=document.getElementById('atom-c-mobile');
