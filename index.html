@@ -291,7 +291,6 @@ textarea.modal-input{min-height:110px;resize:vertical;letter-spacing:.04em;font-
 .btn-submit:hover,.btn-submit:active{box-shadow:var(--glow-gold);}
 .modal-wide{width:600px;}
 
-/* ── THEME PANEL — wider to fit 3-col grid comfortably ── */
 .theme-panel{position:fixed;right:-360px;top:0;bottom:0;width:340px;background:var(--bg2);border-left:1px solid var(--border-md);z-index:150;padding:5rem 2rem 2rem;transition:right .45s cubic-bezier(.4,0,.2,1);overflow-y:auto;}
 .theme-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gg-h);}
 .theme-panel.open{right:0;}
@@ -758,7 +757,6 @@ body.edit-mode .sec-card .card-actions{display:flex;}
     <div class="swatch" data-c="#06b6d4" style="background:linear-gradient(135deg,#0a3a50,#06b6d4,#67e8f9)" title="Aquamarine"></div>
   </div>
   <div class="tp-label">Background</div>
-  <!-- FIX: 12 background options (doubled from original 6) -->
   <div class="swatches" id="bg-sw">
     <div class="swatch active" data-bg="#060503" style="background:#060503;border:1px solid #333" title="Obsidian"></div>
     <div class="swatch" data-bg="#0a0a0a" style="background:#0a0a0a;border:1px solid #333" title="Jet Black"></div>
@@ -889,8 +887,10 @@ function initAtom(canvas){
 initAtom(document.getElementById('atom-c'));
 initAtom(document.getElementById('atom-c-mobile'));
 
+/* ── STORAGE KEYS ── */
 const KP='dv_pass2',KC='dv_content2',KT='dv_theme2',KS='dv_sections2';
 
+/* ── BUILTIN SECTIONS ── */
 const builtinSections={
   education:{crumb:'I · Education',cardCategory:'Academia',cardTitle:'Education',cardSub:'PES University · B.Tech ECE · CGPA 7.51 · 2022–Present',html:`
 <div class="d-overline">Alma Mater</div>
@@ -1052,11 +1052,6 @@ document.querySelectorAll('.anim-card').forEach(el=>obs.observe(el));
 async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function hasPass(){return!!localStorage.getItem(KP);}
 
-/* ════════════════════════════════════════
-   FIX 1 — openModal: always wipe password
-   fields & errors before showing the modal
-   so stale values never linger.
-════════════════════════════════════════ */
 function openModal(id){
   document.getElementById(id).classList.add('active');
   if(id==='login-modal'){
@@ -1147,20 +1142,20 @@ function applyCardOverrides(){
 }
 applyCardOverrides();
 
+/* ── THEME PANEL TOGGLE ── */
 const gp=document.getElementById('theme-panel');
 function handleThemeBtn(){if(document.body.classList.contains('edit-mode')){gp.classList.toggle('open');return;}openModal(hasPass()?'login-modal':'setpass-modal');}
 [document.getElementById('theme-btn'),document.getElementById('theme-btn2')].forEach(b=>b.addEventListener('click',handleThemeBtn));
 document.addEventListener('click',e=>{const btns=[document.getElementById('theme-btn'),document.getElementById('theme-btn2')];if(gp.classList.contains('open')&&!gp.contains(e.target)&&!btns.some(b=>b.contains(e.target)))gp.classList.remove('open');});
 
-const h2r2=h=>{h=h.replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];};
+/* ── COLOUR HELPERS ── */
+const h2r=h=>{h=h.replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];};
+const isValidHex=v=>v&&/^#[0-9a-fA-F]{3,6}$/.test(v.trim());
 
-/* ════════════════════════════════════════
-   FIX 2 — setAccent: now also updates
-   --gg-v so side-lines and gradients that
-   use the vertical gradient recolour too.
-════════════════════════════════════════ */
+/* ── SET ACCENT ── */
 function setAccent(hex){
-  const[r,g,b]=h2r2(hex);
+  hex=hex.trim();
+  const[r,g,b]=h2r(hex);
   const lt='#'+[r,g,b].map(v=>Math.min(255,Math.floor(v*1.28)).toString(16).padStart(2,'0')).join('');
   const dk='#'+[r,g,b].map(v=>Math.floor(v*.5).toString(16).padStart(2,'0')).join('');
   const mid='#'+[r,g,b].map(v=>Math.floor(v*.82).toString(16).padStart(2,'0')).join('');
@@ -1171,8 +1166,7 @@ function setAccent(hex){
   root.style.setProperty('--gold-dk',dk);
   root.style.setProperty('--gold-mid',mid);
   root.style.setProperty('--gold-pale',pale);
-  const gg=`linear-gradient(135deg,${dk},${mid},${hex},${lt},${hex},${mid},${dk})`;
-  root.style.setProperty('--gg',gg);
+  root.style.setProperty('--gg',`linear-gradient(135deg,${dk},${mid},${hex},${lt},${hex},${mid},${dk})`);
   root.style.setProperty('--gg-h',`linear-gradient(90deg,${dk},${mid},${hex},${lt},${hex},${mid},${dk})`);
   root.style.setProperty('--gg-v',`linear-gradient(180deg,transparent,${hex} 30%,${lt} 50%,${hex} 70%,transparent)`);
   root.style.setProperty('--gg-line',`linear-gradient(90deg,transparent,${hex},${lt},${hex},transparent)`);
@@ -1183,8 +1177,10 @@ function setAccent(hex){
   root.style.setProperty('--glow-sm',`0 0 28px rgba(${r},${g},${b},.28)`);
 }
 
+/* ── SET BACKGROUND ── */
 function setBg(hex){
-  const sh=(h,n)=>{const[r,g,b]=h2r2(h);return'#'+[r,g,b].map(v=>Math.min(255,v+n).toString(16).padStart(2,'0')).join('');};
+  hex=hex.trim();
+  const sh=(h,n)=>{const[r,g,b]=h2r(h);return'#'+[r,g,b].map(v=>Math.min(255,v+n).toString(16).padStart(2,'0')).join('');};
   document.documentElement.style.setProperty('--bg',hex);
   document.documentElement.style.setProperty('--bg2',sh(hex,13));
   document.documentElement.style.setProperty('--bg3',sh(hex,22));
@@ -1192,29 +1188,112 @@ function setBg(hex){
   document.body.style.background=hex;
 }
 
-document.querySelectorAll('#acc-sw .swatch').forEach(s=>s.addEventListener('click',()=>{document.querySelectorAll('#acc-sw .swatch').forEach(x=>x.classList.remove('active'));s.classList.add('active');setAccent(s.dataset.c);}));
-document.querySelectorAll('#bg-sw .swatch').forEach(s=>s.addEventListener('click',()=>{document.querySelectorAll('#bg-sw .swatch').forEach(x=>x.classList.remove('active'));s.classList.add('active');setBg(s.dataset.bg);}));
+/* ── SWATCH CLICK HANDLERS ── */
+document.querySelectorAll('#acc-sw .swatch').forEach(s=>s.addEventListener('click',()=>{
+  document.querySelectorAll('#acc-sw .swatch').forEach(x=>x.classList.remove('active'));
+  s.classList.add('active');
+  setAccent(s.dataset.c);
+}));
+document.querySelectorAll('#bg-sw .swatch').forEach(s=>s.addEventListener('click',()=>{
+  document.querySelectorAll('#bg-sw .swatch').forEach(x=>x.classList.remove('active'));
+  s.classList.add('active');
+  setBg(s.dataset.bg);
+}));
 document.querySelectorAll('#f-opts .font-opt').forEach(o=>o.addEventListener('click',()=>{
-  document.querySelectorAll('#f-opts .font-opt').forEach(x=>x.classList.remove('active'));o.classList.add('active');
+  document.querySelectorAll('#f-opts .font-opt').forEach(x=>x.classList.remove('active'));
+  o.classList.add('active');
   const[disp,body]=o.dataset.fonts.split('|');
-  if(!document.getElementById('gf-'+disp)){const l=document.createElement('link');l.id='gf-'+disp;l.rel='stylesheet';l.href=`https://fonts.googleapis.com/css2?family=${disp}:wght@400;600;700&family=${body}:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap`;document.head.appendChild(l);}
-  setTimeout(()=>{const dn=disp.replace(/\+/g,' '),bn=body.replace(/\+/g,' ');document.documentElement.style.setProperty('--royal',`'${dn}',serif`);document.documentElement.style.setProperty('--deco',`'${dn}',serif`);document.documentElement.style.setProperty('--body',`'${bn}',serif`);},400);
+  if(!document.getElementById('gf-'+disp)){
+    const l=document.createElement('link');l.id='gf-'+disp;l.rel='stylesheet';
+    l.href=`https://fonts.googleapis.com/css2?family=${disp}:wght@400;600;700&family=${body}:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap`;
+    document.head.appendChild(l);
+  }
+  setTimeout(()=>{
+    const dn=disp.replace(/\+/g,' '),bn=body.replace(/\+/g,' ');
+    document.documentElement.style.setProperty('--royal',`'${dn}',serif`);
+    document.documentElement.style.setProperty('--deco',`'${dn}',serif`);
+    document.documentElement.style.setProperty('--body',`'${bn}',serif`);
+  },400);
 }));
 
-/* ════════════════════════════════════════
-   THEME PERSISTENCE
-   localStorage  → same browser only
-   URL hash      → works across ALL browsers
-                   and devices (just share the URL)
-
-   saveTheme() writes to BOTH.
-   loadTheme() checks URL hash FIRST, then
-   falls back to localStorage.
+/* ══════════════════════════════════════════════════
+   THEME PERSISTENCE  —  FIXED VERSION
    
-   Format: #t=<base64(JSON({ak,bk,fk}))>
-════════════════════════════════════════ */
+   saveTheme()      → reads actual CSS var as fallback
+                      so ak/bk are NEVER undefined
+   _applyThemeObj() → validates hex before applying,
+                      loads Google Font on restore,
+                      syncs ALL swatch active states
+   loadTheme()      → URL hash first, then localStorage
+══════════════════════════════════════════════════ */
+
+function saveTheme(){
+  /* Read from active swatch; fall back to current CSS var so value is never undefined */
+  const cssGold=getComputedStyle(document.documentElement).getPropertyValue('--gold').trim()||'#d4a84c';
+  const cssBg  =getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()||'#060503';
+  const ak=(document.querySelector('#acc-sw .swatch.active')?.dataset.c||cssGold).trim();
+  const bk=(document.querySelector('#bg-sw .swatch.active')?.dataset.bg||cssBg).trim();
+  const fk=document.querySelector('#f-opts .font-opt.active')?.dataset.fonts||'';
+
+  const payload={ak,bk,fk};
+  localStorage.setItem(KT,JSON.stringify(payload));
+
+  /* Also encode in URL hash so it survives cross-browser sharing */
+  try{history.replaceState(null,'',themeToHash(ak,bk,fk));}catch(e){}
+
+  gp.classList.remove('open');
+
+  const s=document.getElementById('edit-status');
+  if(s){const prev=s.textContent;s.textContent='◆ Theme saved successfully';setTimeout(()=>s.textContent=prev,3000);}
+}
+
+function _applyThemeObj(t){
+  if(!t)return;
+
+  /* Accent colour */
+  if(isValidHex(t.ak)){
+    setAccent(t.ak.trim());
+    /* Sync accent swatch active state */
+    document.querySelectorAll('#acc-sw .swatch').forEach(s=>
+      s.classList.toggle('active',s.dataset.c&&s.dataset.c.trim()===t.ak.trim()));
+  }
+
+  /* Background colour */
+  if(isValidHex(t.bk)){
+    setBg(t.bk.trim());
+    /* Sync bg swatch active state */
+    document.querySelectorAll('#bg-sw .swatch').forEach(s=>
+      s.classList.toggle('active',s.dataset.bg&&s.dataset.bg.trim()===t.bk.trim()));
+  }
+
+  /* Font — also loads the Google Font link if not already present */
+  if(t.fk){
+    const[disp,body]=t.fk.split('|');
+    if(disp){
+      /* Load font if missing */
+      if(!document.getElementById('gf-'+disp)){
+        const l=document.createElement('link');
+        l.id='gf-'+disp;l.rel='stylesheet';
+        l.href=`https://fonts.googleapis.com/css2?family=${disp}:wght@400;600;700&family=${(body||disp)}:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap`;
+        document.head.appendChild(l);
+      }
+      /* Apply CSS vars after a short delay so the font has started loading */
+      setTimeout(()=>{
+        const dn=disp.replace(/\+/g,' '),bn=(body||disp).replace(/\+/g,' ');
+        document.documentElement.style.setProperty('--royal',`'${dn}',serif`);
+        document.documentElement.style.setProperty('--deco',`'${dn}',serif`);
+        document.documentElement.style.setProperty('--body',`'${bn}',serif`);
+      },400);
+    }
+    /* Sync font option active state */
+    document.querySelectorAll('#f-opts .font-opt').forEach(o=>
+      o.classList.toggle('active',o.dataset.fonts===t.fk));
+  }
+}
+
+/* ── URL hash encode / decode ── */
 function themeToHash(ak,bk,fk){
-  try{return '#t='+btoa(JSON.stringify({ak,bk,fk}));}catch(e){return '';}
+  try{return'#t='+btoa(JSON.stringify({ak,bk,fk}));}catch(e){return'';}
 }
 function hashToTheme(){
   try{
@@ -1224,67 +1303,39 @@ function hashToTheme(){
   return null;
 }
 
-function saveTheme(){
-  const ak=document.querySelector('#acc-sw .swatch.active')?.dataset.c;
-  const bk=document.querySelector('#bg-sw .swatch.active')?.dataset.bg;
-  const fk=document.querySelector('#f-opts .font-opt.active')?.dataset.fonts;
-  const cv=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-  const payload={ak,bk,fk,royal:cv('--royal'),deco:cv('--deco'),body:cv('--body')};
-
-  /* 1 — localStorage (same browser, instant) */
-  localStorage.setItem(KT,JSON.stringify(payload));
-
-  /* 2 — URL hash (cross-browser: bookmark or copy this URL to any browser) */
-  try{history.replaceState(null,'',themeToHash(ak,bk,fk));}catch(e){}
-
-  gp.classList.remove('open');
-
-  /* Show a brief hint so the user knows to copy the URL */
-  const s=document.getElementById('edit-status');
-  if(s){
-    const prev=s.textContent;
-    s.textContent='◆ Theme saved — copy this URL to use in any browser';
-    setTimeout(()=>s.textContent=prev,4000);
-  }
-}
-
-function _applyThemeObj(t){
-  if(!t)return;
-  if(t.ak)setAccent(t.ak);
-  if(t.bk)setBg(t.bk);
-  if(t.royal)document.documentElement.style.setProperty('--royal',t.royal);
-  if(t.deco) document.documentElement.style.setProperty('--deco', t.deco);
-  if(t.body) document.documentElement.style.setProperty('--body', t.body);
-  /* Sync swatch active state */
-  if(t.ak)document.querySelectorAll('#acc-sw .swatch').forEach(s=>s.classList.toggle('active',s.dataset.c===t.ak));
-  if(t.bk)document.querySelectorAll('#bg-sw .swatch').forEach(s=>s.classList.toggle('active',s.dataset.bg===t.bk));
-  if(t.fk)document.querySelectorAll('#f-opts .font-opt').forEach(o=>o.classList.toggle('active',o.dataset.fonts===t.fk));
-}
-
 function loadTheme(){
   try{
-    /* Priority 1: URL hash — works across every browser */
+    /* Priority 1: URL hash — works across every browser / device */
     const fromHash=hashToTheme();
-    if(fromHash&&(fromHash.ak||fromHash.bk)){
+    if(fromHash&&(isValidHex(fromHash.ak)||isValidHex(fromHash.bk))){
       _applyThemeObj(fromHash);
-      /* Also write to localStorage so subsequent same-browser loads skip the hash parse */
+      /* Mirror to localStorage so subsequent same-browser loads are instant */
       try{
         const existing=JSON.parse(localStorage.getItem(KT)||'{}');
-        localStorage.setItem(KT,JSON.stringify(Object.assign(existing,fromHash)));
+        localStorage.setItem(KT,JSON.stringify(Object.assign({},existing,fromHash)));
       }catch(e){}
       return;
     }
+
     /* Priority 2: localStorage — same browser fallback */
-    const fromLS=JSON.parse(localStorage.getItem(KT)||'{}');
+    const raw=localStorage.getItem(KT);
+    if(!raw)return; /* nothing saved yet — keep defaults */
+    const fromLS=JSON.parse(raw);
     _applyThemeObj(fromLS);
-    /* Restore the hash so the URL stays shareable */
+
+    /* Restore hash so the URL stays shareable */
     if(fromLS.ak||fromLS.bk){
       try{history.replaceState(null,'',themeToHash(fromLS.ak,fromLS.bk,fromLS.fk));}catch(e){}
     }
-  }catch(e){}
+  }catch(e){
+    /* Silent fail — default theme remains */
+  }
 }
+
+/* Run immediately on page load */
 loadTheme();
 
+/* ── MOBILE ATOM SIZING ── */
 function sizeMobileAtom(){
   const maw=document.getElementById('mobile-atom-wrap');
   const mc=document.getElementById('atom-c-mobile');
