@@ -1202,40 +1202,85 @@ document.querySelectorAll('#f-opts .font-opt').forEach(o=>o.addEventListener('cl
 }));
 
 /* ════════════════════════════════════════
-   FIX 3 — saveTheme: save raw swatch hex
-   keys (ak/bk) not computed CSS values.
-   Browsers normalise hex to rgb() which
-   breaks the hex-only h2r2() parser on
-   the next page load.
+   THEME PERSISTENCE
+   localStorage  → same browser only
+   URL hash      → works across ALL browsers
+                   and devices (just share the URL)
+
+   saveTheme() writes to BOTH.
+   loadTheme() checks URL hash FIRST, then
+   falls back to localStorage.
+   
+   Format: #t=<base64(JSON({ak,bk,fk}))>
 ════════════════════════════════════════ */
+function themeToHash(ak,bk,fk){
+  try{return '#t='+btoa(JSON.stringify({ak,bk,fk}));}catch(e){return '';}
+}
+function hashToTheme(){
+  try{
+    const h=window.location.hash;
+    if(h.startsWith('#t=')){return JSON.parse(atob(h.slice(3)));}
+  }catch(e){}
+  return null;
+}
+
 function saveTheme(){
   const ak=document.querySelector('#acc-sw .swatch.active')?.dataset.c;
   const bk=document.querySelector('#bg-sw .swatch.active')?.dataset.bg;
   const fk=document.querySelector('#f-opts .font-opt.active')?.dataset.fonts;
   const cv=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-  localStorage.setItem(KT,JSON.stringify({ak,bk,fk,royal:cv('--royal'),deco:cv('--deco'),body:cv('--body')}));
+  const payload={ak,bk,fk,royal:cv('--royal'),deco:cv('--deco'),body:cv('--body')};
+
+  /* 1 — localStorage (same browser, instant) */
+  localStorage.setItem(KT,JSON.stringify(payload));
+
+  /* 2 — URL hash (cross-browser: bookmark or copy this URL to any browser) */
+  try{history.replaceState(null,'',themeToHash(ak,bk,fk));}catch(e){}
+
   gp.classList.remove('open');
+
+  /* Show a brief hint so the user knows to copy the URL */
+  const s=document.getElementById('edit-status');
+  if(s){
+    const prev=s.textContent;
+    s.textContent='◆ Theme saved — copy this URL to use in any browser';
+    setTimeout(()=>s.textContent=prev,4000);
+  }
 }
 
-/* ════════════════════════════════════════
-   FIX 4 — loadTheme: use raw hex keys so
-   colours are always restored correctly.
-════════════════════════════════════════ */
+function _applyThemeObj(t){
+  if(!t)return;
+  if(t.ak)setAccent(t.ak);
+  if(t.bk)setBg(t.bk);
+  if(t.royal)document.documentElement.style.setProperty('--royal',t.royal);
+  if(t.deco) document.documentElement.style.setProperty('--deco', t.deco);
+  if(t.body) document.documentElement.style.setProperty('--body', t.body);
+  /* Sync swatch active state */
+  if(t.ak)document.querySelectorAll('#acc-sw .swatch').forEach(s=>s.classList.toggle('active',s.dataset.c===t.ak));
+  if(t.bk)document.querySelectorAll('#bg-sw .swatch').forEach(s=>s.classList.toggle('active',s.dataset.bg===t.bk));
+  if(t.fk)document.querySelectorAll('#f-opts .font-opt').forEach(o=>o.classList.toggle('active',o.dataset.fonts===t.fk));
+}
+
 function loadTheme(){
   try{
-    const t=JSON.parse(localStorage.getItem(KT)||'{}');
-    /* Accent — prefer raw swatch key; fall back to legacy 'gold' if it's still a hex string */
-    if(t.ak)setAccent(t.ak);
-    /* Background — prefer raw swatch key */
-    if(t.bk)setBg(t.bk);
-    /* Font family CSS vars */
-    if(t.royal)document.documentElement.style.setProperty('--royal',t.royal);
-    if(t.deco)document.documentElement.style.setProperty('--deco',t.deco);
-    if(t.body)document.documentElement.style.setProperty('--body',t.body);
-    /* Restore active state of swatches */
-    if(t.ak)document.querySelectorAll('#acc-sw .swatch').forEach(s=>s.classList.toggle('active',s.dataset.c===t.ak));
-    if(t.bk)document.querySelectorAll('#bg-sw .swatch').forEach(s=>s.classList.toggle('active',s.dataset.bg===t.bk));
-    if(t.fk)document.querySelectorAll('#f-opts .font-opt').forEach(o=>o.classList.toggle('active',o.dataset.fonts===t.fk));
+    /* Priority 1: URL hash — works across every browser */
+    const fromHash=hashToTheme();
+    if(fromHash&&(fromHash.ak||fromHash.bk)){
+      _applyThemeObj(fromHash);
+      /* Also write to localStorage so subsequent same-browser loads skip the hash parse */
+      try{
+        const existing=JSON.parse(localStorage.getItem(KT)||'{}');
+        localStorage.setItem(KT,JSON.stringify(Object.assign(existing,fromHash)));
+      }catch(e){}
+      return;
+    }
+    /* Priority 2: localStorage — same browser fallback */
+    const fromLS=JSON.parse(localStorage.getItem(KT)||'{}');
+    _applyThemeObj(fromLS);
+    /* Restore the hash so the URL stays shareable */
+    if(fromLS.ak||fromLS.bk){
+      try{history.replaceState(null,'',themeToHash(fromLS.ak,fromLS.bk,fromLS.fk));}catch(e){}
+    }
   }catch(e){}
 }
 loadTheme();
