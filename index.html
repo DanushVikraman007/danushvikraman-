@@ -957,7 +957,15 @@ initAtom(document.getElementById('atom-c'));
 initAtom(document.getElementById('atom-c-mobile'));
 
 /* ── STORAGE KEYS ── */
-const KP='dv_pass2',KC='dv_content2',KT='dv_theme2',KS='dv_sections2';
+const KP='dv_pass2',KC='dv_content2',KS='dv_sections2';
+
+/* GitHub Pages: scope storage per repo (e.g. /my-site/ → dv_theme2_my-site) */
+function pagesScope(){
+  const parts=location.pathname.replace(/\/index\.html?$/i,'').split('/').filter(Boolean);
+  return parts[0]||'';
+}
+function themeKey(){const s=pagesScope();return s?'dv_theme2_'+s:'dv_theme2';}
+function themeCookiePath(){const s=pagesScope();return s?'/'+s+'/':'/';}
 
 /* ── BUILTIN SECTIONS ── */
 const builtinSections={
@@ -1299,20 +1307,87 @@ function getThemePayload(){
   const ak=(document.querySelector('#acc-sw .swatch.active')?.dataset.c||cssGold).trim();
   const bk=(document.querySelector('#bg-sw .swatch.active')?.dataset.bg||cssBg).trim();
   const fk=document.querySelector('#f-opts .font-opt.active')?.dataset.fonts||'';
-  return{ak,bk,fk};
+  return{ak,bk,fk,savedAt:Date.now()};
+}
+
+function parseThemeRaw(raw){
+  if(!raw)return null;
+  try{return JSON.parse(raw);}catch(e){return null;}
+}
+
+function getThemeCookie(){
+  const key=themeKey().replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  const m=document.cookie.match(new RegExp('(?:^|; )'+key+'=([^;]*)'));
+  if(!m)return null;
+  try{return parseThemeRaw(decodeURIComponent(m[1]));}catch(e){return null;}
+}
+
+function setThemeCookie(payload){
+  const s=encodeURIComponent(JSON.stringify(payload));
+  document.cookie=themeKey()+'='+s+';path='+themeCookiePath()+';max-age=31536000;SameSite=Lax';
+}
+
+function themeEncode(payload){
+  try{return btoa(JSON.stringify(payload));}catch(e){return'';}
+}
+
+function themeDecode(enc){
+  if(!enc)return null;
+  try{return JSON.parse(atob(enc));}catch(e){return null;}
+}
+
+function themeToUrl(payload){
+  const enc=themeEncode(payload);
+  if(!enc)return location.pathname+location.search;
+  return location.pathname+'?t='+encodeURIComponent(enc)+'#t='+enc;
+}
+
+function urlToTheme(){
+  try{
+    const q=new URLSearchParams(location.search).get('t');
+    if(q){const t=themeDecode(decodeURIComponent(q));if(t)return t;}
+  }catch(e){}
+  return hashToTheme();
+}
+
+function collectThemeCandidates(){
+  const list=[];
+  const add=t=>{if(t&&(isValidHex(t.ak)||isValidHex(t.bk)))list.push(t);};
+  const tk=themeKey();
+  add(parseThemeRaw(localStorage.getItem(tk)));
+  add(parseThemeRaw(sessionStorage.getItem(tk)));
+  add(parseThemeRaw(localStorage.getItem('dv_theme2')));
+  add(parseThemeRaw(sessionStorage.getItem('dv_theme2')));
+  add(getThemeCookie());
+  add(urlToTheme());
+  return list;
+}
+
+function pickNewestTheme(candidates){
+  if(!candidates.length)return null;
+  return candidates.reduce((best,t)=>{
+    const tb=t.savedAt||0,bb=best.savedAt||0;
+    return tb>=bb?t:best;
+  });
 }
 
 function persistTheme(showToast){
   const payload=getThemePayload();
-  try{
-    localStorage.setItem(KT,JSON.stringify(payload));
-    try{history.replaceState(null,'',themeToHash(payload.ak,payload.bk,payload.fk));}catch(e){}
-  }catch(e){
-    console.warn('Theme could not be saved (storage blocked?)',e);
-  }
+  const json=JSON.stringify(payload);
+  try{localStorage.setItem(themeKey(),json);}catch(e){}
+  try{sessionStorage.setItem(themeKey(),json);}catch(e){}
+  try{setThemeCookie(payload);}catch(e){}
+  try{history.replaceState(null,'',themeToUrl(payload));}catch(e){}
   if(showToast){
     const s=document.getElementById('edit-status');
-    if(s){const prev=s.textContent;s.textContent='◆ Theme saved successfully';setTimeout(()=>s.textContent=prev,3000);}
+    if(s){
+      const prev=s.textContent;
+      const onMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      s.textContent=onMobile
+        ?'◆ Saved · bookmark this page URL on phone'
+        :'◆ Saved · open same URL on mobile (with ?t= in address)';
+      setTimeout(()=>s.textContent=prev,4000);
+    }
   }
 }
 
@@ -1366,29 +1441,18 @@ function _applyThemeObj(t){
 }
 
 /* ── URL hash encode / decode ── */
-function themeToHash(ak,bk,fk){
-  try{return'#t='+btoa(JSON.stringify({ak,bk,fk}));}catch(e){return'';}
-}
 function hashToTheme(){
   try{
     const h=window.location.hash;
-    if(h.startsWith('#t=')){return JSON.parse(atob(h.slice(3)));}
+    if(h.startsWith('#t='))return themeDecode(h.slice(3));
   }catch(e){}
   return null;
 }
 
 function loadTheme(){
   try{
-    let fromLS=null;
-    const raw=localStorage.getItem(KT);
-    if(raw)fromLS=JSON.parse(raw);
-
-    const fromHash=hashToTheme();
-
-    /* Prefer localStorage (last Save) over stale URL hash */
-    const theme=(fromLS&&(isValidHex(fromLS.ak)||isValidHex(fromLS.bk)))?fromLS:fromHash;
-
-    if(theme&&(isValidHex(theme.ak)||isValidHex(theme.bk))){
+    const theme=pickNewestTheme(collectThemeCandidates());
+    if(theme){
       _applyThemeObj(theme);
       persistTheme(false);
     }
