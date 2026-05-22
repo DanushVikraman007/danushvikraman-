@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "updatedAt": 1779450710250,
+  "theme": {
+    "ak": "#10b981",
+    "bk": "#080510",
+    "fk": "Cinzel+Decorative|Cormorant+Garamond",
+    "savedAt": 1779450710250
+  },
+  "content": {
+    "crown": "Quantum Engineer · Researcher · Inventor",
+    "n1": "Danush",
+    "n2": "Vikraman S.B",
+    "orn": "PES University · Bengaluru · CGPA 7.51",
+    "sub": "\n            B.Tech ECE <span>·</span> 2022–Present <span>·</span> IBM ibm_fez Validator\n          ",
+    "desc": "\n            Forging the frontier of quantum algorithms, NISQ hardware, and machine learning. Three arXiv co-authorships. Outperformed QAOA on Weighted Max-Cut.\n          ",
+    "footer": "© MMXXVI · Danush Vikraman · PES University · Bengaluru"
+  },
+  "sections": {}
+}
