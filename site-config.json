@@ -1,11 +1,12 @@
 {
   "version": 1,
-  "updatedAt": 1779454609299,
+  "updatedAt": 1779589904103,
   "theme": {
-    "ak": "#10b981",
-    "bk": "#080510",
-    "fk": "Cinzel+Decorative|Cormorant+Garamond",
-    "savedAt": 1779454609299
+    "ak": "#00ff88",
+    "bk": "#080a0c",
+    "fk": "PT+Serif|PT+Serif",
+    "pi": 1,
+    "savedAt": 1779589904103
   },
   "content": {
     "crown": "Quantum Engineer · Researcher · Inventor",
@@ -16,5 +17,6 @@
     "desc": "\n            Forging the frontier of quantum algorithms, NISQ hardware, and machine learning. Three arXiv co-authorships. Outperformed QAOA on Weighted Max-Cut.\n          ",
     "footer": "© MMXXVI · Danush Vikraman · PES University · Bengaluru"
   },
-  "sections": {}
+  "sections": {},
+  "passHash": "84c7c93c341f2a62b71c80b54e721f7fcfdde05d84a19030b86d162bd145324e"
 }
