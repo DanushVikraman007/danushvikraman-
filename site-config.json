@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "updatedAt": 1779589904103,
+  "updatedAt": 1779589967865,
   "theme": {
-    "ak": "#00ff88",
-    "bk": "#080a0c",
-    "fk": "PT+Serif|PT+Serif",
-    "pi": 1,
-    "savedAt": 1779589904103
+    "ak": "#f5d06a",
+    "bk": "#060503",
+    "fk": "Tinos|Tinos",
+    "pi": 0,
+    "savedAt": 1779589967865
   },
   "content": {
     "crown": "Quantum Engineer · Researcher · Inventor",
@@ -15,7 +15,25 @@
     "orn": "PES University · Bengaluru · CGPA 7.51",
     "sub": "\n            B.Tech ECE <span>·</span> 2022–Present <span>·</span> IBM ibm_fez Validator\n          ",
     "desc": "\n            Forging the frontier of quantum algorithms, NISQ hardware, and machine learning. Three arXiv co-authorships. Outperformed QAOA on Weighted Max-Cut.\n          ",
-    "footer": "© MMXXVI · Danush Vikraman · PES University · Bengaluru"
+    "footer": "© MMXXVI · Danush Vikraman · PES University · Bengaluru",
+    "p1-tag": "arXiv · Quantum-Classical Hybrid",
+    "p1-t": "QYO — Quantum-Classical Hybrid Metaheuristic",
+    "p1-s": "Co-authored with Prof. Gajanan V Honnavar",
+    "p1-d": "Four-layer pipelined architecture unifying SA warm-start, QWalk-MCMC exploration, and adaptive Grover amplification. Outperformed QAOA by 15.3–21.4 pp on Weighted Max-Cut. Validated on IBM ibm_fez 156-qubit NISQ at depth 119.",
+    "p2-tag": "arXiv:2601.01832 · Optimization",
+    "p2-t": "YO — Classical Hybrid Optimization",
+    "p2-s": "Co-authored with Prof. Gajanan V Honnavar",
+    "p2-d": "Three-layer MCMC + greedy + adaptive SA framework. Ranked 2nd on Rosenbrock 5D with fastest runtime (0.061s). Delivered 1.8% shorter TSP tours at N=200. Open-source on GitHub.",
+    "p3-tag": "arXiv · Quantum Security",
+    "p3-t": "Origo Signum — Quantum PUF",
+    "p3-s": "Co-authored with Prof. Gajanan V Honnavar",
+    "p3-d": "3-qubit quantum circuit exploiting NISQ decoherence as controlled entropy. Achieved 9.38-bit Shannon entropy (≈91% of max) on IBM ibm_fez. Validated on Qiskit Aer.",
+    "p4-t": "Quantum Cryptography — BB84 QKD",
+    "p4-s": "Quantum Key Distribution Implementation",
+    "p4-d": "Implemented and stress-tested BB84 QKD circuits, verifying protocol integrity under simulated channel noise on IBM Quantum Experience.",
+    "p5-t": "Additional Projects",
+    "p5-s": "Hardware, Security &amp; Signal Processing",
+    "p5-d": "PT-broken non-Hermitian system · RF Green Ambulance Corridor (Arduino) · RSA Encryption (Python) · 8-bit Vedic Multiplier (SystemVerilog)"
   },
   "sections": {},
   "passHash": "84c7c93c341f2a62b71c80b54e721f7fcfdde05d84a19030b86d162bd145324e"
