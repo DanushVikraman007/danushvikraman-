@@ -324,6 +324,10 @@ textarea.modal-input{min-height:110px;resize:vertical;letter-spacing:.04em;font-
 .font-opts{display:flex;flex-direction:column;gap:.55rem;}
 .font-opt{padding:.8rem 1rem;border:1px solid var(--border-md);cursor:pointer;font-size:.88rem;transition:all .25s;background:var(--bg3);color:var(--dimmer);}
 .font-opt.active{border-color:var(--gold-mid);color:var(--gold-pale);background:rgba(212,168,76,.07);}
+.preset-theme{cursor:pointer;border-radius:2px;padding:.55rem .4rem;display:flex;align-items:flex-end;justify-content:center;transition:all .25s;aspect-ratio:1.4;position:relative;overflow:hidden;}
+.preset-theme span{font-family:var(--royal);font-size:.38rem;letter-spacing:.12em;color:rgba(255,255,255,.85);text-align:center;text-transform:uppercase;text-shadow:0 1px 4px rgba(0,0,0,.8);pointer-events:none;}
+.preset-theme:hover{transform:scale(1.06);box-shadow:0 4px 20px rgba(0,0,0,.5);}
+.preset-theme.active{box-shadow:0 0 0 2px #fff,0 0 14px rgba(255,255,255,.3);}
 
 .edit-bar{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--gold);padding:.75rem 1.6rem;display:flex;gap:.8rem;align-items:center;z-index:300;box-shadow:var(--glow-gold);font-family:var(--royal);font-size:.56rem;letter-spacing:.1em;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;color:var(--text);max-width:calc(100vw - 2rem);}
 .edit-bar::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--gg-h);}
@@ -766,17 +770,26 @@ body.edit-mode .sec-card .card-actions{display:flex;}
 <div class="theme-panel" id="theme-panel">
   <div class="tp-title">Customise</div>
   <div class="tp-sub">Tailor the royal aesthetic to your vision.</div>
+  <div class="tp-label">Preset Themes</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1.2rem" id="preset-themes"></div>
   <div class="tp-label">Accent Colour</div>
   <div class="swatches" id="acc-sw">
-    <div class="swatch active" data-c="#d4a84c" style="background:linear-gradient(135deg,#4a3a1a,#d4a84c,#f5d06a)" title="Royal Gold"></div>
-    <div class="swatch" data-c="#d4d4d4" style="background:linear-gradient(135deg,#888,#d4d4d4,#fff)" title="Platinum"></div>
-    <div class="swatch" data-c="#b76e79" style="background:linear-gradient(135deg,#7a3a44,#b76e79,#e0a0a8)" title="Rose Gold"></div>
-    <div class="swatch" data-c="#4a9eff" style="background:linear-gradient(135deg,#1040a0,#4a9eff,#90caff)" title="Sapphire"></div>
-    <div class="swatch" data-c="#8b5cf6" style="background:linear-gradient(135deg,#4c1d95,#8b5cf6,#c4b5fd)" title="Amethyst"></div>
-    <div class="swatch" data-c="#10b981" style="background:linear-gradient(135deg,#064030,#10b981,#6ee7b7)" title="Emerald"></div>
-    <div class="swatch" data-c="#f43f5e" style="background:linear-gradient(135deg,#7a1020,#f43f5e,#fda4b0)" title="Crimson"></div>
-    <div class="swatch" data-c="#f97316" style="background:linear-gradient(135deg,#6a2200,#f97316,#fdba74)" title="Amber"></div>
-    <div class="swatch" data-c="#06b6d4" style="background:linear-gradient(135deg,#0a3a50,#06b6d4,#67e8f9)" title="Aquamarine"></div>
+    <div class="swatch active" data-c="#f5d06a" style="background:linear-gradient(135deg,#1a0f00,#d4a84c,#f5d06a,#fff8c0)" title="Royal Gold"></div>
+    <div class="swatch" data-c="#e8eef4" style="background:linear-gradient(135deg,#3a4050,#9ab0c8,#e8eef4,#ffffff)" title="Platinum"></div>
+    <div class="swatch" data-c="#f4b8c0" style="background:linear-gradient(135deg,#6a2838,#c07888,#f4b8c0,#ffdde0)" title="Rose Gold"></div>
+    <div class="swatch" data-c="#c8e0ff" style="background:linear-gradient(135deg,#101830,#4878b8,#c8e0ff,#eaf4ff)" title="Ice Silver"></div>
+    <div class="swatch" data-c="#d080ff" style="background:linear-gradient(135deg,#280850,#8030c0,#d080ff,#f0c0ff)" title="Amethyst"></div>
+    <div class="swatch" data-c="#40f0a0" style="background:linear-gradient(135deg,#083820,#10a060,#40f0a0,#b0ffe0)" title="Emerald"></div>
+    <div class="swatch" data-c="#ff4070" style="background:linear-gradient(135deg,#380610,#c01838,#ff4070,#ffb0c0)" title="Crimson"></div>
+    <div class="swatch" data-c="#e8884a" style="background:linear-gradient(135deg,#3a1808,#a85828,#e8884a,#ffd0a0)" title="Copper"></div>
+    <div class="swatch" data-c="#00f0ff" style="background:linear-gradient(135deg,#043848,#0898b8,#00f0ff,#c0ffff)" title="Aquamarine"></div>
+    <div class="swatch" data-c="#e09840" style="background:linear-gradient(135deg,#281808,#906020,#e09840,#ffd880)" title="Bronze"></div>
+    <div class="swatch" data-c="#b8c8d8" style="background:linear-gradient(135deg,#1a2028,#5878a0,#b8c8d8,#e8f0f8)" title="Titanium"></div>
+    <div class="swatch" data-c="#00ff88" style="background:linear-gradient(135deg,#002818,#00a850,#00ff88,#b0ffe0)" title="Neon Jade"></div>
+    <div class="swatch" data-c="#f8e090" style="background:linear-gradient(135deg,#302818,#c0a040,#f8e090,#fffac0)" title="Champagne"></div>
+    <div class="swatch" data-c="#6080ff" style="background:linear-gradient(135deg,#080c40,#2040c0,#6080ff,#c0d0ff)" title="Cobalt"></div>
+    <div class="swatch" data-c="#f0e8ff" style="background:linear-gradient(135deg,#180c28,#7048b8,#f0e8ff,#ffffff)" title="Onyx Pearl"></div>
+    <div class="swatch" data-c="#ff9030" style="background:linear-gradient(135deg,#381002,#c04010,#ff9030,#ffd090)" title="Molten"></div>
   </div>
   <div class="tp-label">Background</div>
   <div class="swatches" id="bg-sw">
@@ -795,10 +808,21 @@ body.edit-mode .sec-card .card-actions{display:flex;}
   </div>
   <div class="tp-label">Font</div>
   <div class="font-opts" id="f-opts">
-    <div class="font-opt active" data-fonts="Cinzel+Decorative|Cormorant+Garamond" style="font-family:'Cinzel Decorative',serif">Cinzel · Cormorant</div>
-    <div class="font-opt" data-fonts="Playfair+Display|EB+Garamond" style="font-family:'Playfair Display',serif">Playfair · EB Garamond</div>
-    <div class="font-opt" data-fonts="Cormorant+SC|Cormorant+Garamond" style="font-family:'Cormorant SC',serif">Cormorant SC</div>
-    <div class="font-opt" data-fonts="Libre+Baskerville|Libre+Baskerville" style="font-family:'Libre Baskerville',serif">Libre Baskerville</div>
+    <div class="font-opt active" data-fonts="Cinzel+Decorative|Cormorant+Garamond" style="font-family:'Cinzel Decorative',serif">Cinzel · Cormorant <span style="opacity:.4;font-size:.78em">Royal</span></div>
+    <div class="font-opt" data-fonts="Playfair+Display|EB+Garamond" style="font-family:'Playfair Display',serif">Playfair · EB Garamond <span style="opacity:.4;font-size:.78em">Elegant</span></div>
+    <div class="font-opt" data-fonts="Cormorant+SC|Cormorant+Garamond" style="font-family:'Cormorant SC',serif">Cormorant SC <span style="opacity:.4;font-size:.78em">Classic</span></div>
+    <div class="font-opt" data-fonts="Libre+Baskerville|Libre+Baskerville" style="font-family:'Libre Baskerville',serif">Libre Baskerville <span style="opacity:.4;font-size:.78em">Editorial</span></div>
+    <div class="font-opt" data-fonts="IM+Fell+English|IM+Fell+English" style="font-family:'IM Fell English',serif;font-style:italic">IM Fell English <span style="opacity:.4;font-size:.78em">Literary</span></div>
+    <div class="font-opt" data-fonts="Crimson+Text|Crimson+Text" style="font-family:'Crimson Text',serif">Crimson Text <span style="opacity:.4;font-size:.78em">Academic</span></div>
+    <div class="font-opt" data-fonts="Lora|Lora" style="font-family:'Lora',serif">Lora <span style="opacity:.4;font-size:.78em">Modern Serif</span></div>
+    <div class="font-opt" data-fonts="Merriweather|Merriweather" style="font-family:'Merriweather',serif">Merriweather <span style="opacity:.4;font-size:.78em">Readable</span></div>
+    <div class="font-opt" data-fonts="PT+Serif|PT+Serif" style="font-family:'PT Serif',serif">PT Serif <span style="opacity:.4;font-size:.78em">Times-like</span></div>
+    <div class="font-opt" data-fonts="Tinos|Tinos" style="font-family:'Tinos',serif">Tinos <span style="opacity:.4;font-size:.78em">Times New Roman</span></div>
+    <div class="font-opt" data-fonts="Gelasio|Gelasio" style="font-family:'Gelasio',serif">Gelasio <span style="opacity:.4;font-size:.78em">Georgia-like</span></div>
+    <div class="font-opt" data-fonts="Spectral|Spectral" style="font-family:'Spectral',serif">Spectral <span style="opacity:.4;font-size:.78em">Digital Serif</span></div>
+    <div class="font-opt" data-fonts="Josefin+Sans|Josefin+Sans" style="font-family:'Josefin Sans',sans-serif;letter-spacing:.08em">Josefin Sans <span style="opacity:.4;font-size:.78em">Geometric</span></div>
+    <div class="font-opt" data-fonts="Raleway|Raleway" style="font-family:'Raleway',sans-serif">Raleway <span style="opacity:.4;font-size:.78em">Elegant Sans</span></div>
+    <div class="font-opt" data-fonts="Montserrat|Montserrat" style="font-family:'Montserrat',sans-serif">Montserrat <span style="opacity:.4;font-size:.78em">Modern Sans</span></div>
   </div>
   <div class="tp-label" style="margin-top:2rem">Publish to GitHub</div>
   <p style="font-family:var(--fell);font-style:italic;font-size:.82rem;color:var(--dimmer);line-height:1.65;margin-bottom:1rem">One file for the whole site: <span style="color:var(--gold-mid)">site-config.json</span> (theme + text). Saving updates that same file in your repo so every browser loads it.</p>
@@ -1145,7 +1169,14 @@ const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersect
 document.querySelectorAll('.anim-card').forEach(el=>obs.observe(el));
 
 async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
-function hasPass(){return!!localStorage.getItem(KP);}
+const KP_JSON='dv_pass_hash_json'; /* hash stored in site-config.json, cached here */
+function getMasterHash(){
+  /* Priority 1: hash from site-config.json (syncs across all devices via GitHub) */
+  try{const j=JSON.parse(localStorage.getItem(KP_JSON)||'null');if(j&&j.length===64)return j;}catch(e){}
+  /* Priority 2: hash set locally before JSON existed */
+  return localStorage.getItem(KP)||null;
+}
+function hasPass(){return!!getMasterHash();}
 
 function openModal(id){
   document.getElementById(id).classList.add('active');
@@ -1169,8 +1200,33 @@ function closeModal(id){
 [document.getElementById('edit-btn'),document.getElementById('edit-btn2')].forEach(b=>{
   b.addEventListener('click',()=>{if(document.body.classList.contains('edit-mode')){exitEdit();return;}openModal(hasPass()?'login-modal':'setpass-modal');});
 });
-async function doLogin(){const v=document.getElementById('pass-in').value,e=document.getElementById('login-err');if(!v){e.textContent='A passcode is required.';return;}if(await sha(v)===localStorage.getItem(KP)){closeModal('login-modal');enterEdit();}else{e.textContent='Incorrect passcode.';document.getElementById('pass-in').value='';document.getElementById('pass-in').focus();}}
-async function doSetPass(){const np=document.getElementById('np-in').value,cp=document.getElementById('cp-in').value,e=document.getElementById('sp-err');if(!np||np.length<4){e.textContent='Minimum 4 characters.';return;}if(np!==cp){e.textContent='Passcodes do not match.';return;}localStorage.setItem(KP,await sha(np));closeModal('setpass-modal');enterEdit();}
+async function doLogin(){
+  const v=document.getElementById('pass-in').value,e=document.getElementById('login-err');
+  if(!v){e.textContent='A passcode is required.';return;}
+  const h=await sha(v);
+  if(h===getMasterHash()){closeModal('login-modal');enterEdit();}
+  else{e.textContent='Incorrect passcode.';document.getElementById('pass-in').value='';document.getElementById('pass-in').focus();}
+}
+async function doSetPass(){
+  const np=document.getElementById('np-in').value,cp=document.getElementById('cp-in').value,e=document.getElementById('sp-err');
+  if(!np||np.length<4){e.textContent='Minimum 4 characters.';return;}
+  if(np!==cp){e.textContent='Passcodes do not match.';return;}
+  const h=await sha(np);
+  localStorage.setItem(KP,h);
+  localStorage.setItem(KP_JSON,h);
+  closeModal('setpass-modal');
+  enterEdit();
+  /* Immediately push the hash to site-config.json so all devices get it */
+  setTimeout(async()=>{
+    const s=document.getElementById('edit-status');
+    if(s)s.textContent='◆ Saving passcode to GitHub…';
+    const cfg=buildSiteConfig();
+    cfg.passHash=h;
+    const pub=await pushSiteConfig(cfg);
+    if(s)s.textContent=pub.ok?'◆ Passcode saved — all devices now require login':'◆ Passcode set locally · GitHub: '+pub.msg;
+    setTimeout(()=>{if(s)s.textContent='Edit Mode · Click any text to amend';},5000);
+  },200);
+}
 document.getElementById('pass-in').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 document.getElementById('cp-in').addEventListener('keydown',e=>{if(e.key==='Enter')doSetPass();});
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal(o.id);}));
@@ -1315,9 +1371,13 @@ document.querySelectorAll('#f-opts .font-opt').forEach(o=>o.addEventListener('cl
   }
   setTimeout(()=>{
     const dn=disp.replace(/\+/g,' '),bn=body.replace(/\+/g,' ');
-    document.documentElement.style.setProperty('--royal',`'${dn}',serif`);
-    document.documentElement.style.setProperty('--deco',`'${dn}',serif`);
-    document.documentElement.style.setProperty('--body',`'${bn}',serif`);
+    const isSans=o.dataset.fonts&&(o.dataset.fonts.includes('Sans')||o.dataset.fonts.includes('Raleway')||o.dataset.fonts.includes('Montserrat'));
+    const fallback=isSans?'sans-serif':'serif';
+    document.documentElement.style.setProperty('--royal',`'${dn}',${fallback}`);
+    document.documentElement.style.setProperty('--deco',`'${dn}',${fallback}`);
+    document.documentElement.style.setProperty('--body',`'${bn}',${fallback}`);
+    document.documentElement.style.setProperty('--fell',`'${bn}',${fallback}`);
+    document.body.style.fontFamily=`'${bn}',${fallback}`;
   },400);
   persistTheme(false);
 }));
@@ -1373,16 +1433,21 @@ function initGhFields(){
   const s=getGhSettings();
   const o=document.getElementById('gh-owner'),r=document.getElementById('gh-repo'),b=document.getElementById('gh-branch');
   if(!o)return;
-  o.value=(s&&s.owner)||det?.owner||'';
-  r.value=(s&&s.repo)||det?.repo||'';
-  b.value=(s&&s.branch)||det?.branch||'gh-pages';
-  if(s&&s.token)document.getElementById('gh-token').placeholder='•••••••• (saved)';
+  /* Always pre-fill owner/repo/branch from meta or saved — user only needs token */
+  o.value=(s&&s.owner)||det?.owner||'DanushVikraman007';
+  r.value=(s&&s.repo)||det?.repo||'danushvikraman-';
+  b.value=(s&&s.branch)||det?.branch||'main';
+  /* Make owner/repo/branch readonly since they're hardcoded in meta */
+  if(det&&det.owner){o.readOnly=true;r.readOnly=true;b.readOnly=true;
+    o.style.opacity='.5';r.style.opacity='.5';b.style.opacity='.5';}
+  if(s&&s.token)document.getElementById('gh-token').placeholder='•••••••• (saved — tap to update)';
 }
 
 function buildSiteConfig(){
   const content={};
   document.querySelectorAll('[data-k]').forEach(el=>{content[el.dataset.k]=el.innerHTML;});
-  return{version:1,updatedAt:Date.now(),theme:getThemePayload(),content,sections:customSections};
+  const passHash=getMasterHash()||undefined;
+  return{version:1,updatedAt:Date.now(),theme:getThemePayload(),content,sections:customSections,...(passHash?{passHash}:{})};
 }
 
 function saveSiteConfigLocal(cfg){
@@ -1405,17 +1470,29 @@ function applySiteConfig(cfg){
     rebuildGrid();
     setTimeout(enableEditables,80);
   }
+  /* Cache passHash from JSON — this is how all devices get the password lock */
+  if(cfg.passHash&&cfg.passHash.length===64){
+    try{localStorage.setItem(KP_JSON,cfg.passHash);}catch(e){}
+  }
 }
 
 async function fetchSiteConfig(){
   const gh=detectGitHubRepo();
   const urls=[];
-  if(gh&&gh.owner)urls.push('https://raw.githubusercontent.com/'+gh.owner+'/'+gh.repo+'/'+(gh.branch||'gh-pages')+'/'+SITE_CONFIG_FILE);
+  if(gh&&gh.owner){
+    /* Try branch from meta first, then common branches */
+    const branches=[gh.branch,'main','master','gh-pages'].filter((b,i,a)=>b&&a.indexOf(b)===i);
+    branches.forEach(br=>urls.push('https://raw.githubusercontent.com/'+gh.owner+'/'+gh.repo+'/'+br+'/'+SITE_CONFIG_FILE));
+  }
   urls.push(new URL(SITE_CONFIG_FILE,location.href).href.split('?')[0]+'?v='+Date.now());
   for(const url of urls){
     try{
       const res=await fetch(url,{cache:'no-store'});
-      if(res.ok){const cfg=await res.json();if(cfg&&typeof cfg==='object')return cfg;}
+      if(!res.ok)continue;
+      const text=await res.text();
+      if(!text||!text.trim().startsWith('{'))continue;
+      const cfg=JSON.parse(text);
+      if(cfg&&typeof cfg==='object'&&(cfg.theme||cfg.content))return cfg;
     }catch(e){}
   }
   return null;
@@ -1458,8 +1535,13 @@ async function pushSiteConfig(cfg){
 }
 
 async function bootstrapSite(){
-  const remote=await fetchSiteConfig();
-  if(remote){
+  let remote=null;
+  try{remote=await fetchSiteConfig();}catch(e){}
+  if(remote&&(remote.theme||remote.content)){
+    /* Validate theme has real hex values before applying */
+    if(remote.theme&&!isValidHex(remote.theme.ak)&&!isValidHex(remote.theme.bk)){
+      delete remote.theme;
+    }
     applySiteConfig(remote);
     saveSiteConfigLocal(remote);
   }else{
@@ -1467,6 +1549,11 @@ async function bootstrapSite(){
     applySavedContent();
   }
   applyCardOverrides();
+  /* After grid is built, re-sync preset highlight */
+  setTimeout(()=>{
+    const stored=remote?.theme||null;
+    if(stored&&stored.pi>=0)document.querySelectorAll('.preset-theme').forEach((el,j)=>el.classList.toggle('active',j===stored.pi));
+  },500);
 }
 
 /* ══════════════════════════════════════════════════
@@ -1474,12 +1561,13 @@ async function bootstrapSite(){
 ══════════════════════════════════════════════════ */
 
 function getThemePayload(){
-  const cssGold=getComputedStyle(document.documentElement).getPropertyValue('--gold').trim()||'#d4a84c';
-  const cssBg=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()||'#060503';
-  const ak=(document.querySelector('#acc-sw .swatch.active')?.dataset.c||cssGold).trim();
-  const bk=(document.querySelector('#bg-sw .swatch.active')?.dataset.bg||cssBg).trim();
-  const fk=document.querySelector('#f-opts .font-opt.active')?.dataset.fonts||'';
-  return{ak,bk,fk,savedAt:Date.now()};
+  const root=document.documentElement;
+  /* Always read from CSS vars — these are always correct regardless of swatch state */
+  const ak=(root.style.getPropertyValue('--gold')||getComputedStyle(root).getPropertyValue('--gold')||'#d4a84c').trim();
+  const bk=(root.style.getPropertyValue('--bg')||getComputedStyle(root).getPropertyValue('--bg')||'#060503').trim();
+  const fk=document.querySelector('#f-opts .font-opt.active')?.dataset.fonts||'Cinzel+Decorative|Cormorant+Garamond';
+  const pi=document.querySelector('.preset-theme.active')?.dataset.preset;
+  return{ak,bk,fk,pi:pi!=null?parseInt(pi):-1,savedAt:Date.now()};
 }
 
 function parseThemeRaw(raw){
@@ -1623,28 +1711,96 @@ function _applyThemeObj(t){
   /* Font — also loads the Google Font link if not already present */
   if(t.fk){
     const[disp,body]=t.fk.split('|');
+    const bodyF=body||disp;
     if(disp){
-      /* Load font if missing */
+      /* Build correct Google Fonts URL — sans-serif fonts use different weight syntax */
+      const isSans=t.fk.includes('Sans')||t.fk.includes('Raleway')||t.fk.includes('Montserrat')||t.fk.includes('Josefin');
+      const fallback=isSans?'sans-serif':'serif';
       if(!document.getElementById('gf-'+disp)){
         const l=document.createElement('link');
         l.id='gf-'+disp;l.rel='stylesheet';
-        l.href=`https://fonts.googleapis.com/css2?family=${disp}:wght@400;600;700&family=${(body||disp)}:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap`;
+        if(isSans){
+          l.href=`https://fonts.googleapis.com/css2?family=${disp}:wght@300;400;600;700&family=${bodyF}:wght@300;400;600;700&display=swap`;
+        }else{
+          l.href=`https://fonts.googleapis.com/css2?family=${disp}:wght@400;600;700&family=${bodyF}:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap`;
+        }
         document.head.appendChild(l);
       }
-      /* Apply CSS vars after a short delay so the font has started loading */
+      /* Apply all font CSS vars after font starts loading */
       setTimeout(()=>{
-        const dn=disp.replace(/\+/g,' '),bn=(body||disp).replace(/\+/g,' ');
-        document.documentElement.style.setProperty('--royal',`'${dn}',serif`);
-        document.documentElement.style.setProperty('--deco',`'${dn}',serif`);
-        document.documentElement.style.setProperty('--body',`'${bn}',serif`);
+        const dn=disp.replace(/\+/g,' '),bn=bodyF.replace(/\+/g,' ');
+        const isSans2=t.fk.includes('Sans')||t.fk.includes('Raleway')||t.fk.includes('Montserrat')||t.fk.includes('Josefin');
+        const fb=isSans2?'sans-serif':'serif';
+        document.documentElement.style.setProperty('--royal',`'${dn}',${fb}`);
+        document.documentElement.style.setProperty('--deco',`'${dn}',${fb}`);
+        document.documentElement.style.setProperty('--body',`'${bn}',${fb}`);
+        document.documentElement.style.setProperty('--fell',`'${bn}',${fb}`);
+        document.body.style.fontFamily=`'${bn}',${fb}`;
       },400);
     }
-    /* Sync font option active state */
+    /* Sync font-opt active state */
     document.querySelectorAll('#f-opts .font-opt').forEach(o=>
       o.classList.toggle('active',o.dataset.fonts===t.fk));
   }
+  /* Sync preset active — defer in case grid not built yet */
+  if(t.pi!=null&&t.pi>=0){
+    const syncPreset=()=>document.querySelectorAll('.preset-theme').forEach((el,j)=>el.classList.toggle('active',j===t.pi));
+    if(document.getElementById('preset-themes')?.children.length)syncPreset();
+    else setTimeout(syncPreset,300);
+  }
 }
 
+
+/* ── PRESET THEMES ── */
+const PRESETS=[
+  {n:"Royal Gold",   ak:"#f5d06a",bk:"#060503",fk:"Cinzel+Decorative|Cormorant+Garamond",  grad:"linear-gradient(135deg,#1a0f00,#7a5020,#d4a84c,#f5d06a,#c49030)"},
+  {n:"Platinum",     ak:"#e8eef4",bk:"#080a0c",fk:"Playfair+Display|EB+Garamond",           grad:"linear-gradient(135deg,#0a0c10,#3a4050,#9ab0c8,#e8eef4,#b0c0d0)"},
+  {n:"Rose Gold",    ak:"#f4b8c0",bk:"#0d0608",fk:"Cormorant+SC|Cormorant+Garamond",        grad:"linear-gradient(135deg,#1a0608,#6a2838,#c07888,#f4b8c0,#d08898)"},
+  {n:"Ice Silver",   ak:"#c8e0ff",bk:"#04060e",fk:"Spectral|Spectral",                      grad:"linear-gradient(135deg,#04060e,#101830,#4878b8,#c8e0ff,#90b8e8)"},
+  {n:"Amethyst",     ak:"#d080ff",bk:"#08040e",fk:"Cinzel+Decorative|Cormorant+Garamond",   grad:"linear-gradient(135deg,#08040e,#280850,#8030c0,#d080ff,#a050e0)"},
+  {n:"Emerald",      ak:"#40f0a0",bk:"#020c06",fk:"Cinzel+Decorative|Cormorant+Garamond",   grad:"linear-gradient(135deg,#020c06,#083820,#10a060,#40f0a0,#20c878)"},
+  {n:"Crimson",      ak:"#ff4070",bk:"#0c0204",fk:"Cinzel+Decorative|Cormorant+Garamond",   grad:"linear-gradient(135deg,#0c0204,#380610,#c01838,#ff4070,#e02050)"},
+  {n:"Copper",       ak:"#e8884a",bk:"#0e0804",fk:"Libre+Baskerville|Libre+Baskerville",    grad:"linear-gradient(135deg,#0e0804,#3a1808,#a85828,#e8884a,#c86830)"},
+  {n:"Aquamarine",   ak:"#00f0ff",bk:"#020a0c",fk:"Cinzel+Decorative|Cormorant+Garamond",   grad:"linear-gradient(135deg,#020a0c,#043848,#0898b8,#00f0ff,#20d0e8)"},
+  {n:"Bronze",       ak:"#e09840",bk:"#0a0804",fk:"Libre+Baskerville|Libre+Baskerville",    grad:"linear-gradient(135deg,#0a0804,#281808,#906020,#e09840,#b87828)"},
+  {n:"Titanium",     ak:"#b8c8d8",bk:"#060808",fk:"Playfair+Display|EB+Garamond",           grad:"linear-gradient(135deg,#060808,#1a2028,#5878a0,#b8c8d8,#8098b8)"},
+  {n:"Neon Jade",    ak:"#00ff88",bk:"#020810",fk:"Montserrat|Montserrat",                  grad:"linear-gradient(135deg,#020810,#002818,#00a850,#00ff88,#00d870)"},
+  {n:"Champagne",    ak:"#f8e090",bk:"#0c0a06",fk:"Cormorant+SC|Cormorant+Garamond",        grad:"linear-gradient(135deg,#0c0a06,#302818,#c0a040,#f8e090,#e0c060)"},
+  {n:"Cobalt",       ak:"#6080ff",bk:"#020410",fk:"Raleway|Raleway",                         grad:"linear-gradient(135deg,#020410,#080c40,#2040c0,#6080ff,#4060e0)"},
+  {n:"Onyx Pearl",   ak:"#f0e8ff",bk:"#06040a",fk:"Cormorant+SC|Cormorant+Garamond",        grad:"linear-gradient(135deg,#06040a,#180c28,#7048b8,#f0e8ff,#c0a8e8)"},
+  {n:"Molten",       ak:"#ff9030",bk:"#0e0602",fk:"Cinzel+Decorative|Cormorant+Garamond",   grad:"linear-gradient(135deg,#0e0602,#381002,#c04010,#ff9030,#e07020)"}
+];
+function buildPresetGrid(){
+  const grid=document.getElementById("preset-themes");
+  if(!grid)return;
+  grid.innerHTML="";
+  PRESETS.forEach((p,i)=>{
+
+    const el=document.createElement("div");
+    el.className="preset-theme";
+    el.dataset.preset=i;
+    el.title=p.n;
+    el.style.background=p.grad;
+    el.style.border="1px solid "+p.ak+"55";
+    el.style.boxShadow="inset 0 0 20px rgba(0,0,0,.5)";
+    el.innerHTML="<span>"+p.n+"</span>";
+    el.onclick=()=>applyPreset(i);
+    grid.appendChild(el);
+  });
+}
+function applyPreset(i){
+  const p=PRESETS[i];
+  if(!p)return;
+  /* Apply full theme object including preset index */
+  _applyThemeObj({ak:p.ak,bk:p.bk,fk:p.fk,pi:i});
+  /* Sync preset grid */
+  document.querySelectorAll('.preset-theme').forEach((el,j)=>el.classList.toggle('active',j===i));
+  /* Sync accent swatch so getThemePayload reads correctly */
+  document.querySelectorAll('#acc-sw .swatch').forEach(s=>s.classList.toggle('active',s.dataset.c===p.ak));
+  /* Sync bg swatch */
+  document.querySelectorAll('#bg-sw .swatch').forEach(s=>s.classList.toggle('active',s.dataset.bg===p.bk));
+}
+document.addEventListener("DOMContentLoaded",buildPresetGrid);
 /* ── URL hash encode / decode ── */
 function hashToTheme(){
   try{
