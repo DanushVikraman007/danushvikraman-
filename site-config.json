@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "updatedAt": 1779688887121,
+  "updatedAt": 1779701819257,
   "theme": {
-    "ak": "#e8884a",
-    "bk": "#0e0804",
-    "fk": "Libre+Baskerville|Libre+Baskerville",
-    "pi": 7,
-    "savedAt": 1779688887121
+    "ak": "#f5d06a",
+    "bk": "#060503",
+    "fk": "Cinzel+Decorative|Cormorant+Garamond",
+    "pi": 0,
+    "savedAt": 1779701819257
   },
   "content": {
     "crown": "Quantum Engineer · Researcher · Inventor",
@@ -15,16 +15,7 @@
     "orn": "PES University · Bengaluru · CGPA 7.51",
     "sub": "\n            B.Tech ECE <span>·</span> 2022–Present <span>·</span> IBM ibm_fez Validator\n          ",
     "desc": "\n            Forging the frontier of quantum algorithms, NISQ hardware, and machine learning. Three arXiv co-authorships. Outperformed QAOA on Weighted Max-Cut.\n          ",
-    "footer": "© MMXXVI · Danush Vikraman · PES University · Bengaluru",
-    "ex1-r": "Research Intern",
-    "ex1-d": "Jan 2026 — May 2026",
-    "ex1-c": "Quanad Laboratory, PES University · Bengaluru",
-    "ex1-b1": "Fabricated EML layers for Indian QLED panels (CVD, spin-coating), characterising quantum-material device properties across 5+ thin-film samples via DC Keithley, Impedance Analyser, Cyclic Voltammetry, and UV Spectroscopy.",
-    "ex1-b2": "Contributed numerical analysis to neuromorphic computing and quantum-classical hybrid learning model research. Presented findings at Quanad Lab Open Day.",
-    "ex2-r": "AI Intern",
-    "ex2-d": "Jun 2025 — Jul 2025",
-    "ex2-c": "Edunet Foundation · AICTE &amp; IBM SkillsBuild · Remote",
-    "ex2-b1": "Built and deployed an Employee Salary Prediction app using Random Forest Classifier (89.4% accuracy), engineering an end-to-end ML pipeline from data cleaning through production deployment on Streamlit."
+    "footer": "© MMXXVI · Danush Vikraman · PES University · Bengaluru"
   },
   "sections": {},
   "passHash": "84c7c93c341f2a62b71c80b54e721f7fcfdde05d84a19030b86d162bd145324e"
