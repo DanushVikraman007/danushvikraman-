@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1783410427693,
+  "updatedAt": 1783410559583,
   "passHash": {
     "salt": "fbcb3ab55e1b7a3bcb5dc6ece18b2c29",
     "iterations": 210000,
@@ -30,8 +30,8 @@
     "meta": [
       "PES University · Bengaluru",
       "B.Tech ECE · 2022–Present",
-      "CGPA 7.51",
-      "IBM ibm_fez Validator"
+      "CGPA 7.69",
+      "QUANTUM COMPUTING RESEARCHER"
     ],
     "quote": "Forging the frontier of quantum algorithms, NISQ hardware, and machine learning. Three arXiv co-authorships. Outperformed QAOA on Weighted Max-Cut.",
     "equation": "Ĥ Ψ = iℏ ∂Ψ/∂t",
