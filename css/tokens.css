@@ -1,0 +1,80 @@
+/* ============================================================
+   TOKENS — single source of truth.
+   The theme engine (js/theme.js) rewrites these at runtime.
+   No component may use a raw color; everything derives from here.
+   ============================================================ */
+:root {
+  /* Surface scale — bg is true OLED black by default */
+  --bg: #050505;
+  --bg-1: #0c0c0c;
+  --bg-2: #131313;
+  --bg-3: #1a1a1a;
+
+  /* Accent scale — generated from --accent by the theme engine */
+  --accent: #d4a84c;
+  --accent-rgb: 212, 168, 76;
+  --accent-lt: #f5d06a;
+  --accent-mid: #ae8a3e;
+  --accent-dk: #6a5426;
+  --accent-pale: #fdf3d8;
+
+  /* Text */
+  --text: #f2efe6;
+  --text-dim: #b3ab98;
+  --text-dimmer: #857d6a;
+  --text-faint: #5c5647;
+
+  /* Glass system */
+  --glass: linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.015));
+  --glass-strong: linear-gradient(160deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  --glass-blur: blur(22px) saturate(1.25);
+  --glass-edge: inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 0 1px rgba(255,255,255,.02);
+
+  /* Strokes */
+  --stroke: rgba(var(--accent-rgb), .14);
+  --stroke-md: rgba(var(--accent-rgb), .3);
+  --stroke-strong: rgba(var(--accent-rgb), .55);
+  --stroke-glass: rgba(255,255,255,.08);
+
+  /* Metallic gradients */
+  --grad-metal: linear-gradient(135deg, var(--accent-dk), var(--accent-mid), var(--accent), var(--accent-lt), var(--accent), var(--accent-mid), var(--accent-dk));
+  --grad-line: linear-gradient(90deg, transparent, var(--accent), var(--accent-lt), var(--accent), transparent);
+  --grad-line-v: linear-gradient(180deg, transparent, var(--accent) 35%, var(--accent-lt) 50%, var(--accent) 65%, transparent);
+
+  /* Light */
+  --glow: 0 0 50px rgba(var(--accent-rgb), .4), 0 0 110px rgba(var(--accent-rgb), .14);
+  --glow-sm: 0 0 24px rgba(var(--accent-rgb), .25);
+  --shadow-depth: 0 24px 60px -20px rgba(0,0,0,.8);
+
+  /* Type */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Motion */
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --ease-spring: cubic-bezier(.34, 1.4, .44, 1);
+  --dur: .6s;
+
+  /* Geometry */
+  --radius: 14px;
+  --radius-lg: 22px;
+  --radius-sm: 8px;
+}
+
+/* Light mode — elegant frosted, never plain white */
+:root[data-mode="light"] {
+  --bg: #ecebe6;
+  --bg-1: #f4f3ee;
+  --bg-2: #faf9f5;
+  --bg-3: #ffffff;
+  --text: #171410;
+  --text-dim: #4c463a;
+  --text-dimmer: #756c5b;
+  --text-faint: #a29a88;
+  --glass: linear-gradient(160deg, rgba(255,255,255,.72), rgba(255,255,255,.42));
+  --glass-strong: linear-gradient(160deg, rgba(255,255,255,.9), rgba(255,255,255,.6));
+  --glass-edge: inset 0 1px 0 rgba(255,255,255,.9), inset 0 0 0 1px rgba(255,255,255,.35);
+  --stroke-glass: rgba(0,0,0,.07);
+  --shadow-depth: 0 24px 60px -24px rgba(30,25,10,.25);
+}
