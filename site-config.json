@@ -1,17 +1,25 @@
 {
   "version": 2,
-  "updatedAt": 0,
-  "passHash": null,
+  "updatedAt": 1783410427693,
+  "passHash": {
+    "salt": "fbcb3ab55e1b7a3bcb5dc6ece18b2c29",
+    "iterations": 210000,
+    "hash": "eef9b52e45e9f0160680fe53deb11bdceae4bd5380421b2878ad2b14b8b2baef"
+  },
   "meta": {
     "title": "Danush Vikraman · Quantum Engineer",
     "footer": "© MMXXVI · Danush Vikraman · PES University · Bengaluru",
     "status": "SYSTEM ONLINE",
-    "github": { "owner": "DanushVikraman007", "repo": "danushvikraman-", "branch": "main" }
+    "github": {
+      "owner": "DanushVikraman007",
+      "repo": "danushvikraman-",
+      "branch": "main"
+    }
   },
   "theme": {
-    "preset": 0,
-    "accent": "#d4a84c",
-    "bg": "#050505",
+    "preset": 10,
+    "accent": "#28e0f0",
+    "bg": "#03080a",
     "font": "Space Grotesk|Inter",
     "mode": "dark"
   },
@@ -27,8 +35,14 @@
     ],
     "quote": "Forging the frontier of quantum algorithms, NISQ hardware, and machine learning. Three arXiv co-authorships. Outperformed QAOA on Weighted Max-Cut.",
     "equation": "Ĥ Ψ = iℏ ∂Ψ/∂t",
-    "ctaPrimary": { "label": "View my work", "section": "projects" },
-    "ctaSecondary": { "label": "Get in touch", "section": "contact" }
+    "ctaPrimary": {
+      "label": "View my work",
+      "section": "projects"
+    },
+    "ctaSecondary": {
+      "label": "Get in touch",
+      "section": "contact"
+    }
   },
   "sections": [
     {
@@ -47,12 +61,29 @@
           "org": "Bachelor of Technology in Electronics & Communication Engineering",
           "period": "Sep 2022 – Present",
           "meta": [
-            { "k": "Period", "v": "Sep 2022 – Present" },
-            { "k": "CGPA", "v": "7.51 / 10" },
-            { "k": "Campus", "v": "Bengaluru, Karnataka" }
+            {
+              "k": "Period",
+              "v": "Sep 2022 – Present"
+            },
+            {
+              "k": "CGPA",
+              "v": "7.51 / 10"
+            },
+            {
+              "k": "Campus",
+              "v": "Bengaluru, Karnataka"
+            }
           ],
           "bullets": [],
-          "tags": ["Quantum Computing", "Robotics", "Image Processing", "Machine Learning", "Digital Circuits", "Semiconductor Physics", "Wireless Communication"]
+          "tags": [
+            "Quantum Computing",
+            "Robotics",
+            "Image Processing",
+            "Machine Learning",
+            "Digital Circuits",
+            "Semiconductor Physics",
+            "Wireless Communication"
+          ]
         }
       ]
     },
@@ -106,7 +137,12 @@
           "title": "QYO — Quantum-Classical Hybrid Metaheuristic",
           "subtitle": "Co-authored with Prof. Gajanan V Honnavar",
           "description": "Four-layer pipelined architecture unifying SA warm-start, QWalk-MCMC exploration, and adaptive Grover amplification. Outperformed QAOA by 15.3–21.4 pp on Weighted Max-Cut. Validated on IBM ibm_fez 156-qubit NISQ at depth 119.",
-          "links": [{ "label": "arXiv", "url": "#" }]
+          "links": [
+            {
+              "label": "arXiv",
+              "url": "#"
+            }
+          ]
         },
         {
           "tag": "arXiv:2601.01832 · Optimization",
@@ -114,8 +150,14 @@
           "subtitle": "Co-authored with Prof. Gajanan V Honnavar",
           "description": "Three-layer MCMC + greedy + adaptive SA framework. Ranked 2nd on Rosenbrock 5D with fastest runtime (0.061s). Delivered 1.8% shorter TSP tours at N=200. Open-source on GitHub.",
           "links": [
-            { "label": "arXiv", "url": "https://arxiv.org/abs/2601.01832" },
-            { "label": "GitHub", "url": "#" }
+            {
+              "label": "arXiv",
+              "url": "https://arxiv.org/abs/2601.01832"
+            },
+            {
+              "label": "GitHub",
+              "url": "#"
+            }
           ]
         },
         {
@@ -123,14 +165,24 @@
           "title": "Origo Signum — Quantum PUF",
           "subtitle": "Co-authored with Prof. Gajanan V Honnavar",
           "description": "3-qubit quantum circuit exploiting NISQ decoherence as controlled entropy. Achieved 9.38-bit Shannon entropy (≈91% of max) on IBM ibm_fez. Validated on Qiskit Aer.",
-          "links": [{ "label": "arXiv", "url": "#" }]
+          "links": [
+            {
+              "label": "arXiv",
+              "url": "#"
+            }
+          ]
         },
         {
           "tag": "Qiskit · IBM Quantum",
           "title": "Quantum Cryptography — BB84 QKD",
           "subtitle": "Quantum Key Distribution Implementation",
           "description": "Implemented and stress-tested BB84 QKD circuits, verifying protocol integrity under simulated channel noise on IBM Quantum Experience.",
-          "links": [{ "label": "GitHub", "url": "#" }]
+          "links": [
+            {
+              "label": "GitHub",
+              "url": "#"
+            }
+          ]
         },
         {
           "tag": "Hardware · Python · SystemVerilog",
@@ -152,12 +204,66 @@
       "headline": "Technical |skills|",
       "hidden": false,
       "items": [
-        { "group": "Programming", "tags": ["Python", "C", "Java", "SystemVerilog", "MATLAB", "Assembly 8086"] },
-        { "group": "Quantum Tools", "tags": ["Qiskit", "IBM Quantum Experience", "Qiskit Aer"] },
-        { "group": "Engineering Tools", "tags": ["Git", "OpenCV", "Streamlit", "Arduino", "Quartus Prime", "Cadence", "KICAD"] },
-        { "group": "Lab Instruments", "tags": ["DC Keithley", "Impedance Analyser", "UV Spectroscopy", "Spin Coater", "Cyclic Voltammetry"] },
-        { "group": "Research Areas", "tags": ["Quantum Algorithms", "Quantum ML", "NISQ Hardware", "Neuromorphic Computing", "Machine Learning"] },
-        { "group": "Fabrication", "tags": ["CVD", "Spin Coating", "Digital Circuit Design", "Materials Characterisation"] }
+        {
+          "group": "Programming",
+          "tags": [
+            "Python",
+            "C",
+            "Java",
+            "SystemVerilog",
+            "MATLAB",
+            "Assembly 8086"
+          ]
+        },
+        {
+          "group": "Quantum Tools",
+          "tags": [
+            "Qiskit",
+            "IBM Quantum Experience",
+            "Qiskit Aer"
+          ]
+        },
+        {
+          "group": "Engineering Tools",
+          "tags": [
+            "Git",
+            "OpenCV",
+            "Streamlit",
+            "Arduino",
+            "Quartus Prime",
+            "Cadence",
+            "KICAD"
+          ]
+        },
+        {
+          "group": "Lab Instruments",
+          "tags": [
+            "DC Keithley",
+            "Impedance Analyser",
+            "UV Spectroscopy",
+            "Spin Coater",
+            "Cyclic Voltammetry"
+          ]
+        },
+        {
+          "group": "Research Areas",
+          "tags": [
+            "Quantum Algorithms",
+            "Quantum ML",
+            "NISQ Hardware",
+            "Neuromorphic Computing",
+            "Machine Learning"
+          ]
+        },
+        {
+          "group": "Fabrication",
+          "tags": [
+            "CVD",
+            "Spin Coating",
+            "Digital Circuit Design",
+            "Materials Characterisation"
+          ]
+        }
       ]
     },
     {
@@ -200,10 +306,26 @@
       "hidden": false,
       "intro": "Open to research collaborations, quantum computing projects, and internship opportunities. Do not hesitate to reach out.",
       "items": [
-        { "icon": "✉", "label": "danushvikraman004@gmail.com", "url": "mailto:danushvikraman004@gmail.com" },
-        { "icon": "✆", "label": "+91 8971095599", "url": "tel:+918971095599" },
-        { "icon": "in", "label": "LinkedIn — danush-vikraman", "url": "https://www.linkedin.com/in/danush-vikraman-794218350/" },
-        { "icon": "⌥", "label": "GitHub — DanushVikraman007", "url": "https://github.com/DanushVikraman007" }
+        {
+          "icon": "✉",
+          "label": "danushvikraman004@gmail.com",
+          "url": "mailto:danushvikraman004@gmail.com"
+        },
+        {
+          "icon": "✆",
+          "label": "+91 8971095599",
+          "url": "tel:+918971095599"
+        },
+        {
+          "icon": "in",
+          "label": "LinkedIn — danush-vikraman",
+          "url": "https://www.linkedin.com/in/danush-vikraman-794218350/"
+        },
+        {
+          "icon": "⌥",
+          "label": "GitHub — DanushVikraman007",
+          "url": "https://github.com/DanushVikraman007"
+        }
       ]
     }
   ]
