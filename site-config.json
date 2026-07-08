@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1783511080065,
+  "updatedAt": 1783529797528,
   "passHash": {
     "salt": "fbcb3ab55e1b7a3bcb5dc6ece18b2c29",
     "iterations": 210000,
@@ -25,7 +25,7 @@
   },
   "hero": {
     "eyebrow": "Quantum Engineer · Researcher · Inventor",
-    "nameLine1": "Danush",
+    "nameLine1": "S.B. Danush",
     "nameLine2": "Vikraman",
     "meta": [
       "PES University · Bengaluru",
