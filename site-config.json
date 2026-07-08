@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1783410658600,
+  "updatedAt": 1783511075268,
   "passHash": {
     "salt": "fbcb3ab55e1b7a3bcb5dc6ece18b2c29",
     "iterations": 210000,
@@ -29,7 +29,7 @@
     "nameLine2": "Vikraman",
     "meta": [
       "PES University · Bengaluru",
-      "B.Tech ECE · 2022–Present",
+      "B.TECH ECE · 2022–2026",
       "CGPA 7.69",
       "QUANTUM COMPUTING RESEARCHER"
     ],
