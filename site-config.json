@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1783529797528,
+  "updatedAt": 1783595758402,
   "passHash": {
     "salt": "fbcb3ab55e1b7a3bcb5dc6ece18b2c29",
     "iterations": 210000,
@@ -59,7 +59,7 @@
         {
           "heading": "PES University",
           "org": "Bachelor of Technology in Electronics & Communication Engineering",
-          "period": "Sep 2022 – Present",
+          "period": "Sep 2022 – July 2026",
           "meta": [
             {
               "k": "Period",
@@ -67,7 +67,7 @@
             },
             {
               "k": "CGPA",
-              "v": "7.51 / 10"
+              "v": "7.69 / 10"
             },
             {
               "k": "Campus",
