@@ -84,6 +84,7 @@ async function boot() {
     if (e.target.closest('[data-exit]')) { exitEdit(); return; }
 
     if (e.target.closest('[data-studio-toggle]')) { $('theme-studio').classList.toggle('open'); return; }
+    if (e.target.closest('[data-studio-close]')) { $('theme-studio').classList.remove('open'); return; }
     // click outside closes studio / modal
     if (!e.target.closest('#theme-studio')) $('theme-studio').classList.remove('open');
     if (e.target.id === 'dyn-overlay') closeSheet();
