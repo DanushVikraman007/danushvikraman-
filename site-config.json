@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1783595758402,
+  "updatedAt": 1783687242991,
   "passHash": {
     "salt": "fbcb3ab55e1b7a3bcb5dc6ece18b2c29",
     "iterations": 210000,
@@ -8,7 +8,7 @@
   },
   "meta": {
     "title": "Danush Vikraman · Quantum Engineer",
-    "footer": "© MMXXVI · Danush Vikraman · PES University · Bengaluru",
+    "footer": "© MMXXVI · DANUSH VIKRAMAN · PES UNIVERSITY · BENGALURU",
     "status": "SYSTEM ONLINE",
     "github": {
       "owner": "DanushVikraman007",
@@ -327,6 +327,20 @@
           "url": "https://github.com/DanushVikraman007"
         }
       ]
+    },
+    {
+      "id": "m_writing_mrexb6od",
+      "type": "custom",
+      "numeral": "VIII",
+      "category": "Chapter",
+      "title": "Writing",
+      "subtitle": "Writing",
+      "overline": "Chapter",
+      "headline": "Writing",
+      "body": "",
+      "link": null,
+      "hidden": false,
+      "items": []
     }
   ]
 }
