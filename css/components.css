@@ -227,4 +227,53 @@ a.panel.contact:hover, a.panel.contact:active { color: var(--text); transform: t
   .meta-row { gap: 1rem; }
   .proj-grid, .skills-grid { grid-template-columns: 1fr; }
   .hero-ctas .cta { flex: 1; justify-content: center; }
+
+  /* ---------- mobile performance ----------
+     backdrop-filter blur is the single heaviest GPU cost on this page —
+     every .panel, .module, .bar and button recomputes a 22px blur behind
+     itself, every frame, on top of two animated canvases. Phones pay for
+     this in dropped frames and heat. Below 720px we swap it for a plain
+     tinted background: same "glass card" read at a glance, none of the
+     compositing cost. Colors still come from the theme tokens, so this
+     tracks every preset/mode instead of hardcoding a shade. */
+  .bar, .icon-btn, .ghost-btn, .cta.glass,
+  .instrument-chassis, .module, .panel {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--bg-2);
+  }
+  :root[data-mode="light"] .bar,
+  :root[data-mode="light"] .icon-btn,
+  :root[data-mode="light"] .ghost-btn,
+  :root[data-mode="light"] .cta.glass,
+  :root[data-mode="light"] .instrument-chassis,
+  :root[data-mode="light"] .module,
+  :root[data-mode="light"] .panel {
+    background: var(--bg-3);
+  }
+
+  /* Large blurred glows (box-shadow with big blur radii) are also costly
+     to repaint during scroll/hover on mobile GPUs — trim them down. */
+  .module:hover, .module:active,
+  .panel:hover,
+  .icon-btn:hover, .icon-btn:active, .icon-btn.on,
+  .ghost-btn:hover, .ghost-btn:active,
+  .cta.solid:hover, .cta.solid:active,
+  .cta.glass:hover, .cta.glass:active,
+  .link-chip:hover, .link-chip:active {
+    box-shadow: none;
+  }
+
+  /* translateY hover/active lifts trigger their own repaint on tap;
+     mobile has no hover anyway, so drop the transform on the touch path. */
+  .module:hover, .module:active { transform: none; }
+}
+
+/* Low-power devices: coarse pointer AND a narrow viewport (phones, not
+   just any touch laptop) — quiet the shimmer/blink text animations too,
+   since animated background-position and opacity loops keep compositing
+   even when nothing else on screen is moving. */
+@media (max-width: 720px) and (pointer: coarse) {
+  .brand-mark, .hero-name .l2, .d-title em { animation: none; background-position: 50%; }
+  .brand-status::before { animation: none; opacity: 1; }
 }
