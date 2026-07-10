@@ -36,6 +36,9 @@ function accentRgb() {
   const v = cssVar('--accent-rgb', '212, 168, 76').split(',').map((n) => parseInt(n, 10));
   return v.length === 3 && v.every(Number.isFinite) ? v : [212, 168, 76];
 }
+function isLight() {
+  return document.documentElement.dataset.mode === 'light';
+}
 
 function rotate(p, rx, ry) {
   const cx = Math.cos(rx), sx = Math.sin(rx);
@@ -175,7 +178,10 @@ export function mountAtom(canvas, hud = {}) {
       if (!started) { ctx.moveTo(q.x, q.y); started = true; }
       else ctx.lineTo(q.x, q.y);
     }
-    ctx.strokeStyle = `rgba(${r},${g},${b},${front ? 0.14 : 0.05})`;
+    // Light backgrounds need much more alpha for the same ring to read —
+    // the dark-tuned 0.14/0.05 was designed against a near-black chassis.
+    const boost = isLight() ? 2.6 : 1;
+    ctx.strokeStyle = `rgba(${r},${g},${b},${(front ? 0.14 : 0.05) * boost})`;
     ctx.lineWidth = front ? 0.8 : 0.5;
     ctx.stroke();
   }
@@ -194,22 +200,33 @@ export function mountAtom(canvas, hud = {}) {
   function drawElectron(pos, boost) {
     const q = project(pos);
     const rad = R * 0.032 * q.s * (1 + boost * 0.25);
+    const light = isLight();
 
     // faint trail: a few ghost positions just behind the current angle
-    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalCompositeOperation = light ? 'source-over' : 'lighter';
+    const trailColor = light ? '20,18,14' : '255,255,255';
     const grad = ctx.createRadialGradient(q.x - rad * 0.3, q.y - rad * 0.35, rad * 0.1, q.x, q.y, rad * 2.6);
-    grad.addColorStop(0, 'rgba(255,255,255,1)');
-    grad.addColorStop(0.35, 'rgba(255,255,255,0.55)');
-    grad.addColorStop(1, 'rgba(255,255,255,0)');
+    grad.addColorStop(0, `rgba(${trailColor},${light ? 0.35 : 1})`);
+    grad.addColorStop(0.35, `rgba(${trailColor},${light ? 0.18 : 0.55})`);
+    grad.addColorStop(1, `rgba(${trailColor},0)`);
     ctx.beginPath();
     ctx.arc(q.x, q.y, rad * 2.6, 0, TAU);
     ctx.fillStyle = grad;
     ctx.fill();
 
     const core = ctx.createRadialGradient(q.x - rad * 0.35, q.y - rad * 0.4, rad * 0.08, q.x, q.y, rad);
-    core.addColorStop(0, '#ffffff');
-    core.addColorStop(0.55, '#f2f0eb');
-    core.addColorStop(1, '#c9c6bd');
+    if (light) {
+      // Dark, near-black metallic sphere — the light-mode counterpart of
+      // the dark-mode white/pearl electron, same size and motion, just
+      // inverted so it stays visible against a light chassis.
+      core.addColorStop(0, '#3a362e');
+      core.addColorStop(0.55, '#1c1a15');
+      core.addColorStop(1, '#08070a');
+    } else {
+      core.addColorStop(0, '#ffffff');
+      core.addColorStop(0.55, '#f2f0eb');
+      core.addColorStop(1, '#c9c6bd');
+    }
     ctx.beginPath();
     ctx.arc(q.x, q.y, rad, 0, TAU);
     ctx.fillStyle = core;
@@ -286,6 +303,10 @@ export function mountAtom(canvas, hud = {}) {
 
     ctx.clearRect(0, 0, W, H);
     const [r, g, b] = accentRgb();
+    const light = isLight();
+    // Cloud dots need more contrast against a light card than against
+    // near-black — accent colors read a good bit fainter on white.
+    const cloudBoost = light ? 1.35 : 1;
 
     RINGS.forEach((o) => drawRing(o, false, r, g, b));
 
@@ -304,11 +325,18 @@ export function mountAtom(canvas, hud = {}) {
       }, rotX, rotY);
       const q = project(p);
       const twinkle = 0.65 + 0.35 * Math.sin(t * 2.2 + c.tw);
-      const a = c.a * twinkle * q.s * (c.core ? 0.85 : 0.75 + mix * 0.3);
+      const a = Math.min(1, c.a * twinkle * q.s * (c.core ? 0.85 : 0.75 + mix * 0.3) * cloudBoost);
       const size = (c.core ? 1.05 : 1.25) * q.s;
       if (c.core) {
-        // hotter, whiter core
-        ctx.fillStyle = `rgba(${Math.min(255, r + 60)},${Math.min(255, g + 60)},${Math.min(255, b + 50)},${a})`;
+        if (light) {
+          // On light backgrounds, push the densest core toward the
+          // *darkest* shade of the accent instead of toward white —
+          // "hotter" reads as more saturated/deep, not paler, here.
+          ctx.fillStyle = `rgba(${Math.floor(r * 0.55)},${Math.floor(g * 0.55)},${Math.floor(b * 0.55)},${a})`;
+        } else {
+          // hotter, whiter core
+          ctx.fillStyle = `rgba(${Math.min(255, r + 60)},${Math.min(255, g + 60)},${Math.min(255, b + 50)},${a})`;
+        }
       } else {
         ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
       }
