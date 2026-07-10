@@ -1,15 +1,15 @@
 /* ============================================================
    ATOM — the signature instrument, quantum edition.
-   Electrons are NOT on planetary orbits. They render as a
-   probability cloud sampled from hydrogen-like |ψ|² densities:
+   The |ψ|² probability cloud is the physical model:
      · 1s  — dense spherical core           (r² e^-2r)
      · 2p  — dumbbell lobes along z         (r⁴ e^-r · cos²θ)
      · 3d  — four-lobe geometry (excited)   (r⁶ e^-2r/3 · sin⁴θ sin²2φ)
-   Points stochastically resample ("quantum jumps"), bright
-   measurement flashes mark detection events, and hovering
-   excites the atom — the cloud morphs from n=1,2 into n=3
-   lobes. Nucleus stays a metallic nucleon cluster. Faint shell
-   rings remain as instrument guides only.
+   On top of it, small white/pearl spheres ride the shell guide
+   rings as a recognizable "planetary" read — a visual layer, not
+   a claim about electron behavior. Points stochastically resample
+   ("quantum jumps"), bright measurement flashes mark detection
+   events, and hovering excites the atom — the cloud morphs from
+   n=1,2 into n=3 lobes. Nucleus stays a metallic nucleon cluster.
    ============================================================ */
 
 const TAU = Math.PI * 2;
@@ -113,9 +113,15 @@ export function mountAtom(canvas, hud = {}) {
 
   /* ---------- shell guide rings (instrument reference, not orbits) ---------- */
   const RINGS = [
-    { tiltX: 0.4, tiltY: 0.2, r: 0.46 },
-    { tiltX: 1.7, tiltY: 0.9, r: 0.78 },
-    { tiltX: 0.9, tiltY: 2.1, r: 1.02 },
+    { tiltX: 0.4, tiltY: 0.2, r: 0.46, speed: 0.55, phase: 0 },
+    { tiltX: 1.7, tiltY: 0.9, r: 0.78, speed: -0.4, phase: 2.1 },
+    { tiltX: 0.9, tiltY: 2.1, r: 1.02, speed: 0.32, phase: 4.4 },
+  ];
+  // Second traveler on the two outer rings, offset halfway round —
+  // matches the reference image's multiple visible orbiting electrons.
+  const ORBIT_EXTRA = [
+    { ring: 1, offset: TAU / 2 },
+    { ring: 2, offset: TAU / 2 },
   ];
 
   /* ---------- nucleus ---------- */
@@ -172,6 +178,57 @@ export function mountAtom(canvas, hud = {}) {
     ctx.strokeStyle = `rgba(${r},${g},${b},${front ? 0.14 : 0.05})`;
     ctx.lineWidth = front ? 0.8 : 0.5;
     ctx.stroke();
+  }
+
+  /* World-space point for a ring at angle `a` (before rot/tilt applied by caller). */
+  function ringPoint(o, a) {
+    return rotate({ x: Math.cos(a) * o.r, y: Math.sin(a) * o.r * 0.42, z: 0 }, o.tiltX, o.tiltY + t * 0.05);
+  }
+
+  /* ---------- orbiting electrons ----------
+     Small white/pearl spheres riding the shell rings — the recognizable
+     "planetary" read from the reference art, layered on top of the |ψ|²
+     cloud rather than replacing it. Each has a soft core + faint outer
+     glow and a short motion trail so it feels like it's actually moving,
+     not just teleporting frame to frame. */
+  function drawElectron(pos, boost) {
+    const q = project(pos);
+    const rad = R * 0.032 * q.s * (1 + boost * 0.25);
+
+    // faint trail: a few ghost positions just behind the current angle
+    ctx.globalCompositeOperation = 'lighter';
+    const grad = ctx.createRadialGradient(q.x - rad * 0.3, q.y - rad * 0.35, rad * 0.1, q.x, q.y, rad * 2.6);
+    grad.addColorStop(0, 'rgba(255,255,255,1)');
+    grad.addColorStop(0.35, 'rgba(255,255,255,0.55)');
+    grad.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.beginPath();
+    ctx.arc(q.x, q.y, rad * 2.6, 0, TAU);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    const core = ctx.createRadialGradient(q.x - rad * 0.35, q.y - rad * 0.4, rad * 0.08, q.x, q.y, rad);
+    core.addColorStop(0, '#ffffff');
+    core.addColorStop(0.55, '#f2f0eb');
+    core.addColorStop(1, '#c9c6bd');
+    ctx.beginPath();
+    ctx.arc(q.x, q.y, rad, 0, TAU);
+    ctx.fillStyle = core;
+    ctx.fill();
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  function drawOrbitingElectrons() {
+    RINGS.forEach((o, i) => {
+      const a = t * o.speed + o.phase;
+      const p = rotate(ringPoint(o, a), rotX, rotY);
+      drawElectron(p, energy);
+    });
+    ORBIT_EXTRA.forEach(({ ring, offset }) => {
+      const o = RINGS[ring];
+      const a = t * o.speed + o.phase + offset;
+      const p = rotate(ringPoint(o, a), rotX, rotY);
+      drawElectron(p, energy);
+    });
   }
 
   function drawNucleus(r, g, b) {
@@ -290,6 +347,7 @@ export function mountAtom(canvas, hud = {}) {
 
     drawNucleus(r, g, b);
     RINGS.forEach((o) => drawRing(o, true, r, g, b));
+    drawOrbitingElectrons();
 
     /* --- HUD --- */
     if (hud.tr) hud.tr.innerHTML = `|ψ|² <b>${cloud.length}</b> pts · Z <b>6</b>`;
