@@ -15,6 +15,20 @@
 const TAU = Math.PI * 2;
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* ---------- mobile / low-power detection ----------
+   Coarse pointer + narrow viewport = phone-class device. We keep the
+   exact same |ψ|² math, shells, nucleus and spin — only the sample
+   COUNT, canvas resolution cap, and target frame rate scale down, so
+   the instrument is unmistakably the same atom, just lighter to paint. */
+const COARSE = matchMedia('(pointer: coarse)').matches;
+const NARROW = matchMedia('(max-width: 720px)').matches;
+const LOW_CORES = (navigator.hardwareConcurrency || 8) <= 4;
+const MOBILE = COARSE && (NARROW || LOW_CORES);
+const DPR_CAP = MOBILE ? 1.5 : 2;
+const PARTICLE_SCALE = MOBILE ? 0.4 : 1;
+const TARGET_FPS = MOBILE ? 30 : 60;
+const FRAME_BUDGET = 1000 / TARGET_FPS;
+
 function cssVar(name, fallback) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 }
@@ -82,8 +96,12 @@ export function mountAtom(canvas, hud = {}) {
   let energy = 0, targetEnergy = 0;
   let t = 0, lastFrame = performance.now(), fps = 60;
 
-  /* ---------- probability cloud ---------- */
-  const N_CORE = 900, N_P = 1300, N_D = 1300;
+  /* ---------- probability cloud ----------
+     Counts scale by PARTICLE_SCALE on mobile (same 900:1300:1300 ratio,
+     so density/shape reads identically — just fewer sampled points). */
+  const N_CORE = Math.round(900 * PARTICLE_SCALE);
+  const N_P = Math.round(1300 * PARTICLE_SCALE);
+  const N_D = Math.round(1300 * PARTICLE_SCALE);
   const cloud = [];
   for (let i = 0; i < N_CORE; i++) cloud.push({ g: sample1s(), e: sample1s(), core: true, tw: rnd() * TAU, a: 0.3 + rnd() * 0.45 });
   for (let i = 0; i < N_P; i++) cloud.push({ g: sample2p(), e: sample3d(), core: false, tw: rnd() * TAU, a: 0.25 + rnd() * 0.45 });
@@ -117,7 +135,7 @@ export function mountAtom(canvas, hud = {}) {
   function resize() {
     const w = wrap.clientWidth, h = wrap.clientHeight;
     if (!w || !h) return;
-    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const dpr = Math.min(devicePixelRatio || 1, DPR_CAP);
     W = w; H = h; R = Math.min(w, h) * 0.4; focal = R * 3.4;
     canvas.width = Math.floor(w * dpr);
     canvas.height = Math.floor(h * dpr);
@@ -187,7 +205,17 @@ export function mountAtom(canvas, hud = {}) {
     ctx.fillRect(c.x - R * 0.24, c.y - R * 0.24, R * 0.48, R * 0.48);
   }
 
+  let rafPending = 0;
   function frame(now) {
+    // On mobile, skip frames that arrive faster than the target budget
+    // (e.g. a 120Hz phone display) so we paint at ~30fps instead of 60-120fps.
+    const elapsed = now - rafPending;
+    if (MOBILE && elapsed < FRAME_BUDGET && rafPending) {
+      if (!REDUCED) requestAnimationFrame(frame);
+      return;
+    }
+    rafPending = now;
+
     const dt = Math.min((now - lastFrame) / 1000, 0.05);
     lastFrame = now;
     fps += ((1 / Math.max(dt, 1e-4)) - fps) * 0.05;
@@ -270,8 +298,23 @@ export function mountAtom(canvas, hud = {}) {
       ? `EXCITED · n=3 (3d) · <b>${Math.round(fps)}</b> fps`
       : `GROUND · n=1,2 (1s 2p) · <b>${Math.round(fps)}</b> fps`;
 
-    if (!REDUCED) requestAnimationFrame(frame);
+    if (!REDUCED && visible) requestAnimationFrame(frame);
   }
+
+  /* Pause entirely when off-screen (scrolled past on mobile) or the
+     tab is hidden — same trick particles.js already uses, applied
+     here too since the atom is the most expensive draw on the page. */
+  let visible = true;
+  if (typeof IntersectionObserver !== 'undefined') {
+    new IntersectionObserver(([entry]) => {
+      const wasVisible = visible;
+      visible = entry.isIntersecting;
+      if (visible && !wasVisible) { lastFrame = performance.now(); requestAnimationFrame(frame); }
+    }, { threshold: 0.01 }).observe(canvas);
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && visible) { lastFrame = performance.now(); requestAnimationFrame(frame); }
+  });
 
   resize();
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(resize).observe(wrap);
