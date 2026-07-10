@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1783688040991,
+  "updatedAt": 1783688279493,
   "passHash": {
     "salt": "fbcb3ab55e1b7a3bcb5dc6ece18b2c29",
     "iterations": 210000,
@@ -127,7 +127,7 @@
       "numeral": "III",
       "category": "Research",
       "title": "Research & Projects",
-      "subtitle": "3 arXiv papers · QYO, YO, Origo Signum · IBM Quantum",
+      "subtitle": "3 arXiv papers · QYO, YO, Origo Signum · IBM Quantum,m",
       "overline": "Corpus of work",
       "headline": "Research |& projects|",
       "hidden": false,
@@ -332,9 +332,9 @@
       "id": "m_writing_mrexrsvw",
       "type": "custom",
       "numeral": "VIII",
-      "category": "Chapter",
+      "category": "CHAPTER",
       "title": "writing",
-      "subtitle": "writing",
+      "subtitle": "writing,c",
       "overline": "Chapter",
       "headline": "writing",
       "body": "THE CADENCE OF BLISS",
