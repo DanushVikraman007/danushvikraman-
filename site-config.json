@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1783688279493,
+  "updatedAt": 1783688451866,
   "passHash": {
     "salt": "fbcb3ab55e1b7a3bcb5dc6ece18b2c29",
     "iterations": 210000,
@@ -327,20 +327,6 @@
           "url": "https://github.com/DanushVikraman007"
         }
       ]
-    },
-    {
-      "id": "m_writing_mrexrsvw",
-      "type": "custom",
-      "numeral": "VIII",
-      "category": "CHAPTER",
-      "title": "writing",
-      "subtitle": "writing,c",
-      "overline": "Chapter",
-      "headline": "writing",
-      "body": "THE CADENCE OF BLISS",
-      "link": null,
-      "hidden": false,
-      "items": []
     }
   ]
 }
