@@ -259,12 +259,17 @@ export function openConsole() {
 }
 
 /* ================= SECTION (MODULE) EDITOR ================= */
-const NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+const NUMERALS = [
+  'I', 'II', 'III', 'IV', 'V',
+  'VI', 'VII', 'VIII', 'IX', 'X',
+  'XI', 'XII', 'XIII', 'XIV', 'XV',
+  'XVI', 'XVII', 'XVIII', 'XIX', 'XX'
+];
 
 function openSectionEditor(id) {
   const isNew = !id;
   const s = isNew
-    ? { id: '', type: 'custom', numeral: NUMERALS[Math.min(sections().length, 11)], category: 'Chapter', title: '', subtitle: '', overline: '', headline: '', body: '', link: { label: '', url: '' }, hidden: false, items: [] }
+    ? { id: '', type: 'custom', numeral: NUMERALS[Math.min(sections().length, NUMERALS.length - 1)], category: 'Chapter', title: '', subtitle: '', overline: '', headline: '', body: '', link: { label: '', url: '' }, hidden: false, items: [] }
     : sections().find((x) => x.id === id);
 
   const typeOpts = ['custom', 'timeline', 'projects', 'skills', 'achievements', 'contact']
