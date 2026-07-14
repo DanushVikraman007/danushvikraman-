@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1783690432338,
+  "updatedAt": 1784050513368,
   "passHash": {
     "salt": "fbcb3ab55e1b7a3bcb5dc6ece18b2c29",
     "iterations": 210000,
@@ -17,10 +17,10 @@
     }
   },
   "theme": {
-    "preset": 0,
-    "accent": "#d4a84c",
-    "bg": "#050505",
-    "font": "Space Grotesk|Inter",
+    "preset": 32,
+    "accent": "#a8e8f0",
+    "bg": "#040a0d",
+    "font": "Inter|Inter",
     "mode": "dark"
   },
   "hero": {
