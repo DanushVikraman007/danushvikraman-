@@ -7,10 +7,21 @@
 
    NOTHING in this module makes a network request. All compilation
    happens inside the browser tab, using WASM + data files that are
-   vendored into this repository at resume/vendor/busytex/. The only
-   "fetch" calls below are same-origin requests for those local
-   static files (JS glue, .wasm binaries, .data package archives) —
-   exactly like loading an image or a stylesheet, not a compile API.
+   vendored into this repository at resume/vendor/ (both the library's
+   own dist/index.js and the busytex/ WASM+data bundle — see
+   README-latex-engine.md). The only "fetch" calls below are same-origin
+   requests for those local static files (JS glue, .wasm binaries, .data
+   package archives) — exactly like loading an image or a stylesheet,
+   not a compile API.
+
+   IMPORTANT: `texlyre-busytex` is an npm package name, not a URL — a
+   plain <script type="module"> browser has no registry to resolve that
+   against, so `import ... from 'texlyre-busytex'` fails with "Failed to
+   resolve module specifier" on GitHub Pages (no bundler, no import map).
+   The fix is to import the package's own prebuilt ESM file
+   (dist/index.js, which has zero runtime dependencies of its own) by a
+   real relative path once it's vendored into the repo. See
+   README-latex-engine.md step 1.
 
    Lazy: the engine is not created until compileLatex() is first
    called (i.e. not until the person is in Résumé Mode and clicks
@@ -21,28 +32,30 @@
 // Resolved relative to this module's own URL so the app keeps working
 // when served from a GitHub Pages *project* subpath
 // (https://user.github.io/repo/…), not just from a domain root.
-const VENDOR_BASE = new URL('../resume/vendor/busytex/', import.meta.url).href;
+const VENDOR_DIR = new URL('../resume/vendor/', import.meta.url).href;
+const BUSYTEX_LIB = `${VENDOR_DIR}texlyre-busytex/index.js`; // vendored dist/index.js
+const VENDOR_BASE = `${VENDOR_DIR}busytex/`;                 // vendored WASM + TeX Live data
 
 let runnerPromise = null;   // BusyTexRunner init, memoized for the session
 let enginePromise = null;   // PdfLatex instance, memoized alongside it
 
-/** Lazily import texlyre-busytex and boot a pdfTeX-only runner. */
+/** Lazily import the vendored texlyre-busytex build and boot a pdfTeX-only runner. */
 async function getEngine() {
   if (enginePromise) return enginePromise;
 
   enginePromise = (async () => {
-    const { BusyTexRunner, PdfLatex } = await import('texlyre-busytex');
+    const { BusyTexRunner, PdfLatex } = await import(/* @vite-ignore */ BUSYTEX_LIB);
 
     const runner = new BusyTexRunner({
       busytexBasePath: VENDOR_BASE,
       engineMode: 'pdftex', // smaller split build — this template never needs XeTeX/LuaTeX
-      // Packages resume-template.tex actually \usepackage's, so BusyTeX
-      // preloads them from the vendored data instead of trying to fetch
-      // anything at compile time. Keep in sync with resume-template.tex.
-      preloadDataPackages: [
-        'mathptmx', 'geometry', 'hyperref', 'enumitem',
-        'titlesec', 'xcolor', 'multicol', 'graphicx',
-      ],
+      // No preloadDataPackages list here: pdfTeX's bundled texlive-basic
+      // data already resolves packages from texlive-recommended and
+      // texlive-extra (which is where titlesec, enumitem, etc. live) —
+      // see the "Limitations" section of the texlyre-busytex README.
+      // If a future template addition needs a package that genuinely
+      // isn't covered, the fix is to list its real package-data URL
+      // here (copied from the vendored busytex/ catalog), not a guess.
     });
 
     await runner.initialize(true); // true = run in a Web Worker (keeps the UI thread free)
