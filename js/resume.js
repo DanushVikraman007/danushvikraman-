@@ -205,7 +205,7 @@ async function compileAndShow() {
   if (!body || !lastResume) return;
   busy = true;
   syncCompactLabel();
-  body.innerHTML = `<p class="sheet-sub" style="margin-bottom:.6rem">Compiling with pdflatex on texlive.net… usually 3–10 seconds.</p>
+  body.innerHTML = `<p class="sheet-sub" style="margin-bottom:.6rem">Compiling locally in your browser… first run loads the LaTeX engine, so this can take a little longer than later ones.</p>
     <div class="resume-frame resume-frame-wait">⌛</div>`;
 
   try {
@@ -218,7 +218,7 @@ async function compileAndShow() {
       body.innerHTML = `
         <p class="err" style="min-height:0">LaTeX compilation failed.</p>
         <pre class="resume-log">${escHtml((res.log || '').slice(-4000))}</pre>
-        <p class="field-hint">You can still download the .tex below and compile it in Overleaf or locally.</p>`;
+        <p class="field-hint">You can still download the .tex below.</p>`;
       return;
     }
 
@@ -231,7 +231,7 @@ async function compileAndShow() {
       ${pages > 1 ? `<p class="resume-warn">Selected content exceeds the recommended one-page résumé length (${pages} pages). Try “Tighter spacing”, or unselect a few cards — nothing is removed automatically.</p>` : ''}
       ${dropped ? `<p class="field-hint">${dropped} character${dropped > 1 ? 's' : ''} without a safe LaTeX form ${dropped > 1 ? 'were' : 'was'} omitted.</p>` : ''}
       <iframe class="resume-frame" title="Résumé preview" src="${blobUrl}#toolbar=0&navpanes=0"></iframe>
-      <p class="field-hint">${pages ? `${pages} page${pages > 1 ? 's' : ''} · ` : ''}compiled by texlive.net (the LaTeX Project's service — your résumé text is sent there to be compiled). Preview blank on this device? <a href="${blobUrl}" target="_blank" rel="noopener">Open the PDF in a new tab</a>.</p>`;
+      <p class="field-hint">${pages ? `${pages} page${pages > 1 ? 's' : ''} · ` : ''}compiled locally in your browser — your résumé text never leaves this device. Preview blank on this device? <a href="${blobUrl}" target="_blank" rel="noopener">Open the PDF in a new tab</a>.</p>`;
   } catch (e) {
     body.innerHTML = `<p class="err" style="min-height:0">${escHtml(e?.message || String(e))}</p>`;
   } finally {
