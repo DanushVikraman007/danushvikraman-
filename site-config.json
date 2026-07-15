@@ -105,8 +105,8 @@
           "period": "Jan 2026 — May 2026",
           "meta": [],
           "bullets": [
-            "Fabricated EML layers for Indian QLED panels (CVD, spin-coating), characterising quantum-material device properties across 5+ thin-film samples via DC Keithley, Impedance Analyser, Cyclic Voltammetry, and UV Spectroscopy.",
-            "Contributed numerical analysis to neuromorphic computing and quantum-classical hybrid learning model research. Presented findings at Quanad Lab Open Day."
+            "Fabricated EML layers for Indian QLED panels (CVD, spin-coating), characterised quantum-material device properties across 5+ thin-film samples via DC Keithley, Impedance Analyser, Cyclic Voltammetry, and UV Spectroscopy; contributed materials characterisation data to Project STHIRA — a bio-mimetic digital twin implementing an ATP-gated Izhikevich spiking neural network (10,000–65,000 neurons/region) driven by real-time EEG/fNIRS dual-sensor input, with CuS QD photoconductors (synthesised in-lab, ΔR/R_dark > 10% at 850 nm) forming the fNIRS metabolic veto core.",
+            "Authored technical reports and presented NISQ hardware findings to faculty and visiting engineers from 3+ industry partners at Quanad Lab Open Day."
           ],
           "tags": [],
           "_id": "experience_research-intern"
@@ -117,7 +117,7 @@
           "period": "Jun 2025 — Jul 2025",
           "meta": [],
           "bullets": [
-            "Built and deployed an Employee Salary Prediction app using Random Forest Classifier (89.4% accuracy), engineering an end-to-end ML pipeline from data cleaning through production deployment on Streamlit."
+            "Built and deployed an Employee Salary Prediction app using Random Forest Classifier (89.4% accuracy); engineered an end-to-end ML pipeline covering data cleaning, feature engineering, model training, and production deployment on Streamlit."
           ],
           "tags": [],
           "_id": "experience_ai-intern"
@@ -137,9 +137,9 @@
       "items": [
         {
           "tag": "arXiv · Quantum-Classical Hybrid",
-          "title": "QYO — Quantum-Classical Hybrid Metaheuristic",
+          "title": "Quintus Yukthi Opus (QYO) — Quantum-Classical Hybrid Metaheuristic",
           "subtitle": "Co-authored with Prof. Gajanan V Honnavar",
-          "description": "Four-layer pipelined architecture unifying SA warm-start, QWalk-MCMC exploration, and adaptive Grover amplification. Outperformed QAOA by 15.3–21.4 pp on Weighted Max-Cut. Validated on IBM ibm_fez 156-qubit NISQ at depth 119.",
+          "description": "Designed a four-layer pipelined architecture unifying SA warm-start, QWalk-MCMC exploration, and adaptive Grover amplification as a quantum machine learning hybrid; outperformed QAOA by 15.3–21.4 pp on Weighted Max-Cut (Cohen's d > 6.2, p < 10⁻⁶) at up to 9.0× faster runtime. Optimised quantum circuit compilation via candidate-index encoding, reducing qubit overhead 78% (O(n²)=36 → O(log K)=8); validated on IBM ibm_fez (156-qubit NISQ), TSP approximation ratio 1.0000 in 9.87 s, characterising gate error and decoherence at circuit depth 119.",
           "links": [
             {
               "label": "arXiv",
@@ -150,9 +150,9 @@
         },
         {
           "tag": "arXiv:2601.01832 · Optimization",
-          "title": "YO — Classical Hybrid Optimization",
+          "title": "Yukthi Opus (YO) — Classical Hybrid Optimization Framework",
           "subtitle": "Co-authored with Prof. Gajanan V Honnavar",
-          "description": "Three-layer MCMC + greedy + adaptive SA framework. Ranked 2nd on Rosenbrock 5D with fastest runtime (0.061s). Delivered 1.8% shorter TSP tours at N=200. Open-source on GitHub.",
+          "description": "Designed three-layer MCMC + greedy + adaptive SA framework; numerical analysis across 30 trials (t-test, Cohen's d) proved 30–36% quality degradation without MCMC or greedy (p < 0.01); reduced variance 55% via multi-chain execution. Ranked 2nd on Rosenbrock 5D with fastest runtime (0.061 s) vs. CMA-ES, BayesOpt, APSO; delivered 1.8% shorter TSP tours at N=200; open-sourced at github.com/DanushVikraman007/Yukthi_opus.",
           "links": [
             {
               "label": "arXiv",
@@ -167,9 +167,9 @@
         },
         {
           "tag": "arXiv · Quantum Security",
-          "title": "Origo Signum — Quantum PUF",
+          "title": "Origo Signum (Q-PUF) — Quantum Physical Unclonable Function",
           "subtitle": "Co-authored with Prof. Gajanan V Honnavar",
-          "description": "3-qubit quantum circuit exploiting NISQ decoherence as controlled entropy. Achieved 9.38-bit Shannon entropy (≈91% of max) on IBM ibm_fez. Validated on Qiskit Aer.",
+          "description": "Inverted quantum error correction principles to exploit NISQ decoherence as a controlled entropy source in a 3-qubit quantum software library circuit; achieved 9.38-bit Shannon entropy (≈91% of max) on IBM ibm_fez, validated across Qiskit Aer simulators.",
           "links": [
             {
               "label": "arXiv",
@@ -179,10 +179,26 @@
           "_id": "projects_origo-signum-quantum-puf"
         },
         {
+          "tag": "ROS · PointPillars · CUDA",
+          "title": "Real-Time LiDAR 3D Object Detection Node",
+          "subtitle": "ROS · MATLAB Coder · GPU Coder",
+          "description": "Deployed an end-to-end ROS node running a pre-trained PointPillars model to generate real-time 3D bounding boxes, spatial orientations, and object classifications (Car, Truck) from raw point cloud frames. Used MATLAB Coder and GPU Coder to cross-compile algorithmic scripts into optimized, native CUDA-accelerated standalone executables for localhost deployment. Engineered an asynchronous pipeline utilizing custom sensor_msgs/PointCloud2 and std_msgs arrays to deserialize telemetry and dynamically overlay accurate cuboids onto live streams.",
+          "links": [],
+          "_id": "projects_realtime-lidar-3d-object-detection-node"
+        },
+        {
+          "tag": "Neuromorphic · EEG/fNIRS · Biosensing",
+          "title": "Project STHIRA — Bio-Mimetic EEG/fNIRS Digital Twin",
+          "subtitle": "Quanad Laboratory, PES University",
+          "description": "Designed and synthesised CuS quantum dot photoconductors (wet-chemical co-precipitation, 2.0 g yield, ΔR/R_dark > 10% at 850 nm) for the fNIRS metabolic veto core of a hybrid biosensor with concentric GQD-coated EEG ring and CuS fNIRS photoconductive centre. Implemented an ATP-gated Izhikevich spiking neural network (10,000–65,000 neurons/region, 4 neuron classes) driven by real-time dual-sensor EEG/fNIRS input; synaptic STDP updates triple-gated on EEG frequency band, fNIRS O₂ saturation (>0.65 SpO₂), and per-neuron ATP reserve — a metabolic honesty constraint absent from all standard ANN frameworks.",
+          "links": [],
+          "_id": "projects_project-sthira-bio-mimetic-eeg-fnirs-digital-twin"
+        },
+        {
           "tag": "Qiskit · IBM Quantum",
-          "title": "Quantum Cryptography — BB84 QKD",
-          "subtitle": "Quantum Key Distribution Implementation",
-          "description": "Implemented and stress-tested BB84 QKD circuits, verifying protocol integrity under simulated channel noise on IBM Quantum Experience.",
+          "title": "Quantum Computation for Cryptography",
+          "subtitle": "Qiskit / IBM Quantum Experience",
+          "description": "Implemented BB84 QKD circuits in Qiskit and benchmarked key error rate (QBER) across depolarising noise levels of 0–15%, confirming protocol abort-threshold behaviour on IBM Quantum Experience.",
           "links": [
             {
               "label": "GitHub",
@@ -356,6 +372,8 @@
       "projects_qyo-quantum-classical-hybrid-metaheuristic",
       "projects_yo-classical-hybrid-optimization",
       "projects_origo-signum-quantum-puf",
+      "projects_realtime-lidar-3d-object-detection-node",
+      "projects_project-sthira-bio-mimetic-eeg-fnirs-digital-twin",
       "projects_quantum-cryptography-bb84-qkd",
       "projects_additional-projects",
       "skills_programming",
