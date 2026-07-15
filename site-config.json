@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1783690432338,
+  "updatedAt": 1784097709411,
   "passHash": {
     "salt": "fbcb3ab55e1b7a3bcb5dc6ece18b2c29",
     "iterations": 210000,
@@ -51,7 +51,7 @@
       "numeral": "I",
       "category": "Academia",
       "title": "Education",
-      "subtitle": "PES University · B.Tech ECE · CGPA 7.51 · 2022–Present",
+      "subtitle": "PES University · B.Tech ECE · CGPA 7.69 · 2022–Present",
       "overline": "Alma mater",
       "headline": "Academic |foundation|",
       "hidden": false,
@@ -352,9 +352,7 @@
   ],
   "resume": {
     "selectedItems": [
-      "education_pes-university",
       "experience_research-intern",
-      "experience_ai-intern",
       "projects_qyo-quantum-classical-hybrid-metaheuristic",
       "projects_yo-classical-hybrid-optimization",
       "projects_origo-signum-quantum-puf",
@@ -368,7 +366,8 @@
       "skills_fabrication",
       "honours_hackathon-finalist-infynite-hackathon",
       "honours_ibm-ai-digital-badge-edunet-foundation-ibm-skill",
-      "honours_professional-certifications"
+      "honours_professional-certifications",
+      "experience_ai-intern"
     ]
   }
 }
