@@ -299,31 +299,60 @@ export function renderResumeTex(resume, template, opts = {}) {
    bytes, or the compile log when LaTeX errors. There is no backend of
    our own: the template is repo-controlled, all content is escaped, and
    texlive.net is a public service, so no new attack surface is exposed. */
+/* ---------------- compile: latex.ytotech.com (LaTeX-on-HTTP) ----------------
+   POST JSON with the document content. The service has CORS enabled
+   (Access-Control-Allow-Origin: *), so it works directly from GitHub Pages.
+   
+   Returns the PDF bytes on success, or the compile log when LaTeX errors.
+   No backend of our own is needed: the template is repo-controlled, all 
+   content is escaped, and latex.ytotech.com is a public service. */
 export async function compileResumeTex(texSource, { timeoutMs = 90000 } = {}) {
-  const fd = new FormData();
-  fd.append('filecontents[]', texSource);
-  fd.append('filename[]', 'document.tex');
-  fd.append('engine', 'pdflatex');
-  fd.append('return', 'pdf');
+  const payload = {
+    compiler: 'pdflatex',
+    resources: [
+      {
+        main: true,
+        content: texSource,
+      },
+    ],
+  };
 
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
-    const res = await fetch('https://texlive.net/cgi-bin/latexcgi', {
+    const res = await fetch('https://latex.ytotech.com/builds/sync', {
       method: 'POST',
-      body: fd,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
       signal: ctrl.signal,
     });
+
     const buf = await res.arrayBuffer();
-    const head = new TextDecoder().decode(buf.slice(0, 5));
-    const type = res.headers.get('content-type') || '';
-    if (res.ok && (head === '%PDF-' || type.includes('pdf'))) return { ok: true, pdf: buf };
-    return { ok: false, log: new TextDecoder().decode(buf) };
+
+    if (res.ok) {
+      const head = new TextDecoder().decode(buf.slice(0, 5));
+      const type = res.headers.get('content-type') || '';
+      if (head === '%PDF-' || type.includes('pdf')) {
+        return { ok: true, pdf: buf };
+      }
+    }
+
+    // Compilation error: parse JSON log response
+    try {
+      const json = JSON.parse(new TextDecoder().decode(buf));
+      const logs = json.log_files || {};
+      const logText = Object.values(logs).join('\n');
+      return { ok: false, log: logText || json.error || 'Unknown compilation error' };
+    } catch {
+      return { ok: false, log: new TextDecoder().decode(buf) };
+    }
   } catch (e) {
     return {
       ok: false,
       log:
-        (e?.name === 'AbortError' ? 'Timed out contacting texlive.net.' : 'Could not reach texlive.net.') +
+        (e?.name === 'AbortError'
+          ? 'Timed out contacting latex.ytotech.com.'
+          : 'Could not reach latex.ytotech.com.') +
         ' Check your connection, or download the .tex and compile it in Overleaf/locally.\n' +
         (e?.message || ''),
     };
