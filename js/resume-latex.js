@@ -3,13 +3,19 @@
 
      site-config.json ──▶ buildResumeJson() ──▶ resume.json
      resume.json + resume/resume-template.tex ──▶ renderResumeTex()
-     .tex ──▶ compileResumeTex() (texlive.net, pdflatex) ──▶ PDF
+     .tex ──▶ compileResumeTex() (local WASM pdfTeX, in-browser) ──▶ PDF
 
    No DOM, no app state — every function takes plain data, so the
    whole pipeline is testable outside the browser. All portfolio
    content is treated as untrusted plain text and escaped before
    it reaches LaTeX; only resume-template.tex contains raw LaTeX.
+
+   Compilation itself is delegated to js/latex-engine.js, a thin
+   wrapper around a browser-side WASM LaTeX engine. Nothing in this
+   file, or in latex-engine.js, sends the generated LaTeX anywhere:
+   the whole pipeline runs inside the visitor's own tab.
    ============================================================ */
+import { compileLatex } from './latex-engine.js';
 
 /* ---------------- resume.json: normalized schema ----------------
    {
@@ -293,42 +299,20 @@ export function renderResumeTex(resume, template, opts = {}) {
   return { tex, dropped: stats.dropped };
 }
 
-/* ---------------- compile: texlive.net (LaTeX Project CGI) ----------------
-   POST multipart/form-data with exactly the documented fields — the
-   service rejects submissions containing anything else. Returns the PDF
-   bytes, or the compile log when LaTeX errors. There is no backend of
-   our own: the template is repo-controlled, all content is escaped, and
-   texlive.net is a public service, so no new attack surface is exposed. */
-export async function compileResumeTex(texSource, { timeoutMs = 90000 } = {}) {
-  const fd = new FormData();
-  fd.append('filecontents[]', texSource);
-  fd.append('filename[]', 'document.tex');
-  fd.append('engine', 'pdflatex');
-  fd.append('return', 'pdf');
-
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+/* ---------------- compile: local in-browser WASM pdfTeX ----------------
+   No network request of any kind. The generated LaTeX is handed to
+   js/latex-engine.js, which runs a WebAssembly build of pdfTeX inside
+   the visitor's own tab (optionally on a Web Worker) and hands back
+   real PDF bytes. The engine and its TeX Live data files are static
+   assets vendored into this repository — see resume/vendor/busytex/
+   and README-latex-engine.md for how they got there. */
+export async function compileResumeTex(texSource) {
   try {
-    const res = await fetch('https://texlive.net/cgi-bin/latexcgi', {
-      method: 'POST',
-      body: fd,
-      signal: ctrl.signal,
-    });
-    const buf = await res.arrayBuffer();
-    const head = new TextDecoder().decode(buf.slice(0, 5));
-    const type = res.headers.get('content-type') || '';
-    if (res.ok && (head === '%PDF-' || type.includes('pdf'))) return { ok: true, pdf: buf };
-    return { ok: false, log: new TextDecoder().decode(buf) };
+    const result = await compileLatex(texSource);
+    if (!result.ok) return { ok: false, log: result.log || 'LaTeX compilation failed.' };
+    return { ok: true, pdf: result.pdf };
   } catch (e) {
-    return {
-      ok: false,
-      log:
-        (e?.name === 'AbortError' ? 'Timed out contacting texlive.net.' : 'Could not reach texlive.net.') +
-        ' Check your connection, or download the .tex and compile it in Overleaf/locally.\n' +
-        (e?.message || ''),
-    };
-  } finally {
-    clearTimeout(timer);
+    return { ok: false, log: e?.message || 'Local LaTeX compiler failed to load.' };
   }
 }
 
