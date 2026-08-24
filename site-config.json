@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1784097709411,
+  "updatedAt": 1787543382721,
   "passHash": {
     "salt": "fbcb3ab55e1b7a3bcb5dc6ece18b2c29",
     "iterations": 210000,
@@ -324,6 +324,11 @@
           "title": "Professional Certifications",
           "description": "Data Analytics & Cybersecurity (Deloitte) · EE Simulation (GE) · Intermediate Problem Solving (HackerRank) · Robotics L1 & L2 (40 hrs) · C Programming (Codechef)",
           "_id": "honours_professional-certifications"
+        },
+        {
+          "icon": "🎓",
+          "title": "Pgcet qualification",
+          "description": "Qualified for pgcet mtech karnataka with rank of 2732"
         }
       ]
     },
