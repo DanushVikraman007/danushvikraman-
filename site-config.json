@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1787543382721,
+  "updatedAt": 1791181217105,
   "passHash": {
     "salt": "fbcb3ab55e1b7a3bcb5dc6ece18b2c29",
     "iterations": 210000,
@@ -121,6 +121,21 @@
           ],
           "tags": [],
           "_id": "experience_ai-intern"
+        },
+        {
+          "heading": "Level 1 SDE FTE",
+          "org": "Shyena Solutions Pvt Ltd",
+          "period": "May 2026 - Present",
+          "meta": [
+            {
+              "k": "Working in project deliverable to DRDO",
+              "v": ""
+            }
+          ],
+          "bullets": [
+            "- Worked on infrastructure for audio processing for models for purpose of language identification and Transcription"
+          ],
+          "tags": []
         }
       ]
     },
@@ -328,7 +343,8 @@
         {
           "icon": "🎓",
           "title": "Pgcet qualification",
-          "description": "Qualified for pgcet mtech karnataka with rank of 2732"
+          "description": "Qualified for pgcet mtech karnataka with rank of 2732",
+          "_id": "honours_pgcet-qualification"
         }
       ]
     },
