@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": 1791181217105,
+  "updatedAt": 1791181300690,
   "passHash": {
     "salt": "fbcb3ab55e1b7a3bcb5dc6ece18b2c29",
     "iterations": 210000,
@@ -128,12 +128,12 @@
           "period": "May 2026 - Present",
           "meta": [
             {
-              "k": "Working in project deliverable to DRDO",
+              "k": "WORKING IN PROJECT DELIVERABLE TO DRDO",
               "v": ""
             }
           ],
           "bullets": [
-            "- Worked on infrastructure for audio processing for models for purpose of language identification and Transcription"
+            "Worked on infrastructure for audio processing for models for purpose of language identification and Transcription"
           ],
           "tags": []
         }
